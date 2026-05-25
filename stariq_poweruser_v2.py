@@ -190,7 +190,7 @@ def draw_footer(cv):
 #  PAGE 1  —  Model Mastery & Prompting
 # ─────────────────────────────────────────────────────────────────────────
 def page1(cv):
-    draw_header(cv, 1, 3,
+    draw_header(cv, 1, 4,
         "Model mastery · Token economics · CRAFT prompt framework · "
         "Power techniques · Anti-patterns")
 
@@ -443,7 +443,7 @@ def page2(cv):
     cv.setFillColor(CREAM)
     cv.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_header(cv, 2, 3,
+    draw_header(cv, 2, 4,
         "Knowledge bases · RAG internals · Retrieval modes · "
         "Custom agents · Skills, tools & prompt libraries")
 
@@ -754,23 +754,17 @@ def page3(cv):
     cv.setFillColor(CREAM)
     cv.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_header(cv, 3, 3,
-        "RBAC & sharing · Document generation · Data governance · "
-        "2026 roadmap · Troubleshooting")
+    draw_header(cv, 3, 4,
+        "RBAC & sharing · Document generation · Data governance · AI intake process")
 
     top = H - HEADER_H - STRIPE_H
 
-    # 3 rows:
-    # Row A: RBAC (left) | Document Generation (right)   — 252pt
-    # Row B: Data Governance (left) | Intake + Compliance (right)  — 224pt
-    # Row C: Roadmap (left 56%) | Troubleshooting (right 44%)      — 148pt
+    # 2 rows — roadmap & troubleshooting moved to page 4
     ROW_A_H = 252
-    ROW_B_H = 224
-    ROW_C_H = BODY_H - ROW_A_H - ROW_B_H - 4 * GUTTER  # 656-252-224-64=116
+    ROW_B_H = BODY_H - ROW_A_H - 3 * GUTTER  # 656-252-48=356
 
     ra_y = top - GUTTER - ROW_A_H
     rb_y = ra_y - GUTTER - ROW_B_H
-    rc_y = FOOTER_H + GUTTER
 
     cl = MARGIN; cr = MARGIN + SC + GUTTER
     IW = SC - 2 * PAD
@@ -779,7 +773,6 @@ def page3(cv):
     rr(cv, cr, ra_y, SC, ROW_A_H, r=8, fill=WHITE,     stroke=RULE, sw=0.8)
     rr(cv, cl, rb_y, SC, ROW_B_H, r=8, fill=WHITE,     stroke=RULE, sw=0.8)
     rr(cv, cr, rb_y, SC, ROW_B_H, r=8, fill=GOLD_TINT, stroke=RULE, sw=0.8)
-    rr(cv, MARGIN, rc_y, CW, ROW_C_H, r=8, fill=DARK_BG)
 
     # ── A-LEFT: RBAC & Sharing ────────────────────────────────────────────
     iy = ra_y + ROW_A_H - PAD - 2
@@ -934,32 +927,7 @@ def page3(cv):
                        size=8, color=MID, lh=11)
         iy -= 8
 
-    divider(cv, cl + PAD, iy + 2, IW)
-    iy -= 10
-
-    cv.setFont("Helvetica-Bold", 8); cv.setFillColor(GOLD)
-    cv.drawString(cl + PAD, iy, "KEY POLICIES TO KNOW")
-    iy -= 12
-
-    policies = [
-        ("CIS Policy (Jan 2025)",
-         "Customer Information Security — governs GLBA nonpublic personal information"),
-        ("EDG Policy (Aug 2025)",
-         "Enterprise Data Governance — data ownership and user responsibilities"),
-        ("ECIM Policy (Aug 2025)",
-         "Enterprise Corporate Information Management — defines data types and handling"),
-        ("Master InfoSec Policy (Dec 2022)",
-         "Access controls, data protection, confidentiality requirements"),
-    ]
-    for pol_name, pol_desc in policies:
-        cv.setFont("Helvetica-Bold", 8); cv.setFillColor(MID)
-        cv.drawString(cl + PAD, iy, pol_name)
-        iy -= 11
-        iy = wrap_text(cv, pol_desc, cl + PAD + 8, iy, IW - 8,
-                       size=7.5, color=SOFT, lh=10)
-        iy -= 5
-
-    # ── B-RIGHT: Intake Process + Compliance ──────────────────────────────
+    # ── B-RIGHT: Intake Process + Key Policies ───────────────────────────
     iy = rb_y + ROW_B_H - PAD - 2
     iy = section_label(cv, "AI Use Case Intake Process", cr + PAD, iy, IW)
     iy -= 4
@@ -990,91 +958,211 @@ def page3(cv):
                        size=8, color=MID, lh=11)
         iy -= 5
 
-    iy -= 4
+    iy -= 6
     divider(cv, cr + PAD, iy + 2, IW)
     iy -= 10
 
     cv.setFont("Helvetica-Bold", 8); cv.setFillColor(GOLD)
-    cv.drawString(cr + PAD, iy, "WHAT ADMINISTRATORS CAN SEE")
+    cv.drawString(cr + PAD, iy, "KEY POLICIES TO KNOW")
     iy -= 12
 
-    admin_vis = [
-        ("Conversation logs",   "All chats — required for regulatory audit"),
-        ("Model usage",         "Token consumption, model selection, cost patterns"),
-        ("KB access",           "Who accessed which knowledge base and when"),
-        ("User activity",       "Login times, feature usage, document uploads"),
-        ("Tool executions",     "All Python tool calls and their outputs"),
+    policies = [
+        ("CIS Policy (Jan 2025)",
+         "Customer Information Security — governs GLBA nonpublic personal information"),
+        ("EDG Policy (Aug 2025)",
+         "Enterprise Data Governance — data ownership and user responsibilities"),
+        ("ECIM Policy (Aug 2025)",
+         "Enterprise Corporate Information Management — data types and handling"),
+        ("Master InfoSec Policy (Dec 2022)",
+         "Access controls, data protection, and confidentiality requirements"),
     ]
-    for item, detail in admin_vis:
+    for pol_name, pol_desc in policies:
         cv.setFont("Helvetica-Bold", 8); cv.setFillColor(MID)
-        cv.drawString(cr + PAD, iy, item)
-        cv.setFont("Helvetica", 8); cv.setFillColor(SOFT)
-        cv.drawString(cr + PAD + cv.stringWidth(item, "Helvetica-Bold", 8) + 5, iy, f"— {detail}")
+        cv.drawString(cr + PAD, iy, pol_name)
         iy -= 11
+        iy = wrap_text(cv, pol_desc, cr + PAD + 8, iy, IW - 8,
+                       size=7.5, color=SOFT, lh=10)
+        iy -= 6
 
     iy -= 4
     cv.setFont("Helvetica-Oblique", 8); cv.setFillColor(SOFT)
     iy = wrap_text(cv,
-        "StarIQ does NOT train AI models on your conversations or uploads. "
-        "Data is used only to generate responses within your session.",
+        "Full admin visibility details and privacy commitments on page 4.",
         cr + PAD, iy, IW, size=8, color=SOFT, lh=11)
 
-    # ── C: Roadmap + Troubleshooting (dark strip) ─────────────────────────
-    road_w = int(CW * 0.54)
-    trouble_w = CW - road_w - GUTTER
-    rx = MARGIN; tx = MARGIN + road_w + GUTTER
-    IW_r = road_w - 2 * PAD
-    IW_t = trouble_w - 2 * PAD
+    draw_footer(cv)
 
-    iy_r = rc_y + ROW_C_H - PAD - 2
-    iy_t = rc_y + ROW_C_H - PAD - 2
 
-    cv.setFont("Helvetica-Bold", 8); cv.setFillColor(GOLD)
-    cv.drawString(rx + PAD, iy_r, "2026 ROADMAP")
-    cv.drawString(tx + PAD, iy_t, "TROUBLESHOOTING QUICK REFERENCE")
-    iy_r -= 12; iy_t -= 12
+# ─────────────────────────────────────────────────────────────────────────
+def page4(cv):
+    cv.showPage()
+    cv.setFillColor(CREAM); cv.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_header(cv, 4, 4,
+        "2026 roadmap · Troubleshooting · Admin visibility & privacy")
+
+    top = H - HEADER_H - STRIPE_H
+
+    ROW_A_H = 260  # dark roadmap strip (full width)
+    ROW_B_H = BODY_H - ROW_A_H - 3 * GUTTER  # 656-260-48=348
+
+    ra_y = top - GUTTER - ROW_A_H
+    rb_y = ra_y - GUTTER - ROW_B_H
+
+    cl = MARGIN; cr = MARGIN + SC + GUTTER
+    IW = SC - 2 * PAD
+
+    rr(cv, MARGIN, ra_y, CW, ROW_A_H, r=8, fill=DARK_BG)
+    rr(cv, cl, rb_y, SC, ROW_B_H, r=8, fill=GOLD_TINT, stroke=RULE, sw=0.8)
+    rr(cv, cr, rb_y, SC, ROW_B_H, r=8, fill=WHITE,     stroke=RULE, sw=0.8)
+
+    # ── ROW A: 2026 Roadmap (dark, 2×2 quarter grid) ─────────────────────
+    iy = ra_y + ROW_A_H - PAD - 2
+    cv.setFont("Helvetica-Bold", 9); cv.setFillColor(GOLD)
+    cv.drawString(MARGIN + PAD, iy, "2026 ROADMAP")
+    iy -= 14
+
+    # Left half: Q1 + Q2   |   Right half: Q3 + Q4
+    lx = MARGIN + PAD;     lw = SC - PAD
+    rx_ = MARGIN + SC + GUTTER; rw = SC - PAD
+    iy_l = iy; iy_r = iy
 
     quarters = [
         ("✅  Q1 — Launched Feb 2026", GREEN,
-         "Core platform, all 5 models via Amazon Bedrock, knowledge bases & RAG, "
-         "prompt libraries with slash commands, voice dictation & voice mode, full accessibility"),
-        ("Q2 — Apr–Jun 2026", GOLD,
-         "OneDrive & SharePoint RAG integration (auto permission enforcement) · "
+         "Core platform · All 5 models via Amazon Bedrock · Knowledge bases & RAG "
+         "· Prompt libraries with slash commands · Voice dictation & voice mode · "
+         "Full accessibility compliance"),
+        ("⏳  Q2 — Apr–Jun 2026", GOLD,
+         "OneDrive & SharePoint RAG with auto permission enforcement · "
          "Mobile PWA (offline + push notifications) · "
          "AI Web Search via Palo Alto Prisma AI firewalls"),
         ("Q3 — Jul–Sep 2026", ORANGE,
          "Model Context Protocol (MCP) — connect AI to external tools & APIs · "
          "Python AI Tool Framework with internal marketplace · "
-         "Code Interpreter enhancements"),
+         "Code Interpreter enhancements · Advanced multi-step agent chains"),
         ("Q4 — Oct–Dec 2026", RED,
          "Custom Agents for IT Support, HR & Finance · "
          "Agent Policy Controls (natural language guardrails) · "
-         "Agent Evaluation Pipeline (accuracy tracking & A/B testing)"),
+         "Agent Evaluation Pipeline (accuracy tracking & A/B testing) · "
+         "Enterprise agent versioning & rollback"),
     ]
-    for q_label, qc, q_desc in quarters:
+    for i, (q_label, qc, q_desc) in enumerate(quarters):
+        if i < 2:
+            x_, w_ = lx, lw; iy_ptr = "l"
+        else:
+            x_, w_ = rx_, rw; iy_ptr = "r"
+
+        cur_y = iy_l if iy_ptr == "l" else iy_r
         cv.setFont("Helvetica-Bold", 8); cv.setFillColor(qc)
-        cv.drawString(rx + PAD, iy_r, q_label)
-        iy_r -= 11
-        iy_r = wrap_text(cv, q_desc, rx + PAD + 6, iy_r, IW_r - 6,
-                         size=7.5, color=HexColor("#CCCCCC"), lh=10)
-        iy_r -= 6
+        cv.drawString(x_, cur_y, q_label)
+        cur_y -= 11
+        cur_y = wrap_text(cv, q_desc, x_ + 6, cur_y, w_ - 6,
+                          size=7.5, color=HexColor("#CCCCCC"), lh=10)
+        cur_y -= 10
+        if iy_ptr == "l":
+            iy_l = cur_y
+        else:
+            iy_r = cur_y
+
+    # vertical rule between left/right quarters
+    mid_x = MARGIN + SC + GUTTER / 2
+    cv.setStrokeColor(HexColor("#333333")); cv.setLineWidth(0.5)
+    cv.line(mid_x, ra_y + 8, mid_x, ra_y + ROW_A_H - 8)
+
+    # ── ROW B LEFT: Admin Visibility & Privacy ────────────────────────────
+    iy = rb_y + ROW_B_H - PAD - 2
+    iy = section_label(cv, "What Administrators Can See", cl + PAD, iy, IW)
+    iy -= 4
+
+    cv.setFont("Helvetica", 8); cv.setFillColor(MID)
+    iy = wrap_text(cv,
+        "Flagstar's AI team has visibility into platform activity for "
+        "regulatory compliance, security auditing, and cost management. "
+        "All access is governed by Flagstar's information security policies.",
+        cl + PAD, iy, IW, size=8, color=MID, lh=11)
+    iy -= 10
+
+    admin_vis = [
+        (GOLD,   "Conversation logs",
+         "All chat sessions are retained for regulatory audit. Accessible to AI Team admins only."),
+        (GOLD,   "Model & token usage",
+         "Model selected, token consumption per session, cost patterns by team."),
+        (GOLD,   "Knowledge base access",
+         "Which KB was accessed, which documents retrieved, and by whom."),
+        (GOLD,   "User activity",
+         "Login times, feature usage, document uploads, voice sessions."),
+        (GOLD,   "Tool executions",
+         "All Python tool calls, their inputs, outputs, and execution times."),
+    ]
+    for ac, item, detail in admin_vis:
+        cv.setFont("Helvetica-Bold", 8); cv.setFillColor(DARK_BG if ac == GOLD else ac)
+        cv.setFont("Helvetica-Bold", 8); cv.setFillColor(MID)
+        cv.drawString(cl + PAD, iy, item)
+        iy -= 11
+        iy = wrap_text(cv, detail, cl + PAD + 8, iy, IW - 8,
+                       size=7.5, color=SOFT, lh=10)
+        iy -= 6
+
+    divider(cv, cl + PAD, iy + 4, IW)
+    iy -= 10
+
+    cv.setFont("Helvetica-Bold", 8); cv.setFillColor(GOLD)
+    cv.drawString(cl + PAD, iy, "PRIVACY COMMITMENTS")
+    iy -= 12
+
+    privacy = [
+        "StarIQ does NOT train AI models on your conversations or uploads",
+        "Data is used only to generate your response — never shared externally",
+        "Conversations are encrypted at rest (AES-256) and in transit (TLS 1.3)",
+        "Runs entirely within Flagstar's private AWS VPC — zero data leaves our perimeter",
+        "Retention periods follow Flagstar's records management schedule",
+    ]
+    for p_ in privacy:
+        cv.setFillColor(GREEN); cv.setFont("Helvetica-Bold", 9)
+        cv.drawString(cl + PAD, iy, "✓")
+        iy = wrap_text(cv, p_, cl + PAD + 12, iy, IW - 12,
+                       size=8, color=MID, lh=11)
+        iy -= 5
+
+    # ── ROW B RIGHT: Troubleshooting Quick Reference ──────────────────────
+    iy = rb_y + ROW_B_H - PAD - 2
+    iy = section_label(cv, "Troubleshooting Quick Reference", cr + PAD, iy, IW)
+    iy -= 4
 
     trouble = [
-        ("SSO login fails",          "Access via myapps.microsoft.com; check OAuth redirect URIs"),
-        ("Doc missing from KB",      "Check Documents tab for processing status; verify # reference in chat"),
-        ("Outdated AI responses",    "Upload current documents to a KB and reference it; use web search (Q2)"),
-        ("Slow responses",           "Switch to Haiku/Lite; start fresh chat; use Focused Retrieval mode"),
-        ("Token limit reached",      "Start new chat, paste summary of prior context; use concise prompts"),
-        ("Account shows Pending",    "Contact AI Team on Teams (join code: g2w1hjy) to elevate role"),
-        ("Citations seem wrong",     "Test KB with sample questions; check document structure and recency"),
+        ("SSO login fails",
+         "Go to myapps.microsoft.com directly. If the StarIQ tile is missing, "
+         "contact your manager — access requires group assignment in Entra ID."),
+        ("Document missing from KB",
+         "Check the Documents tab for processing status (green = indexed). "
+         "In chat, type # then the KB name to reference it explicitly."),
+        ("AI gives outdated answers",
+         "Upload current documents to a KB and reference it with #. "
+         "Web Search (Q2 2026) will add live internet access."),
+        ("Slow or hanging responses",
+         "Switch to Haiku (fastest) or Lite. Start a fresh chat to clear context. "
+         "Large file uploads slow initial processing — wait for green status."),
+        ("Token / context limit hit",
+         "Start a new chat. Paste a short summary of the prior conversation. "
+         "Use concise, specific prompts — avoid pasting full documents into chat."),
+        ("Account stuck on Pending",
+         "New SSO accounts need role elevation. Message the AI Team on Teams "
+         "(join code: g2w1hjy) and they'll promote you to User within 1 business day."),
+        ("KB citations seem wrong",
+         "Test your KB with 3–5 representative questions. "
+         "Check document recency, header structure, and ensure no scanned-image PDFs "
+         "(Tika cannot OCR images — use searchable PDFs or Word docs)."),
+        ("Model ignoring instructions",
+         "Move key rules to the top of your prompt. Use Memory for persistent preferences. "
+         "Opus handles complex multi-constraint tasks better than Sonnet or Haiku."),
     ]
     for issue, fix in trouble:
-        cv.setFont("Helvetica-Bold", 7.5); cv.setFillColor(RED)
-        cv.drawString(tx + PAD, iy_t, issue)
-        iy_t -= 11
-        iy_t = wrap_text(cv, fix, tx + PAD + 6, iy_t, IW_t - 6,
-                         size=7.5, color=HexColor("#CCCCCC"), lh=10)
-        iy_t -= 5
+        cv.setFont("Helvetica-Bold", 8); cv.setFillColor(ORANGE)
+        cv.drawString(cr + PAD, iy, issue)
+        iy -= 11
+        iy = wrap_text(cv, fix, cr + PAD + 8, iy, IW - 8,
+                       size=7.5, color=MID, lh=10)
+        iy -= 8
 
     draw_footer(cv)
 
@@ -1087,6 +1175,7 @@ def build(out_path):
     page1(cv)
     page2(cv)
     page3(cv)
+    page4(cv)
     cv.save()
     print(f"✅  {out_path}  ({os.path.getsize(out_path) // 1024} KB)")
 
