@@ -120,7 +120,7 @@ CELLS = [
     {
         "num": "5",
         "title": "Pick Your Model",
-        "body": "⚡ Haiku — quick tasks\n🚀 Sonnet — most work  ★ start here\n🎯 Premier — critical decisions\nSwitch with @ModelName mid-chat.",
+        "body": "⚡ Haiku — quick tasks\n🚀 Sonnet — most work  ★ start here\n🎯 Opus — critical decisions\nSwitch with @ModelName mid-chat.",
         "link": None,
     },
     {

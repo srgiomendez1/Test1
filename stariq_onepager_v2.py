@@ -316,7 +316,7 @@ def build(out_path):
          "Quick tasks,\nsummaries,\nsimple Q&A", False),
         ("★", ORANGE, "Sonnet",
          "Analysis,\nwriting, code,\nmost daily work", True),
-        ("◆", WHITE, "Premier",
+        ("◆", WHITE, "Opus",
          "Critical decisions,\ncomplex reasoning,\nhigh stakes", False),
     ]
     for sym, col, name, desc, is_rec in models:
