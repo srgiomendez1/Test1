@@ -1,0 +1,46 @@
+name: Update results
+
+# Refreshes data/results.json from the live/openfootball sources and commits it
+# (which redeploys Pages). NOTE: GitHub only runs scheduled workflows from the
+# repository's DEFAULT branch, so for the cron to fire this file must exist on
+# the default branch. Until then use the "Run workflow" button (workflow_dispatch).
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # every 10 min (GitHub min is 5; may be delayed under load)
+  workflow_dispatch:
+  push:
+    branches: [main, claude/world-cup-bet-tracker-i5xyab]
+    paths: [scripts/fetch_results.py]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-results
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Fetch results
+        env:
+          # Optional: point at a free no-key live in-match API to overlay live
+          # scores on the openfootball baseline. Leave empty to use baseline only.
+          LIVE_SOURCE_URL: ${{ vars.LIVE_SOURCE_URL }}
+        run: python3 scripts/fetch_results.py
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- data/results.json; then
+            git add data/results.json
+            git commit -m "chore: update results $(date -u +%FT%TZ)"
+            git push
+          else
+            echo "No changes."
+          fi

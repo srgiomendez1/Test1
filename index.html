@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiniela Mundial 2026 · Los Reyes</title>
+  <meta name="description" content="Seguimiento de la quiniela del Mundial 2026 entre amigos." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="ball">⚽</span>
+      <div>
+        <h1>Quiniela Mundial 2026</h1>
+        <p class="sub">Los Reyes · Fase de Grupos</p>
+      </div>
+    </div>
+    <span id="updated" class="updated"></span>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="posiciones">🏆 Posiciones</button>
+    <button class="tab" data-view="partidos">📅 Partidos</button>
+    <button class="tab" data-view="jugador">👤 Por Jugador</button>
+  </nav>
+
+  <main id="content" class="content">
+    <p class="hint">Cargando…</p>
+  </main>
+
+  <footer class="foot">
+    <p>Resultados: <a href="https://github.com/openfootball/worldcup.json" target="_blank" rel="noopener">openfootball</a>
+      (dominio público) · Puntuación: acertar ganador/empate +1, marcador exacto +2 (3 en total).</p>
+  </footer>
+
+  <script src="assets/js/scoring.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
