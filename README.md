@@ -1,4 +1,4 @@
-# Quiniela Mundial 2026 · Los Reyes ⚽
+# Los Reyes Quiniela Mundial 2026 ⚽
 
 Rastreador de la quiniela del Mundial 2026 entre amigos. Sitio estático (sin
 servidor, sin API key, gratis en GitHub Pages) que toma los resultados de los
