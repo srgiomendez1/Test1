@@ -1,0 +1,1331 @@
+{
+  "generated_at": "2026-06-18T22:59:29.699457+00:00",
+  "matches": {
+    "2026-06-11|Mexico|South Africa": {
+      "date": "2026-06-11",
+      "time": "13:00 UTC-6",
+      "kickoff_utc": "2026-06-11T19:00:00+00:00",
+      "home": "Mexico",
+      "away": "South Africa",
+      "group": "Group A",
+      "ground": "Mexico City",
+      "score": [
+        2,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-11|South Korea|Czech Republic": {
+      "date": "2026-06-11",
+      "time": "20:00 UTC-6",
+      "kickoff_utc": "2026-06-12T02:00:00+00:00",
+      "home": "South Korea",
+      "away": "Czech Republic",
+      "group": "Group A",
+      "ground": "Guadalajara (Zapopan)",
+      "score": [
+        2,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-18|Czech Republic|South Africa": {
+      "date": "2026-06-18",
+      "time": "12:00 UTC-4",
+      "kickoff_utc": "2026-06-18T16:00:00+00:00",
+      "home": "Czech Republic",
+      "away": "South Africa",
+      "group": "Group A",
+      "ground": "Atlanta",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-18|Mexico|South Korea": {
+      "date": "2026-06-18",
+      "time": "19:00 UTC-6",
+      "kickoff_utc": "2026-06-19T01:00:00+00:00",
+      "home": "Mexico",
+      "away": "South Korea",
+      "group": "Group A",
+      "ground": "Guadalajara (Zapopan)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|Czech Republic|Mexico": {
+      "date": "2026-06-24",
+      "time": "19:00 UTC-6",
+      "kickoff_utc": "2026-06-25T01:00:00+00:00",
+      "home": "Czech Republic",
+      "away": "Mexico",
+      "group": "Group A",
+      "ground": "Mexico City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|South Africa|South Korea": {
+      "date": "2026-06-24",
+      "time": "19:00 UTC-6",
+      "kickoff_utc": "2026-06-25T01:00:00+00:00",
+      "home": "South Africa",
+      "away": "South Korea",
+      "group": "Group A",
+      "ground": "Monterrey (Guadalupe)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-12|Canada|Bosnia & Herzegovina": {
+      "date": "2026-06-12",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-06-12T19:00:00+00:00",
+      "home": "Canada",
+      "away": "Bosnia & Herzegovina",
+      "group": "Group B",
+      "ground": "Toronto",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-13|Qatar|Switzerland": {
+      "date": "2026-06-13",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-13T19:00:00+00:00",
+      "home": "Qatar",
+      "away": "Switzerland",
+      "group": "Group B",
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-18|Switzerland|Bosnia & Herzegovina": {
+      "date": "2026-06-18",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-18T19:00:00+00:00",
+      "home": "Switzerland",
+      "away": "Bosnia & Herzegovina",
+      "group": "Group B",
+      "ground": "Los Angeles (Inglewood)",
+      "score": [
+        4,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-18|Canada|Qatar": {
+      "date": "2026-06-18",
+      "time": "15:00 UTC-7",
+      "kickoff_utc": "2026-06-18T22:00:00+00:00",
+      "home": "Canada",
+      "away": "Qatar",
+      "group": "Group B",
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|Switzerland|Canada": {
+      "date": "2026-06-24",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-24T19:00:00+00:00",
+      "home": "Switzerland",
+      "away": "Canada",
+      "group": "Group B",
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|Bosnia & Herzegovina|Qatar": {
+      "date": "2026-06-24",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-24T19:00:00+00:00",
+      "home": "Bosnia & Herzegovina",
+      "away": "Qatar",
+      "group": "Group B",
+      "ground": "Seattle",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-13|Brazil|Morocco": {
+      "date": "2026-06-13",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-13T22:00:00+00:00",
+      "home": "Brazil",
+      "away": "Morocco",
+      "group": "Group C",
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-13|Haiti|Scotland": {
+      "date": "2026-06-13",
+      "time": "21:00 UTC-4",
+      "kickoff_utc": "2026-06-14T01:00:00+00:00",
+      "home": "Haiti",
+      "away": "Scotland",
+      "group": "Group C",
+      "ground": "Boston (Foxborough)",
+      "score": [
+        0,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-19|Scotland|Morocco": {
+      "date": "2026-06-19",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-19T22:00:00+00:00",
+      "home": "Scotland",
+      "away": "Morocco",
+      "group": "Group C",
+      "ground": "Boston (Foxborough)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-19|Brazil|Haiti": {
+      "date": "2026-06-19",
+      "time": "20:30 UTC-4",
+      "kickoff_utc": "2026-06-20T00:30:00+00:00",
+      "home": "Brazil",
+      "away": "Haiti",
+      "group": "Group C",
+      "ground": "Philadelphia",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|Scotland|Brazil": {
+      "date": "2026-06-24",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-24T22:00:00+00:00",
+      "home": "Scotland",
+      "away": "Brazil",
+      "group": "Group C",
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-24|Morocco|Haiti": {
+      "date": "2026-06-24",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-24T22:00:00+00:00",
+      "home": "Morocco",
+      "away": "Haiti",
+      "group": "Group C",
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-12|USA|Paraguay": {
+      "date": "2026-06-12",
+      "time": "18:00 UTC-7",
+      "kickoff_utc": "2026-06-13T01:00:00+00:00",
+      "home": "USA",
+      "away": "Paraguay",
+      "group": "Group D",
+      "ground": "Los Angeles (Inglewood)",
+      "score": [
+        4,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-13|Australia|Turkey": {
+      "date": "2026-06-13",
+      "time": "21:00 UTC-7",
+      "kickoff_utc": "2026-06-14T04:00:00+00:00",
+      "home": "Australia",
+      "away": "Turkey",
+      "group": "Group D",
+      "ground": "Vancouver",
+      "score": [
+        2,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-19|USA|Australia": {
+      "date": "2026-06-19",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-19T19:00:00+00:00",
+      "home": "USA",
+      "away": "Australia",
+      "group": "Group D",
+      "ground": "Seattle",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-19|Turkey|Paraguay": {
+      "date": "2026-06-19",
+      "time": "20:00 UTC-7",
+      "kickoff_utc": "2026-06-20T03:00:00+00:00",
+      "home": "Turkey",
+      "away": "Paraguay",
+      "group": "Group D",
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Turkey|USA": {
+      "date": "2026-06-25",
+      "time": "19:00 UTC-7",
+      "kickoff_utc": "2026-06-26T02:00:00+00:00",
+      "home": "Turkey",
+      "away": "USA",
+      "group": "Group D",
+      "ground": "Los Angeles (Inglewood)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Paraguay|Australia": {
+      "date": "2026-06-25",
+      "time": "19:00 UTC-7",
+      "kickoff_utc": "2026-06-26T02:00:00+00:00",
+      "home": "Paraguay",
+      "away": "Australia",
+      "group": "Group D",
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-14|Germany|Curaçao": {
+      "date": "2026-06-14",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-14T17:00:00+00:00",
+      "home": "Germany",
+      "away": "Curaçao",
+      "group": "Group E",
+      "ground": "Houston",
+      "score": [
+        7,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-14|Ivory Coast|Ecuador": {
+      "date": "2026-06-14",
+      "time": "19:00 UTC-4",
+      "kickoff_utc": "2026-06-14T23:00:00+00:00",
+      "home": "Ivory Coast",
+      "away": "Ecuador",
+      "group": "Group E",
+      "ground": "Philadelphia",
+      "score": [
+        1,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-20|Germany|Ivory Coast": {
+      "date": "2026-06-20",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-06-20T20:00:00+00:00",
+      "home": "Germany",
+      "away": "Ivory Coast",
+      "group": "Group E",
+      "ground": "Toronto",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-20|Ecuador|Curaçao": {
+      "date": "2026-06-20",
+      "time": "19:00 UTC-5",
+      "kickoff_utc": "2026-06-21T00:00:00+00:00",
+      "home": "Ecuador",
+      "away": "Curaçao",
+      "group": "Group E",
+      "ground": "Kansas City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Curaçao|Ivory Coast": {
+      "date": "2026-06-25",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-06-25T20:00:00+00:00",
+      "home": "Curaçao",
+      "away": "Ivory Coast",
+      "group": "Group E",
+      "ground": "Philadelphia",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Ecuador|Germany": {
+      "date": "2026-06-25",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-06-25T20:00:00+00:00",
+      "home": "Ecuador",
+      "away": "Germany",
+      "group": "Group E",
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-14|Netherlands|Japan": {
+      "date": "2026-06-14",
+      "time": "15:00 UTC-5",
+      "kickoff_utc": "2026-06-14T20:00:00+00:00",
+      "home": "Netherlands",
+      "away": "Japan",
+      "group": "Group F",
+      "ground": "Dallas (Arlington)",
+      "score": [
+        2,
+        2
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-14|Sweden|Tunisia": {
+      "date": "2026-06-14",
+      "time": "20:00 UTC-6",
+      "kickoff_utc": "2026-06-15T02:00:00+00:00",
+      "home": "Sweden",
+      "away": "Tunisia",
+      "group": "Group F",
+      "ground": "Monterrey (Guadalupe)",
+      "score": [
+        5,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-20|Netherlands|Sweden": {
+      "date": "2026-06-20",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-20T17:00:00+00:00",
+      "home": "Netherlands",
+      "away": "Sweden",
+      "group": "Group F",
+      "ground": "Houston",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-20|Tunisia|Japan": {
+      "date": "2026-06-20",
+      "time": "22:00 UTC-6",
+      "kickoff_utc": "2026-06-21T04:00:00+00:00",
+      "home": "Tunisia",
+      "away": "Japan",
+      "group": "Group F",
+      "ground": "Monterrey (Guadalupe)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Japan|Sweden": {
+      "date": "2026-06-25",
+      "time": "18:00 UTC-5",
+      "kickoff_utc": "2026-06-25T23:00:00+00:00",
+      "home": "Japan",
+      "away": "Sweden",
+      "group": "Group F",
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-25|Tunisia|Netherlands": {
+      "date": "2026-06-25",
+      "time": "18:00 UTC-5",
+      "kickoff_utc": "2026-06-25T23:00:00+00:00",
+      "home": "Tunisia",
+      "away": "Netherlands",
+      "group": "Group F",
+      "ground": "Kansas City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-15|Belgium|Egypt": {
+      "date": "2026-06-15",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-15T19:00:00+00:00",
+      "home": "Belgium",
+      "away": "Egypt",
+      "group": "Group G",
+      "ground": "Seattle",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-15|Iran|New Zealand": {
+      "date": "2026-06-15",
+      "time": "18:00 UTC-7",
+      "kickoff_utc": "2026-06-16T01:00:00+00:00",
+      "home": "Iran",
+      "away": "New Zealand",
+      "group": "Group G",
+      "ground": "Los Angeles (Inglewood)",
+      "score": [
+        2,
+        2
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-21|Belgium|Iran": {
+      "date": "2026-06-21",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-21T19:00:00+00:00",
+      "home": "Belgium",
+      "away": "Iran",
+      "group": "Group G",
+      "ground": "Los Angeles (Inglewood)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-21|New Zealand|Egypt": {
+      "date": "2026-06-21",
+      "time": "18:00 UTC-7",
+      "kickoff_utc": "2026-06-22T01:00:00+00:00",
+      "home": "New Zealand",
+      "away": "Egypt",
+      "group": "Group G",
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|Egypt|Iran": {
+      "date": "2026-06-26",
+      "time": "20:00 UTC-7",
+      "kickoff_utc": "2026-06-27T03:00:00+00:00",
+      "home": "Egypt",
+      "away": "Iran",
+      "group": "Group G",
+      "ground": "Seattle",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|New Zealand|Belgium": {
+      "date": "2026-06-26",
+      "time": "20:00 UTC-7",
+      "kickoff_utc": "2026-06-27T03:00:00+00:00",
+      "home": "New Zealand",
+      "away": "Belgium",
+      "group": "Group G",
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-15|Spain|Cape Verde": {
+      "date": "2026-06-15",
+      "time": "12:00 UTC-4",
+      "kickoff_utc": "2026-06-15T16:00:00+00:00",
+      "home": "Spain",
+      "away": "Cape Verde",
+      "group": "Group H",
+      "ground": "Atlanta",
+      "score": [
+        0,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-15|Saudi Arabia|Uruguay": {
+      "date": "2026-06-15",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-15T22:00:00+00:00",
+      "home": "Saudi Arabia",
+      "away": "Uruguay",
+      "group": "Group H",
+      "ground": "Miami (Miami Gardens)",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-21|Spain|Saudi Arabia": {
+      "date": "2026-06-21",
+      "time": "12:00 UTC-4",
+      "kickoff_utc": "2026-06-21T16:00:00+00:00",
+      "home": "Spain",
+      "away": "Saudi Arabia",
+      "group": "Group H",
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-21|Uruguay|Cape Verde": {
+      "date": "2026-06-21",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-21T22:00:00+00:00",
+      "home": "Uruguay",
+      "away": "Cape Verde",
+      "group": "Group H",
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|Cape Verde|Saudi Arabia": {
+      "date": "2026-06-26",
+      "time": "19:00 UTC-5",
+      "kickoff_utc": "2026-06-27T00:00:00+00:00",
+      "home": "Cape Verde",
+      "away": "Saudi Arabia",
+      "group": "Group H",
+      "ground": "Houston",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|Uruguay|Spain": {
+      "date": "2026-06-26",
+      "time": "18:00 UTC-6",
+      "kickoff_utc": "2026-06-27T00:00:00+00:00",
+      "home": "Uruguay",
+      "away": "Spain",
+      "group": "Group H",
+      "ground": "Guadalajara (Zapopan)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-16|France|Senegal": {
+      "date": "2026-06-16",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-06-16T19:00:00+00:00",
+      "home": "France",
+      "away": "Senegal",
+      "group": "Group I",
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": [
+        3,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-16|Iraq|Norway": {
+      "date": "2026-06-16",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-06-16T22:00:00+00:00",
+      "home": "Iraq",
+      "away": "Norway",
+      "group": "Group I",
+      "ground": "Boston (Foxborough)",
+      "score": [
+        1,
+        4
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-22|France|Iraq": {
+      "date": "2026-06-22",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-06-22T21:00:00+00:00",
+      "home": "France",
+      "away": "Iraq",
+      "group": "Group I",
+      "ground": "Philadelphia",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-22|Norway|Senegal": {
+      "date": "2026-06-22",
+      "time": "20:00 UTC-4",
+      "kickoff_utc": "2026-06-23T00:00:00+00:00",
+      "home": "Norway",
+      "away": "Senegal",
+      "group": "Group I",
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|Norway|France": {
+      "date": "2026-06-26",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-06-26T19:00:00+00:00",
+      "home": "Norway",
+      "away": "France",
+      "group": "Group I",
+      "ground": "Boston (Foxborough)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-26|Senegal|Iraq": {
+      "date": "2026-06-26",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-06-26T19:00:00+00:00",
+      "home": "Senegal",
+      "away": "Iraq",
+      "group": "Group I",
+      "ground": "Toronto",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-16|Argentina|Algeria": {
+      "date": "2026-06-16",
+      "time": "20:00 UTC-5",
+      "kickoff_utc": "2026-06-17T01:00:00+00:00",
+      "home": "Argentina",
+      "away": "Algeria",
+      "group": "Group J",
+      "ground": "Kansas City",
+      "score": [
+        3,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-16|Austria|Jordan": {
+      "date": "2026-06-16",
+      "time": "21:00 UTC-7",
+      "kickoff_utc": "2026-06-17T04:00:00+00:00",
+      "home": "Austria",
+      "away": "Jordan",
+      "group": "Group J",
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": [
+        3,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-22|Argentina|Austria": {
+      "date": "2026-06-22",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-22T17:00:00+00:00",
+      "home": "Argentina",
+      "away": "Austria",
+      "group": "Group J",
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-22|Jordan|Algeria": {
+      "date": "2026-06-22",
+      "time": "20:00 UTC-7",
+      "kickoff_utc": "2026-06-23T03:00:00+00:00",
+      "home": "Jordan",
+      "away": "Algeria",
+      "group": "Group J",
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|Algeria|Austria": {
+      "date": "2026-06-27",
+      "time": "21:00 UTC-5",
+      "kickoff_utc": "2026-06-28T02:00:00+00:00",
+      "home": "Algeria",
+      "away": "Austria",
+      "group": "Group J",
+      "ground": "Kansas City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|Jordan|Argentina": {
+      "date": "2026-06-27",
+      "time": "21:00 UTC-5",
+      "kickoff_utc": "2026-06-28T02:00:00+00:00",
+      "home": "Jordan",
+      "away": "Argentina",
+      "group": "Group J",
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-17|Portugal|DR Congo": {
+      "date": "2026-06-17",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-17T17:00:00+00:00",
+      "home": "Portugal",
+      "away": "DR Congo",
+      "group": "Group K",
+      "ground": "Houston",
+      "score": [
+        1,
+        1
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-17|Uzbekistan|Colombia": {
+      "date": "2026-06-17",
+      "time": "20:00 UTC-6",
+      "kickoff_utc": "2026-06-18T02:00:00+00:00",
+      "home": "Uzbekistan",
+      "away": "Colombia",
+      "group": "Group K",
+      "ground": "Mexico City",
+      "score": [
+        1,
+        3
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-23|Portugal|Uzbekistan": {
+      "date": "2026-06-23",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-23T17:00:00+00:00",
+      "home": "Portugal",
+      "away": "Uzbekistan",
+      "group": "Group K",
+      "ground": "Houston",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-23|Colombia|DR Congo": {
+      "date": "2026-06-23",
+      "time": "20:00 UTC-6",
+      "kickoff_utc": "2026-06-24T02:00:00+00:00",
+      "home": "Colombia",
+      "away": "DR Congo",
+      "group": "Group K",
+      "ground": "Guadalajara (Zapopan)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|Colombia|Portugal": {
+      "date": "2026-06-27",
+      "time": "19:30 UTC-4",
+      "kickoff_utc": "2026-06-27T23:30:00+00:00",
+      "home": "Colombia",
+      "away": "Portugal",
+      "group": "Group K",
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|DR Congo|Uzbekistan": {
+      "date": "2026-06-27",
+      "time": "19:30 UTC-4",
+      "kickoff_utc": "2026-06-27T23:30:00+00:00",
+      "home": "DR Congo",
+      "away": "Uzbekistan",
+      "group": "Group K",
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-17|England|Croatia": {
+      "date": "2026-06-17",
+      "time": "15:00 UTC-5",
+      "kickoff_utc": "2026-06-17T20:00:00+00:00",
+      "home": "England",
+      "away": "Croatia",
+      "group": "Group L",
+      "ground": "Dallas (Arlington)",
+      "score": [
+        4,
+        2
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-17|Ghana|Panama": {
+      "date": "2026-06-17",
+      "time": "19:00 UTC-4",
+      "kickoff_utc": "2026-06-17T23:00:00+00:00",
+      "home": "Ghana",
+      "away": "Panama",
+      "group": "Group L",
+      "ground": "Toronto",
+      "score": [
+        1,
+        0
+      ],
+      "status": "finished",
+      "source": "openfootball"
+    },
+    "2026-06-23|England|Ghana": {
+      "date": "2026-06-23",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-06-23T20:00:00+00:00",
+      "home": "England",
+      "away": "Ghana",
+      "group": "Group L",
+      "ground": "Boston (Foxborough)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-23|Panama|Croatia": {
+      "date": "2026-06-23",
+      "time": "19:00 UTC-4",
+      "kickoff_utc": "2026-06-23T23:00:00+00:00",
+      "home": "Panama",
+      "away": "Croatia",
+      "group": "Group L",
+      "ground": "Toronto",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|Panama|England": {
+      "date": "2026-06-27",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-06-27T21:00:00+00:00",
+      "home": "Panama",
+      "away": "England",
+      "group": "Group L",
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-27|Croatia|Ghana": {
+      "date": "2026-06-27",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-06-27T21:00:00+00:00",
+      "home": "Croatia",
+      "away": "Ghana",
+      "group": "Group L",
+      "ground": "Philadelphia",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-28|2A|2B": {
+      "date": "2026-06-28",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-06-28T19:00:00+00:00",
+      "home": "2A",
+      "away": "2B",
+      "group": null,
+      "ground": "Los Angeles (Inglewood)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-29|1E|3A/B/C/D/F": {
+      "date": "2026-06-29",
+      "time": "16:30 UTC-4",
+      "kickoff_utc": "2026-06-29T20:30:00+00:00",
+      "home": "1E",
+      "away": "3A/B/C/D/F",
+      "group": null,
+      "ground": "Boston (Foxborough)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-29|1F|2C": {
+      "date": "2026-06-29",
+      "time": "19:00 UTC-6",
+      "kickoff_utc": "2026-06-30T01:00:00+00:00",
+      "home": "1F",
+      "away": "2C",
+      "group": null,
+      "ground": "Monterrey (Guadalupe)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-29|1C|2F": {
+      "date": "2026-06-29",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-29T17:00:00+00:00",
+      "home": "1C",
+      "away": "2F",
+      "group": null,
+      "ground": "Houston",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-30|1I|3C/D/F/G/H": {
+      "date": "2026-06-30",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-06-30T21:00:00+00:00",
+      "home": "1I",
+      "away": "3C/D/F/G/H",
+      "group": null,
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-30|2E|2I": {
+      "date": "2026-06-30",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-06-30T17:00:00+00:00",
+      "home": "2E",
+      "away": "2I",
+      "group": null,
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-06-30|1A|3C/E/F/H/I": {
+      "date": "2026-06-30",
+      "time": "19:00 UTC-6",
+      "kickoff_utc": "2026-07-01T01:00:00+00:00",
+      "home": "1A",
+      "away": "3C/E/F/H/I",
+      "group": null,
+      "ground": "Mexico City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-01|1L|3E/H/I/J/K": {
+      "date": "2026-07-01",
+      "time": "12:00 UTC-4",
+      "kickoff_utc": "2026-07-01T16:00:00+00:00",
+      "home": "1L",
+      "away": "3E/H/I/J/K",
+      "group": null,
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-01|1D|3B/E/F/I/J": {
+      "date": "2026-07-01",
+      "time": "17:00 UTC-7",
+      "kickoff_utc": "2026-07-02T00:00:00+00:00",
+      "home": "1D",
+      "away": "3B/E/F/I/J",
+      "group": null,
+      "ground": "San Francisco Bay Area (Santa Clara)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-01|1G|3A/E/H/I/J": {
+      "date": "2026-07-01",
+      "time": "13:00 UTC-7",
+      "kickoff_utc": "2026-07-01T20:00:00+00:00",
+      "home": "1G",
+      "away": "3A/E/H/I/J",
+      "group": null,
+      "ground": "Seattle",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-02|2K|2L": {
+      "date": "2026-07-02",
+      "time": "19:00 UTC-4",
+      "kickoff_utc": "2026-07-02T23:00:00+00:00",
+      "home": "2K",
+      "away": "2L",
+      "group": null,
+      "ground": "Toronto",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-02|1H|2J": {
+      "date": "2026-07-02",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-07-02T19:00:00+00:00",
+      "home": "1H",
+      "away": "2J",
+      "group": null,
+      "ground": "Los Angeles (Inglewood)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-02|1B|3E/F/G/I/J": {
+      "date": "2026-07-02",
+      "time": "20:00 UTC-7",
+      "kickoff_utc": "2026-07-03T03:00:00+00:00",
+      "home": "1B",
+      "away": "3E/F/G/I/J",
+      "group": null,
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-03|1J|2H": {
+      "date": "2026-07-03",
+      "time": "18:00 UTC-4",
+      "kickoff_utc": "2026-07-03T22:00:00+00:00",
+      "home": "1J",
+      "away": "2H",
+      "group": null,
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-03|1K|3D/E/I/J/L": {
+      "date": "2026-07-03",
+      "time": "20:30 UTC-5",
+      "kickoff_utc": "2026-07-04T01:30:00+00:00",
+      "home": "1K",
+      "away": "3D/E/I/J/L",
+      "group": null,
+      "ground": "Kansas City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-03|2D|2G": {
+      "date": "2026-07-03",
+      "time": "13:00 UTC-5",
+      "kickoff_utc": "2026-07-03T18:00:00+00:00",
+      "home": "2D",
+      "away": "2G",
+      "group": null,
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-04|W74|W77": {
+      "date": "2026-07-04",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-07-04T21:00:00+00:00",
+      "home": "W74",
+      "away": "W77",
+      "group": null,
+      "ground": "Philadelphia",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-04|W73|W75": {
+      "date": "2026-07-04",
+      "time": "12:00 UTC-5",
+      "kickoff_utc": "2026-07-04T17:00:00+00:00",
+      "home": "W73",
+      "away": "W75",
+      "group": null,
+      "ground": "Houston",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-05|W76|W78": {
+      "date": "2026-07-05",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-07-05T20:00:00+00:00",
+      "home": "W76",
+      "away": "W78",
+      "group": null,
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-05|W79|W80": {
+      "date": "2026-07-05",
+      "time": "18:00 UTC-6",
+      "kickoff_utc": "2026-07-06T00:00:00+00:00",
+      "home": "W79",
+      "away": "W80",
+      "group": null,
+      "ground": "Mexico City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-06|W83|W84": {
+      "date": "2026-07-06",
+      "time": "14:00 UTC-5",
+      "kickoff_utc": "2026-07-06T19:00:00+00:00",
+      "home": "W83",
+      "away": "W84",
+      "group": null,
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-06|W81|W82": {
+      "date": "2026-07-06",
+      "time": "17:00 UTC-7",
+      "kickoff_utc": "2026-07-07T00:00:00+00:00",
+      "home": "W81",
+      "away": "W82",
+      "group": null,
+      "ground": "Seattle",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-07|W86|W88": {
+      "date": "2026-07-07",
+      "time": "12:00 UTC-4",
+      "kickoff_utc": "2026-07-07T16:00:00+00:00",
+      "home": "W86",
+      "away": "W88",
+      "group": null,
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-07|W85|W87": {
+      "date": "2026-07-07",
+      "time": "13:00 UTC-7",
+      "kickoff_utc": "2026-07-07T20:00:00+00:00",
+      "home": "W85",
+      "away": "W87",
+      "group": null,
+      "ground": "Vancouver",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-09|W89|W90": {
+      "date": "2026-07-09",
+      "time": "16:00 UTC-4",
+      "kickoff_utc": "2026-07-09T20:00:00+00:00",
+      "home": "W89",
+      "away": "W90",
+      "group": null,
+      "ground": "Boston (Foxborough)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-10|W93|W94": {
+      "date": "2026-07-10",
+      "time": "12:00 UTC-7",
+      "kickoff_utc": "2026-07-10T19:00:00+00:00",
+      "home": "W93",
+      "away": "W94",
+      "group": null,
+      "ground": "Los Angeles (Inglewood)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-11|W91|W92": {
+      "date": "2026-07-11",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-07-11T21:00:00+00:00",
+      "home": "W91",
+      "away": "W92",
+      "group": null,
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-11|W95|W96": {
+      "date": "2026-07-11",
+      "time": "20:00 UTC-5",
+      "kickoff_utc": "2026-07-12T01:00:00+00:00",
+      "home": "W95",
+      "away": "W96",
+      "group": null,
+      "ground": "Kansas City",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-14|W97|W98": {
+      "date": "2026-07-14",
+      "time": "14:00 UTC-5",
+      "kickoff_utc": "2026-07-14T19:00:00+00:00",
+      "home": "W97",
+      "away": "W98",
+      "group": null,
+      "ground": "Dallas (Arlington)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-15|W99|W100": {
+      "date": "2026-07-15",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-07-15T19:00:00+00:00",
+      "home": "W99",
+      "away": "W100",
+      "group": null,
+      "ground": "Atlanta",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-18|L101|L102": {
+      "date": "2026-07-18",
+      "time": "17:00 UTC-4",
+      "kickoff_utc": "2026-07-18T21:00:00+00:00",
+      "home": "L101",
+      "away": "L102",
+      "group": null,
+      "ground": "Miami (Miami Gardens)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    },
+    "2026-07-19|W101|W102": {
+      "date": "2026-07-19",
+      "time": "15:00 UTC-4",
+      "kickoff_utc": "2026-07-19T19:00:00+00:00",
+      "home": "W101",
+      "away": "W102",
+      "group": null,
+      "ground": "New York/New Jersey (East Rutherford)",
+      "score": null,
+      "status": "scheduled",
+      "source": "openfootball"
+    }
+  }
+}
