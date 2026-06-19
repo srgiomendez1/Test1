@@ -6,6 +6,31 @@
   const DAYS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
+  // Prize pot (MXN). Ties split, in equal parts, the combined prize of the
+  // places they occupy (places beyond 3rd pay 0). E.g. 3 tied for 3rd → each
+  // gets POT*0.15/3 = $300.
+  const POT = 6000;
+  const PLACE_PCT = { 1: 0.60, 2: 0.25, 3: 0.15 };
+  const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
+  const fmtMXN = (n) => mxn.format(Math.round(n));
+
+  // Set r.prize on each row based on its (tie-aware) rank from computeStandings.
+  function assignPrizes(rows) {
+    let i = 0;
+    while (i < rows.length) {
+      const rank = rows[i].rank;
+      let j = i;
+      while (j < rows.length && rows[j].rank === rank) j++;
+      const k = j - i; // players tied at this rank, occupying places rank..rank+k-1
+      let sumPct = 0;
+      for (let p = rank; p < rank + k; p++) sumPct += PLACE_PCT[p] || 0;
+      const each = (POT * sumPct) / k;
+      for (let t = i; t < j; t++) rows[t].prize = each;
+      i = j;
+    }
+    return rows;
+  }
+
   let state = { bets: null, results: null, teams: {}, view: "posiciones", player: null, countLive: true };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -56,8 +81,17 @@
   /* ---------- Views ---------- */
 
   function renderPosiciones() {
-    const rows = Scoring.computeStandings(state.bets, state.results, state.countLive);
+    const rows = assignPrizes(Scoring.computeStandings(state.bets, state.results, state.countLive));
     const wrap = el("div");
+
+    wrap.appendChild(el("div", "prizes",
+      `<div class="pot">💰 Bote total: <strong>${fmtMXN(POT)}</strong></div>
+       <div class="splits">
+         <span class="sp"><span class="med">🥇</span> 1º · 60% · ${fmtMXN(POT * 0.60)}</span>
+         <span class="sp"><span class="med">🥈</span> 2º · 25% · ${fmtMXN(POT * 0.25)}</span>
+         <span class="sp"><span class="med">🥉</span> 3º · 15% · ${fmtMXN(POT * 0.15)}</span>
+       </div>
+       <div class="prizenote">Empates: se reparten el premio del lugar en partes iguales.</div>`));
 
     const ctrl = el("label", "live-toggle",
       `<input type="checkbox" ${state.countLive ? "checked" : ""}> Incluir partidos en vivo (puntos provisionales)`);
@@ -72,16 +106,19 @@
         <th title="Marcadores exactos (2 pts)">Exactos</th>
         <th title="Solo resultado (1 pt)">Resultados</th>
         <th title="Partidos puntuados">PJ</th>
+        <th title="Premio según posición actual">Premio</th>
       </tr></thead>`;
     const tb = el("tbody");
     rows.forEach((r, i) => {
       const tr = el("tr", i === 0 ? "leader" : "");
       const prov = r.provisional > 0 ? ` <span class="prov" title="puntos provisionales en vivo">(+${r.provisional})</span>` : "";
       const medal = r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] + " " : "";
+      const prize = r.prize > 0 ? `<span class="money">${fmtMXN(r.prize)}</span>` : "—";
       tr.innerHTML = `<td class="rank">${medal}${r.rank}</td>
         <td class="pname">${r.player}</td>
         <td class="pts"><strong>${r.points}</strong>${prov}</td>
-        <td>${r.exact}</td><td>${r.outcome}</td><td>${r.played}</td>`;
+        <td>${r.exact}</td><td>${r.outcome}</td><td>${r.played}</td>
+        <td class="prize">${prize}</td>`;
       tr.addEventListener("click", () => { state.player = r.player; switchView("jugador"); });
       tb.appendChild(tr);
     });
