@@ -16,11 +16,19 @@
 
   const OPENFOOTBALL_URL =
     "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
-  // Free, no-key live in-match source. Fetched directly from the browser for
-  // ~30s freshness (the server-side Action only refreshes every 5 min — GitHub's
-  // cron minimum). Best-effort: if it's unreachable or blocks cross-origin
-  // requests (CORS), we silently keep the committed data.
-  const LIVE_SOURCE_URL = "https://worldcup26.ir/get/games";
+  // Free, no-key live in-match source, fetched directly from the browser for
+  // ~30s freshness (the server-side Action's cron is best-effort and can stall
+  // for long stretches, so the browser is the real real-time path). worldcup26.ir
+  // does not send CORS headers, so a direct browser fetch is blocked — we try it
+  // first anyway (in case that changes) and then fall back through public CORS
+  // proxies. Best-effort: if all fail we keep the committed data.
+  const LIVE_TARGET = "https://worldcup26.ir/get/games";
+  const LIVE_ENDPOINTS = [
+    LIVE_TARGET,
+    "https://corsproxy.io/?url=" + encodeURIComponent(LIVE_TARGET),
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent(LIVE_TARGET),
+    "https://thingproxy.freeboard.io/fetch/" + LIVE_TARGET,
+  ];
 
   const TEAM_ALIASES = {
     "cote d ivoire": "ivory coast", "cote divoire": "ivory coast",
@@ -101,18 +109,25 @@
   // committed data. worldcup26.ir schema: home_team_name_en / away_team_name_en,
   // home_score / away_score (strings), finished "TRUE"/"FALSE", time_elapsed.
   async function overlayLiveClient(results) {
-    let raw;
-    try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 8000);
-      const res = await fetch(LIVE_SOURCE_URL, { cache: "no-store", signal: ctrl.signal });
-      clearTimeout(t);
-      if (!res.ok) return false;
-      raw = await res.json();
-    } catch (e) {
-      return false; // unreachable, timed out, or blocked by CORS — keep committed results
+    // Try each endpoint (direct, then CORS proxies) until one yields games.
+    let games = null;
+    for (const url of LIVE_ENDPOINTS) {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) continue;
+        let raw = await res.json();
+        // allorigins (non-/raw) wraps the body in {contents:"<json string>"}
+        if (raw && typeof raw.contents === "string") {
+          try { raw = JSON.parse(raw.contents); } catch (e) { continue; }
+        }
+        const g = Array.isArray(raw) ? raw : (raw.games || raw.matches || raw.data || []);
+        if (g && g.length) { games = g; break; }
+      } catch (e) { /* try next endpoint */ }
     }
-    const games = Array.isArray(raw) ? raw : (raw.games || raw.matches || raw.data || []);
+    if (!games) return false; // all endpoints blocked/unreachable — keep committed results
     const idx = {};
     for (const [key, m] of Object.entries(results.matches)) {
       idx[[normTeam(m.home), normTeam(m.away)].sort().join("|")] = key;
