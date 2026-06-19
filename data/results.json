@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T00:24:44.227160+00:00",
+  "generated_at": "2026-06-19T00:34:54.759714+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -803,7 +803,7 @@
         1
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-17|Uzbekistan|Colombia": {
       "date": "2026-06-17",
