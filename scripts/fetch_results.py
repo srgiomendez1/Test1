@@ -17,15 +17,51 @@ Output is normalized and keyed exactly like data/bets.json
 import datetime as dt
 import json
 import os
+import re
 import sys
+import unicodedata
 import urllib.request
 
 OPENFOOTBALL_URL = (
     "https://raw.githubusercontent.com/openfootball/worldcup.json"
     "/master/2026/worldcup.json"
 )
-LIVE_SOURCE_URL = os.environ.get("LIVE_SOURCE_URL", "").strip()
+# Free, no-key live in-match source (worldcup26.ir). Overridable via the
+# LIVE_SOURCE_URL repository variable; set it to "none"/empty to disable.
+DEFAULT_LIVE_URL = "https://worldcup26.ir/get/games"
+
+
+def normalize_url(u):
+    u = (u or "").strip()
+    if u.lower() in ("", "none", "off", "false", "disable", "disabled"):
+        return ""
+    if not u.startswith(("http://", "https://")):
+        u = "https://" + u  # the repo variable is set without a scheme
+    return u
+
+
+LIVE_SOURCE_URL = normalize_url(os.environ.get("LIVE_SOURCE_URL", DEFAULT_LIVE_URL))
 OUT = os.environ.get("RESULTS_OUT", "data/results.json")
+
+
+# Canonicalize a country name so the openfootball and live feeds line up despite
+# spelling/diacritic/word-order differences.
+_TEAM_ALIASES = {
+    "cote d ivoire": "ivory coast", "cote divoire": "ivory coast",
+    "congo dr": "dr congo", "democratic republic of congo": "dr congo",
+    "korea republic": "south korea", "republic of korea": "south korea",
+    "czechia": "czech republic",
+    "united states": "usa", "united states of america": "usa",
+    "bosnia and herzegovina": "bosnia herzegovina",
+    "turkiye": "turkey",
+}
+
+
+def norm_team(name):
+    s = unicodedata.normalize("NFKD", str(name or "")).encode("ascii", "ignore").decode()
+    s = s.lower().replace("&", " and ")
+    s = re.sub(r"[^a-z0-9]+", " ", s).strip()
+    return _TEAM_ALIASES.get(s, s)
 
 
 def fetch_json(url, timeout=20):
@@ -75,13 +111,21 @@ def normalize_openfootball(data):
     return out
 
 
-def overlay_live(baseline, live_url):
-    """Best-effort overlay of a live source. Defensive: never raises.
+def _to_int(v):
+    try:
+        s = str(v).strip()
+        return int(s) if s not in ("", "null", "none", "None") else None
+    except (TypeError, ValueError):
+        return None
 
-    Expects a list of games with team names + scores + a status field. The
-    exact shape of free live APIs varies; we try common field names and skip
-    anything we can't confidently map. Tweak the field guesses here once the
-    chosen live source's schema is confirmed.
+
+def overlay_live(baseline, live_url):
+    """Overlay the worldcup26.ir live feed onto the openfootball baseline.
+
+    Schema (GET /get/games): games[] with home_team_name_en / away_team_name_en,
+    home_score / away_score (strings), finished ("TRUE"/"FALSE"), time_elapsed
+    ("notstarted" -> minute when live), group, matchday. Defensive: never raises;
+    on any failure the openfootball baseline is kept untouched.
     """
     try:
         raw = fetch_json(live_url)
@@ -92,36 +136,52 @@ def overlay_live(baseline, live_url):
     games = raw if isinstance(raw, list) else (
         raw.get("games") or raw.get("matches") or raw.get("data") or []
     )
-    updated = 0
-    # Build a lookup from English home/away -> baseline key (date-agnostic match
-    # on team pair, since live feeds may format dates differently).
+
+    # Index baseline matches by the unordered, normalized team pair (also tolerates
+    # home/away orientation differences between feeds).
     pair_index = {}
     for key, m in baseline.items():
-        pair_index.setdefault((m["home"], m["away"]), key)
+        pair_index[frozenset((norm_team(m["home"]), norm_team(m["away"])))] = key
 
+    updated, unmatched = 0, []
     for g in games:
         try:
-            home = (g.get("home") or g.get("team1") or g.get("homeTeam") or "").strip()
-            away = (g.get("away") or g.get("team2") or g.get("awayTeam") or "").strip()
-            key = pair_index.get((home, away))
+            lh = g.get("home_team_name_en") or g.get("home") or g.get("team1") or ""
+            la = g.get("away_team_name_en") or g.get("away") or g.get("team2") or ""
+            nlh, nla = norm_team(lh), norm_team(la)
+            key = pair_index.get(frozenset((nlh, nla)))
             if not key:
+                if lh and la:
+                    unmatched.append(f"{lh} vs {la}")
                 continue
-            hs = g.get("home_score", g.get("score_home", g.get("homeScore")))
-            as_ = g.get("away_score", g.get("score_away", g.get("awayScore")))
-            status = str(g.get("status", "")).lower()
+
             entry = baseline[key]
+            finished = str(g.get("finished", "")).strip().upper() == "TRUE"
+            elapsed = str(g.get("time_elapsed", "")).strip()
+            started = finished or (elapsed.lower() not in ("", "notstarted", "null", "none"))
+            if not started:
+                continue  # don't clobber a scheduled match with a 0-0 placeholder
+
+            hs = _to_int(g.get("home_score", g.get("homeScore")))
+            as_ = _to_int(g.get("away_score", g.get("awayScore")))
             if hs is not None and as_ is not None:
-                entry["score"] = [int(hs), int(as_)]
+                # Match baseline orientation; flip if the live feed lists teams reversed.
+                entry["score"] = [hs, as_] if nlh == norm_team(entry["home"]) else [as_, hs]
                 entry["source"] = "live"
-            if any(s in status for s in ("live", "playing", "in_play", "1h", "2h", "ht")):
-                entry["status"] = "live"
-                entry["minute"] = g.get("minute") or g.get("time")
-            elif any(s in status for s in ("finish", "ft", "ended", "full")):
+
+            if finished:
                 entry["status"] = "finished"
+            else:
+                entry["status"] = "live"
+                entry["minute"] = elapsed
             updated += 1
         except Exception as e:  # noqa: BLE001
             print(f"[live] skipped a game: {e}", file=sys.stderr)
+
     print(f"[live] overlaid {updated} games from live source", file=sys.stderr)
+    if unmatched:
+        print(f"[live] {len(unmatched)} unmatched (add to _TEAM_ALIASES): "
+              + "; ".join(unmatched[:12]), file=sys.stderr)
     return updated
 
 

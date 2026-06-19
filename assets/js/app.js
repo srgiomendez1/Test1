@@ -33,7 +33,11 @@
   }
 
   function statusBadge(m) {
-    if (m.status === "live") return `<span class="badge live">● EN VIVO</span>`;
+    if (m.status === "live") {
+      const raw = m.minute != null ? String(m.minute) : "";
+      const min = raw ? ` <span class="min">${/^\d+$/.test(raw) ? raw + "'" : raw}</span>` : "";
+      return `<span class="badge live">● EN VIVO${min}</span>`;
+    }
     if (m.status === "finished") return `<span class="badge done">Final</span>`;
     return `<span class="badge soon">Próximo</span>`;
   }

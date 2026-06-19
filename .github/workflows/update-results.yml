@@ -6,7 +6,7 @@ name: Update results
 # the default branch. Until then use the "Run workflow" button (workflow_dispatch).
 on:
   schedule:
-    - cron: "*/10 * * * *"   # every 10 min (GitHub min is 5; may be delayed under load)
+    - cron: "*/5 * * * *"    # every 5 min (GitHub's minimum; may be delayed under load)
   workflow_dispatch:
   push:
     branches: [main, claude/world-cup-bet-tracker-i5xyab]

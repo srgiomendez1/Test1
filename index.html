@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Los Reyes Quiniela Mundial 2026</title>
   <meta name="description" content="Seguimiento de la quiniela del Mundial 2026 entre amigos." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/badge.png" />
+  <meta name="theme-color" content="#3a0d0d" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="ball">⚽</span>
+      <img src="assets/img/badge.png" class="crest" alt="Los Reyes Quiniela Mundial 2026" />
       <div>
         <h1>Los Reyes Quiniela Mundial 2026</h1>
         <p class="sub">Fase de Grupos</p>
@@ -27,12 +29,17 @@
   </nav>
 
   <main id="content" class="content">
-    <p class="hint">Cargando…</p>
+    <div class="loading">
+      <img src="assets/img/badge.png" class="crest-lg" alt="" />
+      <p class="hint">Cargando…</p>
+    </div>
   </main>
 
   <footer class="foot">
+    <img src="assets/img/badge.png" class="crest-sm" alt="" />
     <p>Resultados: <a href="https://github.com/openfootball/worldcup.json" target="_blank" rel="noopener">openfootball</a>
-      (dominio público) · Puntuación: acertar ganador/empate +1, marcador exacto +2 (3 en total).</p>
+      + <a href="https://worldcup26.ir" target="_blank" rel="noopener">worldcup26</a> (en vivo) ·
+      Puntuación: acertar ganador/empate +1, marcador exacto +2 (3 en total).</p>
   </footer>
 
   <script src="assets/js/scoring.js"></script>
