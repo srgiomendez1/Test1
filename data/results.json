@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T21:34:46.353420+00:00",
+  "generated_at": "2026-06-19T22:35:21.792993+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -222,9 +222,13 @@
       "group": "Group C",
       "round": "Matchday 9",
       "ground": "Boston (Foxborough)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-19|Brazil|Haiti": {
       "date": "2026-06-19",
