@@ -16,21 +16,22 @@
 
   const OPENFOOTBALL_URL =
     "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
-  // Free, no-key live in-match source. worldcup26.ir does NOT send CORS headers,
-  // so a direct browser fetch is blocked. The reliable path is a tiny Cloudflare
-  // Worker (worker/worldcup-proxy.js) whose URL is configured in
-  // data/live-source.json. We try, in order: the configured Worker → direct →
-  // public CORS proxies (unreliable, last resort). Best-effort: if all fail we
-  // keep the committed data. The Worker URL is loaded at runtime into LIVE_PROXY.
+  // Free, no-key live in-match source. worldcup26.ir does NOT send CORS headers
+  // (and refuses direct cross-origin connections), so the browser never hits it
+  // directly — that only spams the console with ERR_CONNECTION_RESET. The reliable
+  // path is a tiny Cloudflare Worker (worker/worldcup-proxy.js) whose URL is in
+  // data/live-source.json (loaded at runtime into LIVE_PROXY). Public CORS proxies
+  // are kept only as a flaky last resort. Best-effort: if all fail we keep the
+  // committed data. (The server-side scripts/fetch_results.py DOES use the direct
+  // URL, where it works fine.)
   const LIVE_TARGET = "https://worldcup26.ir/get/games";
   let LIVE_PROXY = ""; // set from data/live-source.json during load()
 
   function liveEndpoints() {
     const enc = encodeURIComponent(LIVE_TARGET);
     const list = [];
-    if (LIVE_PROXY) list.push(LIVE_PROXY);            // reliable Cloudflare Worker
-    list.push(LIVE_TARGET);                            // direct (works only if CORS opens up)
-    list.push("https://corsproxy.io/?url=" + enc);     // public fallbacks (flaky)
+    if (LIVE_PROXY) list.push(LIVE_PROXY);             // reliable Cloudflare Worker (primary)
+    list.push("https://corsproxy.io/?url=" + enc);     // public fallbacks (flaky, last resort)
     list.push("https://api.allorigins.win/raw?url=" + enc);
     return list;
   }
