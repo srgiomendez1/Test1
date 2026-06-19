@@ -6,22 +6,29 @@
   const DAYS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
-  // Prize pot (MXN). Places are by total points (dense rank). Each place divides
-  // ITS OWN prize equally among everyone in that place — e.g. with 4 in 1st,
-  // 5 in 2nd, 6 in 3rd: each gets 3600/4, 1500/5, 900/6. Places beyond 3rd: $0.
+  // Prize pot (MXN). Common practice: ties split, in equal parts, the COMBINED
+  // prize of the places they occupy (places beyond 3rd pay 0). E.g. 3 tied for
+  // 3rd → each gets POT*0.15/3 = $300; 2 tied for 1st → each (60%+25%)/2 = $2,550.
   const POT = 6000;
   const PLACE_PCT = { 1: 0.60, 2: 0.25, 3: 0.15 };
   const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
   const fmtMXN = (n) => mxn.format(Math.round(n));
 
-  // Set r.prize: each rank (place) splits its own pot share among its members.
+  // Set r.prize: tied players (same competition rank) occupy places rank..rank+k-1
+  // and split the combined prize of those places equally.
   function assignPrizes(rows) {
-    const counts = {};
-    rows.forEach((r) => { counts[r.rank] = (counts[r.rank] || 0) + 1; });
-    rows.forEach((r) => {
-      const pct = PLACE_PCT[r.rank] || 0;
-      r.prize = pct ? (POT * pct) / counts[r.rank] : 0;
-    });
+    let i = 0;
+    while (i < rows.length) {
+      const rank = rows[i].rank;
+      let j = i;
+      while (j < rows.length && rows[j].rank === rank) j++;
+      const k = j - i; // players tied at this rank
+      let sumPct = 0;
+      for (let p = rank; p < rank + k; p++) sumPct += PLACE_PCT[p] || 0;
+      const each = (POT * sumPct) / k;
+      for (let t = i; t < j; t++) rows[t].prize = each;
+      i = j;
+    }
     return rows;
   }
 
