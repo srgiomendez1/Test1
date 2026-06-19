@@ -82,7 +82,7 @@
       const ft = m.score && m.score.ft;
       matches[`${date}|${home}|${away}`] = {
         date, time: m.time, kickoff_utc: kickoffUtc(date, m.time),
-        home, away, group: m.group, ground: m.ground,
+        home, away, group: m.group, round: m.round, ground: m.ground,
         score: ft && ft.length === 2 ? [ft[0], ft[1]] : null,
         status: ft && ft.length === 2 ? "finished" : "scheduled",
         source: "openfootball",

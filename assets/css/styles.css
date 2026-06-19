@@ -151,6 +151,37 @@ body > * { position: relative; z-index: 1; }
 .jmatch .flag { font-size: 1.1rem; }
 .jvs { font-weight: 800; color: var(--muted); padding: 0 4px; }
 
+/* Grupos + Bracket */
+.sechdr { color: var(--gold); font-size: 1.05rem; margin: 22px 0 6px; border-bottom: 1px solid var(--gold-deep); padding-bottom: 5px; }
+.groupgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.grouptable { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px 10px; }
+.ghdr { margin: 2px 0 8px; font-size: 0.92rem; color: var(--txt); }
+.gtbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.gtbl th { color: var(--muted); font-weight: 600; text-align: center; padding: 3px 4px; border-bottom: 1px solid var(--line); }
+.gtbl td { text-align: center; padding: 5px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.gtbl td.rank { color: var(--muted); width: 18px; }
+.gtbl td.gteam { text-align: left; }
+.gtbl td.gpts { font-weight: 800; color: var(--gold); }
+.gtbl tr.q1 td.rank { box-shadow: inset 3px 0 0 var(--p2); }   /* top 2 qualify */
+.gtbl tr.q3 td.rank { box-shadow: inset 3px 0 0 var(--p1); }   /* 3rd: maybe */
+.gtbl .team .tname { display: inline; font-weight: 600; font-size: 0.82rem; }
+.gtbl .flag { font-size: 1rem; }
+
+.team.ph { display: inline-flex; align-items: center; }
+.phcode { color: var(--muted); font-weight: 700; font-size: 0.8rem; background: var(--bg2); border: 1px dashed var(--line); border-radius: 6px; padding: 1px 6px; }
+
+.bracket { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; align-items: start; }
+.round { background: rgba(0,0,0,0.15); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px 10px; }
+.rhdr { margin: 2px 0 8px; font-size: 0.9rem; color: var(--gold); text-align: center; }
+.tie { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; }
+.tiehead { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); margin-bottom: 6px; }
+.tiehead .tdate { margin-right: auto; text-transform: capitalize; }
+.tierow { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; }
+.tierow .team:last-child { justify-content: flex-end; }
+.tscore { font-weight: 800; min-width: 42px; text-align: center; color: var(--muted); }
+.tscore.finished, .tscore.live { color: var(--txt); }
+.tscore.live { color: var(--live); }
+
 .foot { text-align: center; padding: 20px; color: var(--muted); font-size: 0.75rem; }
 .foot a { color: var(--accent); }
 
