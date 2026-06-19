@@ -56,6 +56,9 @@
       }
     }
 
+    // Display order: by points; exact/outcome only break the visual order, NOT
+    // the rank. Ranking is by TOTAL POINTS only — equal points = same place
+    // (and they split the prize for those places).
     rows.sort(
       (a, b) =>
         b.points - a.points ||
@@ -63,11 +66,9 @@
         b.outcome - a.outcome ||
         a.player.localeCompare(b.player, "es")
     );
-    // Assign ranks (ties share a rank).
     let rank = 0, prev = null;
     rows.forEach((r, i) => {
-      const sig = `${r.points}|${r.exact}|${r.outcome}`;
-      if (sig !== prev) { rank = i + 1; prev = sig; }
+      if (r.points !== prev) { rank = i + 1; prev = r.points; }
       r.rank = rank;
     });
     return rows;
