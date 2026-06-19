@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const REFRESH_MS = 60 * 1000;
+  const REFRESH_MS = 30 * 1000;
   const DAYS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 

@@ -16,6 +16,26 @@
 
   const OPENFOOTBALL_URL =
     "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
+  // Free, no-key live in-match source. Fetched directly from the browser for
+  // ~30s freshness (the server-side Action only refreshes every 5 min — GitHub's
+  // cron minimum). Best-effort: if it's unreachable or blocks cross-origin
+  // requests (CORS), we silently keep the committed data.
+  const LIVE_SOURCE_URL = "https://worldcup26.ir/get/games";
+
+  const TEAM_ALIASES = {
+    "cote d ivoire": "ivory coast", "cote divoire": "ivory coast",
+    "congo dr": "dr congo", "democratic republic of congo": "dr congo",
+    "democratic republic of the congo": "dr congo",
+    "korea republic": "south korea", "republic of korea": "south korea",
+    "czechia": "czech republic",
+    "united states": "usa", "united states of america": "usa",
+    "bosnia and herzegovina": "bosnia herzegovina", "turkiye": "turkey",
+  };
+  function normTeam(name) {
+    let s = String(name || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+    s = s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim();
+    return TEAM_ALIASES[s] || s;
+  }
   // A match is treated as possibly "live" for this long after kickoff if it
   // still has no final score (covers 90' + stoppage + half-time + buffer).
   const LIVE_WINDOW_MS = 150 * 60 * 1000;
@@ -76,6 +96,53 @@
     return results;
   }
 
+  // Best-effort: overlay fresher live scores straight from the live API (mirrors
+  // scripts/fetch_results.py). Never throws; on CORS/network failure we keep the
+  // committed data. worldcup26.ir schema: home_team_name_en / away_team_name_en,
+  // home_score / away_score (strings), finished "TRUE"/"FALSE", time_elapsed.
+  async function overlayLiveClient(results) {
+    let raw;
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(LIVE_SOURCE_URL, { cache: "no-store", signal: ctrl.signal });
+      clearTimeout(t);
+      if (!res.ok) return false;
+      raw = await res.json();
+    } catch (e) {
+      return false; // unreachable, timed out, or blocked by CORS — keep committed results
+    }
+    const games = Array.isArray(raw) ? raw : (raw.games || raw.matches || raw.data || []);
+    const idx = {};
+    for (const [key, m] of Object.entries(results.matches)) {
+      idx[[normTeam(m.home), normTeam(m.away)].sort().join("|")] = key;
+    }
+    let n = 0;
+    for (const g of games) {
+      try {
+        const lh = g.home_team_name_en || g.home || g.team1 || "";
+        const la = g.away_team_name_en || g.away || g.team2 || "";
+        const key = idx[[normTeam(lh), normTeam(la)].sort().join("|")];
+        if (!key) continue;
+        const m = results.matches[key];
+        const finished = String(g.finished || "").toUpperCase() === "TRUE";
+        const elapsed = String(g.time_elapsed || "").trim();
+        const started = finished || !["", "notstarted", "null", "none"].includes(elapsed.toLowerCase());
+        if (!started) continue;
+        const hs = parseInt(g.home_score, 10), as = parseInt(g.away_score, 10);
+        if (Number.isFinite(hs) && Number.isFinite(as)) {
+          m.score = normTeam(lh) === normTeam(m.home) ? [hs, as] : [as, hs];
+          m.source = "live";
+        }
+        if (finished) { m.status = "finished"; }
+        else { m.status = "live"; m.minute = elapsed; }
+        n++;
+      } catch (e) { /* skip a malformed game */ }
+    }
+    if (n) results.generated_at = new Date().toISOString();
+    return n > 0;
+  }
+
   async function load() {
     const bets = await getJSON("data/bets.json");
     let results;
@@ -86,6 +153,7 @@
       console.warn("results.json unavailable, falling back to openfootball:", e);
       results = normalizeOpenfootball(await getJSON(OPENFOOTBALL_URL));
     }
+    await overlayLiveClient(results); // ~30s live refresh, best-effort
     applyClock(results);
 
     // Attach team metadata (Spanish name + flag); tolerate a missing file.
