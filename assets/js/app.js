@@ -215,11 +215,16 @@
     try {
       const d = await DataLayer.load();
       state.bets = d.bets; state.results = d.results; state.teams = d.teams;
-      render();
+      render(); // paint committed data immediately (fast, same-origin only)
     } catch (e) {
       console.error(e);
       $("#content").innerHTML = `<p class="error">No se pudieron cargar los datos: ${e.message}</p>`;
+      return;
     }
+    // Then overlay live scores in the background and re-render if anything changed.
+    try {
+      if (state.results && await DataLayer.applyLive(state.results)) render();
+    } catch (e) { console.warn("live overlay failed:", e); }
   }
 
   function init() {

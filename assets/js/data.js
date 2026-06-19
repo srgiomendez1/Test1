@@ -178,8 +178,11 @@
       console.warn("results.json unavailable, falling back to openfootball:", e);
       results = normalizeOpenfootball(await getJSON(OPENFOOTBALL_URL));
     }
-    await overlayLiveClient(results); // ~30s live refresh, best-effort
     applyClock(results);
+    // NOTE: the live overlay is intentionally NOT awaited here — it's an
+    // external network call and would block first paint on slow phones. The app
+    // renders committed data immediately, then calls applyLive() to fill in live
+    // scores and re-renders.
 
     // Attach team metadata (Spanish name + flag); tolerate a missing file.
     let teams = {};
@@ -188,5 +191,13 @@
     return { bets, results, teams };
   }
 
-  global.DataLayer = { load };
+  // Overlay live scores onto already-loaded results, then re-apply the clock.
+  // Returns true if anything changed (so the caller can re-render). Best-effort.
+  async function applyLive(results) {
+    const changed = await overlayLiveClient(results);
+    applyClock(results);
+    return changed;
+  }
+
+  global.DataLayer = { load, applyLive };
 })(typeof window !== "undefined" ? window : globalThis);
