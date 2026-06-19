@@ -230,6 +230,104 @@
     return wrap;
   }
 
+  /* ---------- Grupos + Bracket ---------- */
+
+  // Compute group tables from finished group-stage matches (3-1-0 points).
+  function computeGroupTables() {
+    const groups = {};
+    for (const m of Object.values(state.results.matches)) {
+      const g = m.group;
+      if (!g || g.indexOf("Group") !== 0) continue;
+      groups[g] = groups[g] || {};
+      for (const t of [m.home, m.away]) {
+        groups[g][t] = groups[g][t] || { team: t, pj: 0, g: 0, e: 0, p: 0, gf: 0, ga: 0, pts: 0 };
+      }
+      if (m.status === "finished" && m.score) {
+        const [hs, as] = m.score, H = groups[g][m.home], A = groups[g][m.away];
+        H.pj++; A.pj++; H.gf += hs; H.ga += as; A.gf += as; A.ga += hs;
+        if (hs > as) { H.g++; A.p++; H.pts += 3; }
+        else if (hs < as) { A.g++; H.p++; A.pts += 3; }
+        else { H.e++; A.e++; H.pts++; A.pts++; }
+      }
+    }
+    const out = {};
+    Object.keys(groups).sort().forEach((g) => {
+      out[g] = Object.values(groups[g]).sort((a, b) =>
+        b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf ||
+        a.team.localeCompare(b.team, "es"));
+    });
+    return out;
+  }
+
+  // A knockout slot is a real team (flag + name) or a placeholder code (e.g. "2A").
+  function koTeamHTML(name) {
+    if (state.teams[name]) return teamHTML(name);
+    return `<span class="team ph"><span class="phcode">${name || "?"}</span></span>`;
+  }
+
+  const KO_ROUNDS = [
+    ["Round of 32", "Dieciseisavos de final"],
+    ["Round of 16", "Octavos de final"],
+    ["Quarter-final", "Cuartos de final"],
+    ["Semi-final", "Semifinales"],
+    ["Match for third place", "Tercer lugar"],
+    ["Final", "Final"],
+  ];
+
+  function renderGrupos() {
+    const wrap = el("div");
+
+    // --- Group standings ---
+    wrap.appendChild(el("h2", "sechdr", "Fase de Grupos"));
+    wrap.appendChild(el("p", "hint", "Clasifican los 2 primeros de cada grupo (y los 8 mejores terceros). 3 pts victoria · 1 empate."));
+    const grid = el("div", "groupgrid");
+    const tables = computeGroupTables();
+    Object.keys(tables).forEach((g) => {
+      const box = el("div", "grouptable");
+      box.appendChild(el("h3", "ghdr", g.replace("Group", "Grupo")));
+      const t = el("table", "gtbl");
+      t.innerHTML = `<thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>DG</th><th>Pts</th></tr></thead>`;
+      const tb = el("tbody");
+      tables[g].forEach((r, idx) => {
+        const cls = idx < 2 ? "q1" : idx === 2 ? "q3" : "";
+        const dg = r.gf - r.ga;
+        const tr = el("tr", cls);
+        tr.innerHTML = `<td class="rank">${idx + 1}</td>
+          <td class="gteam">${koTeamHTML(r.team)}</td>
+          <td>${r.pj}</td><td>${r.g}</td><td>${r.e}</td><td>${r.p}</td>
+          <td>${dg > 0 ? "+" + dg : dg}</td><td class="gpts">${r.pts}</td>`;
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb);
+      box.appendChild(t);
+      grid.appendChild(box);
+    });
+    wrap.appendChild(grid);
+
+    // --- Knockout bracket (round by round) ---
+    wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
+    const allKo = Object.values(state.results.matches).filter((m) => m.round && (!m.group || m.group.indexOf("Group") !== 0));
+    const bracket = el("div", "bracket");
+    KO_ROUNDS.forEach(([en, es]) => {
+      const ms = allKo.filter((m) => m.round === en)
+        .sort((a, b) => (Date.parse(a.kickoff_utc) || 0) - (Date.parse(b.kickoff_utc) || 0));
+      if (!ms.length) return;
+      const col = el("div", "round");
+      col.appendChild(el("h3", "rhdr", es));
+      ms.forEach((m) => {
+        const score = m.score ? `${m.score[0]}–${m.score[1]}` : "vs";
+        const tie = el("div", "tie");
+        tie.innerHTML = `
+          <div class="tiehead"><span class="tdate">${fmtDay(m.date)} · ${fmtKickoffTime(m)}</span>${statusBadge(m)}</div>
+          <div class="tierow">${koTeamHTML(m.home)}<span class="tscore ${m.status}">${score}</span>${koTeamHTML(m.away)}</div>`;
+        col.appendChild(tie);
+      });
+      bracket.appendChild(col);
+    });
+    wrap.appendChild(bracket);
+    return wrap;
+  }
+
   /* ---------- Shell ---------- */
 
   function switchView(v) { state.view = v; render(); window.scrollTo(0, 0); }
@@ -239,6 +337,7 @@
     main.innerHTML = "";
     if (state.view === "posiciones") main.appendChild(renderPosiciones());
     else if (state.view === "partidos") main.appendChild(renderPartidos());
+    else if (state.view === "grupos") main.appendChild(renderGrupos());
     else main.appendChild(renderJugador());
 
     document.querySelectorAll(".tab").forEach((t) =>

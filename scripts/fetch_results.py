@@ -104,6 +104,7 @@ def normalize_openfootball(data):
             "home": home,
             "away": away,
             "group": m.get("group"),
+            "round": m.get("round"),
             "ground": m.get("ground"),
             "score": [ft[0], ft[1]] if ft and len(ft) == 2 else None,
             "status": "finished" if ft and len(ft) == 2 else "scheduled",
