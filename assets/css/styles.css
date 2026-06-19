@@ -85,6 +85,21 @@ body > * { position: relative; z-index: 1; }
 .prov { color: var(--live); font-size: 0.75rem; }
 .live-toggle { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
 
+/* Prize pot panel */
+.prizes {
+  background: linear-gradient(180deg, rgba(232,198,106,0.14), rgba(232,198,106,0.05));
+  border: 1px solid var(--gold-deep); border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 14px; text-align: center;
+}
+.prizes .pot { font-size: 1.05rem; }
+.prizes .pot strong { color: var(--gold); }
+.prizes .splits { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-top: 8px; font-size: 0.88rem; }
+.prizes .sp { white-space: nowrap; color: var(--txt); }
+.prizes .med { font-size: 1rem; }
+.prizes .prizenote { color: var(--muted); font-size: 0.74rem; margin-top: 8px; }
+.standings td.prize { font-weight: 700; white-space: nowrap; }
+.standings td.prize .money { color: var(--gold); }
+
 /* Filters */
 .filters { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .filters select, .pselect {
