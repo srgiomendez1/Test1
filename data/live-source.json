@@ -1,4 +1,4 @@
 {
   "_comment": "Pega aquí la URL del Cloudflare Worker (worker/worldcup-proxy.js) para los marcadores en vivo. Ej: https://quiniela-live.tu-subdominio.workers.dev . Si queda vacío, el sitio intenta el API directo y proxies públicos como respaldo.",
-  "proxy": ""
+  "proxy": "https://quiniela-live.mendez-larregui.workers.dev"
 }
