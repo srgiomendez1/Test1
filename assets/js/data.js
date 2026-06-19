@@ -16,19 +16,24 @@
 
   const OPENFOOTBALL_URL =
     "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
-  // Free, no-key live in-match source, fetched directly from the browser for
-  // ~30s freshness (the server-side Action's cron is best-effort and can stall
-  // for long stretches, so the browser is the real real-time path). worldcup26.ir
-  // does not send CORS headers, so a direct browser fetch is blocked — we try it
-  // first anyway (in case that changes) and then fall back through public CORS
-  // proxies. Best-effort: if all fail we keep the committed data.
+  // Free, no-key live in-match source. worldcup26.ir does NOT send CORS headers,
+  // so a direct browser fetch is blocked. The reliable path is a tiny Cloudflare
+  // Worker (worker/worldcup-proxy.js) whose URL is configured in
+  // data/live-source.json. We try, in order: the configured Worker → direct →
+  // public CORS proxies (unreliable, last resort). Best-effort: if all fail we
+  // keep the committed data. The Worker URL is loaded at runtime into LIVE_PROXY.
   const LIVE_TARGET = "https://worldcup26.ir/get/games";
-  const LIVE_ENDPOINTS = [
-    LIVE_TARGET,
-    "https://corsproxy.io/?url=" + encodeURIComponent(LIVE_TARGET),
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent(LIVE_TARGET),
-    "https://thingproxy.freeboard.io/fetch/" + LIVE_TARGET,
-  ];
+  let LIVE_PROXY = ""; // set from data/live-source.json during load()
+
+  function liveEndpoints() {
+    const enc = encodeURIComponent(LIVE_TARGET);
+    const list = [];
+    if (LIVE_PROXY) list.push(LIVE_PROXY);            // reliable Cloudflare Worker
+    list.push(LIVE_TARGET);                            // direct (works only if CORS opens up)
+    list.push("https://corsproxy.io/?url=" + enc);     // public fallbacks (flaky)
+    list.push("https://api.allorigins.win/raw?url=" + enc);
+    return list;
+  }
 
   const TEAM_ALIASES = {
     "cote d ivoire": "ivory coast", "cote divoire": "ivory coast",
@@ -109,9 +114,9 @@
   // committed data. worldcup26.ir schema: home_team_name_en / away_team_name_en,
   // home_score / away_score (strings), finished "TRUE"/"FALSE", time_elapsed.
   async function overlayLiveClient(results) {
-    // Try each endpoint (direct, then CORS proxies) until one yields games.
+    // Try each endpoint (Worker, then direct, then public proxies) until one yields games.
     let games = null;
-    for (const url of LIVE_ENDPOINTS) {
+    for (const url of liveEndpoints()) {
       try {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 8000);
@@ -160,6 +165,11 @@
 
   async function load() {
     const bets = await getJSON("data/bets.json");
+    // Pick up the configured live proxy (Cloudflare Worker) if present.
+    try {
+      const cfg = await getJSON("data/live-source.json");
+      LIVE_PROXY = (cfg && cfg.proxy ? String(cfg.proxy) : "").trim();
+    } catch (e) { LIVE_PROXY = ""; }
     let results;
     try {
       results = await getJSON("data/results.json");
