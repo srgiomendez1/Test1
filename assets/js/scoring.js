@@ -67,8 +67,8 @@
         a.player.localeCompare(b.player, "es")
     );
     let rank = 0, prev = null;
-    rows.forEach((r, i) => {
-      if (r.points !== prev) { rank = i + 1; prev = r.points; }
+    rows.forEach((r) => {
+      if (r.points !== prev) { rank += 1; prev = r.points; } // dense rank: 1º,2º,3º by distinct point totals
       r.rank = rank;
     });
     return rows;
