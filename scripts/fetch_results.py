@@ -49,6 +49,7 @@ OUT = os.environ.get("RESULTS_OUT", "data/results.json")
 _TEAM_ALIASES = {
     "cote d ivoire": "ivory coast", "cote divoire": "ivory coast",
     "congo dr": "dr congo", "democratic republic of congo": "dr congo",
+    "democratic republic of the congo": "dr congo", "dr congo": "dr congo",
     "korea republic": "south korea", "republic of korea": "south korea",
     "czechia": "czech republic",
     "united states": "usa", "united states of america": "usa",
