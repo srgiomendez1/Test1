@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T00:34:54.759714+00:00",
+  "generated_at": "2026-06-19T05:34:30.647186+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -54,9 +54,12 @@
       "away": "South Korea",
       "group": "Group A",
       "ground": "Guadalajara (Zapopan)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        0
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-24|Czech Republic|Mexico": {
       "date": "2026-06-24",
