@@ -194,6 +194,7 @@ body > * { position: relative; z-index: 1; }
 .bteam .flag { font-size: 1.05rem; }
 .bteam .bn { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bteam .bn.ph { color: var(--muted); }
+.bteam .bn.proj { font-style: italic; }
 .bteam .bsc { font-weight: 800; color: var(--muted); min-width: 14px; text-align: right; }
 .bteam.bw { background: rgba(232, 198, 106, 0.12); }
 .bteam.bw .bn { font-weight: 700; color: var(--gold); }
