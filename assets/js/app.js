@@ -32,10 +32,9 @@
     return rows;
   }
 
-  // Monte Carlo: probability each player finishes 1st (wins the quiniela).
-  // Simulates the remaining matches' scorelines from the odds model, scores every
-  // player, and credits the winner(s) of each sim (ties split). Σ = 100%.
-  let _winCache = { sig: null, probs: null };
+  // Monte Carlo: P(win) per player + each player's expected cumulative-points
+  // trajectory across the remaining matches. Σ probs = 100%.
+  let _winCache = { sig: null, val: null };
   function poissonSample(l) {           // Knuth
     if (l <= 0) return 0;
     const L = Math.exp(-l); let k = 0, p = 1;
@@ -61,20 +60,26 @@
           rem = Math.max(0.02, (90 - Math.min(mm, 90)) / 90);
           if (m.score) { cH = m.score[0]; cA = m.score[1]; liveGoals += cH + cA; }
         }
-        remaining.push({ lh: lh * rem, la: la * rem, cH, cA, preds });
+        remaining.push({ ko: m.kickoff_utc ? Date.parse(m.kickoff_utc) : 0, lh: lh * rem, la: la * rem, cH, cA, preds });
       }
     }
+    remaining.sort((a, b) => a.ko - b.ko);
+    const R = remaining.length;
     const baseSum = Object.values(base).reduce((a, b) => a + b, 0);
-    const sig = `${players.length}|${baseSum}|${remaining.length}|${liveGoals}`;
-    if (_winCache.sig === sig) return _winCache.probs;
+    const sig = `${players.length}|${baseSum}|${R}|${liveGoals}`;
+    if (_winCache.sig === sig) return _winCache.val;
 
     const N = 5000, wins = {}, tmp = {};
-    players.forEach((p) => (wins[p] = 0));
+    const sum = Array.from({ length: R + 1 }, () => ({})); // sum[step][player]
+    players.forEach((p) => { wins[p] = 0; for (let s = 0; s <= R; s++) sum[s][p] = 0; });
     for (let n = 0; n < N; n++) {
-      for (const p of players) tmp[p] = base[p];
-      for (const rm of remaining) {
+      for (const p of players) { tmp[p] = base[p]; sum[0][p] += tmp[p]; }
+      for (let s = 0; s < R; s++) {
+        const rm = remaining[s];
         const sc = [rm.cH + poissonSample(rm.lh), rm.cA + poissonSample(rm.la)];
         for (const pl in rm.preds) tmp[pl] += Scoring.scoreOne(rm.preds[pl], sc).points;
+        const st = s + 1;
+        for (const p of players) sum[st][p] += tmp[p];
       }
       let mx = -Infinity;
       for (const p of players) if (tmp[p] > mx) mx = tmp[p];
@@ -82,9 +87,54 @@
       const credit = 1 / w.length;
       for (const p of w) wins[p] += credit;
     }
-    const probs = {}; players.forEach((p) => (probs[p] = wins[p] / N));
-    _winCache = { sig, probs };
-    return probs;
+    const probs = {}, mean = {};
+    players.forEach((p) => {
+      probs[p] = wins[p] / N;
+      mean[p] = []; for (let s = 0; s <= R; s++) mean[p].push(sum[s][p] / N);
+    });
+    const val = { probs, mean, R };
+    _winCache = { sig, val };
+    return val;
+  }
+
+  // Stable per-player color (alphabetical order → palette).
+  const PLAYER_COLORS = ["#e8c66a", "#ff6b6b", "#4dd2ff", "#69db7c", "#ffa94d", "#b197fc",
+    "#ff8cc3", "#ffe066", "#74c0fc", "#63e6be", "#f06595", "#adb5bd"];
+  function playerColor(name) {
+    const ps = state.bets.players.slice().sort((a, b) => a.localeCompare(b, "es"));
+    const i = ps.indexOf(name);
+    return PLAYER_COLORS[(i < 0 ? 0 : i) % PLAYER_COLORS.length];
+  }
+
+  function buildMonteCarloChart(W) {
+    const players = state.bets.players, R = W.R;
+    const box = el("div", "mcchart");
+    let yMin = Infinity, yMax = -Infinity;
+    players.forEach((p) => W.mean[p].forEach((v) => { if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
+    yMin = Math.floor(yMin - 1); yMax = Math.ceil(yMax + 1);
+    const Wd = 720, H = 360, pad = 36;
+    const X = (i) => pad + i * (Wd - 2 * pad) / Math.max(1, R);
+    const Y = (v) => H - pad - (v - yMin) / Math.max(1, yMax - yMin) * (H - 2 * pad);
+    let svg = `<svg viewBox="0 0 ${Wd} ${H}" class="mcsvg" preserveAspectRatio="xMidYMid meet">`;
+    svg += `<line x1="${pad}" y1="${H - pad}" x2="${Wd - pad}" y2="${H - pad}" class="ax"/>`;
+    svg += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H - pad}" class="ax"/>`;
+    [yMin, Math.round((yMin + yMax) / 2), yMax].forEach((v) =>
+      (svg += `<text x="${pad - 6}" y="${Y(v) + 4}" class="axt" text-anchor="end">${v}</text>`));
+    svg += `<text x="${pad}" y="${H - 10}" class="axt">Hoy</text>`;
+    svg += `<text x="${Wd - pad}" y="${H - 10}" class="axt" text-anchor="end">Fin de grupos</text>`;
+    // draw lowest-prob first so leaders are on top
+    players.slice().sort((a, b) => W.probs[a] - W.probs[b]).forEach((p) => {
+      const pts = W.mean[p].map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+      svg += `<polyline points="${pts}" fill="none" stroke="${playerColor(p)}" stroke-width="2.2" opacity="0.92"/>`;
+    });
+    svg += `</svg>`;
+    box.innerHTML = svg;
+    const leg = el("div", "mcleg");
+    players.slice().sort((a, b) => W.probs[b] - W.probs[a]).forEach((p) =>
+      leg.insertAdjacentHTML("beforeend",
+        `<span class="mcli"><span class="mcsw" style="background:${playerColor(p)}"></span>${p} <i>${Math.round(W.probs[p] * 100)}%</i></span>`));
+    box.appendChild(leg);
+    return box;
   }
 
   let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true };
@@ -156,7 +206,8 @@
     });
     wrap.appendChild(ctrl);
 
-    const winp = computeWinProbs();
+    const W = computeWinProbs();
+    const winp = W.probs;
     const fmtWin = (p) => (p >= 0.005 ? Math.round(p * 100) + "%" : (p > 0 ? "<1%" : "—"));
 
     const table = el("table", "standings");
@@ -182,6 +233,12 @@
     table.appendChild(tb);
     wrap.appendChild(table);
     wrap.appendChild(el("p", "hint", "Toca un jugador para ver su detalle. <b>Gana</b> = prob. de terminar 1º (simulación Monte Carlo de los juegos restantes con el modelo de odds; suma 100%). Puntos: acertar ganador/empate +1 · marcador exacto +2."));
+
+    if (W.R >= 1) {
+      wrap.appendChild(el("h3", "sechdr", "Proyección Monte Carlo"));
+      wrap.appendChild(el("p", "hint", "Puntos esperados de cada jugador hasta el cierre de la fase de grupos (promedio de 5,000 simulaciones)."));
+      wrap.appendChild(buildMonteCarloChart(W));
+    }
     return wrap;
   }
 
