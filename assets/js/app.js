@@ -298,27 +298,61 @@
     });
     wrap.appendChild(grid);
 
-    // --- Knockout bracket (round by round) ---
+    // --- Knockout bracket (horizontal, rounds → Campeón) ---
     wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
+    wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro →"));
     const allKo = Object.values(state.results.matches).filter((m) => m.round && (!m.group || m.group.indexOf("Group") !== 0));
-    const bracket = el("div", "bracket");
-    KO_ROUNDS.forEach(([en, es]) => {
-      const ms = allKo.filter((m) => m.round === en)
-        .sort((a, b) => (Date.parse(a.kickoff_utc) || 0) - (Date.parse(b.kickoff_utc) || 0));
+
+    const brTeam = (name, score, win) => {
+      const t = state.teams[name];
+      const inner = t ? `<span class="flag">${t.flag}</span><span class="bn">${t.es}</span>`
+                      : `<span class="bn ph">${name || "?"}</span>`;
+      return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}</span></div>`;
+    };
+    const bnode = (m) => {
+      const fin = m.status === "finished" && m.score;
+      const w0 = fin && m.score[0] > m.score[1], w1 = fin && m.score[1] > m.score[0];
+      const n = el("div", "bmatch" + (m.status === "live" ? " blive" : ""));
+      n.innerHTML = brTeam(m.home, m.score ? m.score[0] : null, w0) + brTeam(m.away, m.score ? m.score[1] : null, w1);
+      return n;
+    };
+
+    const order = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Final"];
+    const bracket = el("div", "bracket2");
+    order.forEach((rn) => {
+      const ms = allKo.filter((m) => m.round === rn); // keep feed (bracket) order
       if (!ms.length) return;
-      const col = el("div", "round");
-      col.appendChild(el("h3", "rhdr", es));
-      ms.forEach((m) => {
-        const score = m.score ? `${m.score[0]}–${m.score[1]}` : "vs";
-        const tie = el("div", "tie");
-        tie.innerHTML = `
-          <div class="tiehead"><span class="tdate">${fmtDay(m.date)} · ${fmtKickoffTime(m)}</span>${statusBadge(m)}</div>
-          <div class="tierow">${koTeamHTML(m.home)}<span class="tscore ${m.status}">${score}</span>${koTeamHTML(m.away)}</div>`;
-        col.appendChild(tie);
-      });
+      const col = el("div", "bround");
+      col.innerHTML = `<div class="brh">${roundES(rn)}</div>`;
+      const body = el("div", "bbody");
+      ms.forEach((m) => body.appendChild(bnode(m)));
+      col.appendChild(body);
       bracket.appendChild(col);
     });
+    // Champion column
+    const final = allKo.find((m) => m.round === "Final");
+    let champ = null;
+    if (final && final.status === "finished" && final.score && final.score[0] !== final.score[1])
+      champ = final.score[0] > final.score[1] ? final.home : final.away;
+    const cc = el("div", "bround champ-col");
+    cc.innerHTML = `<div class="brh">Campeón</div>`;
+    const cb = el("div", "bbody");
+    const champHtml = champ
+      ? (state.teams[champ] ? `<span class="flag">${state.teams[champ].flag}</span> ${state.teams[champ].es}` : champ)
+      : "🏆 ¿?";
+    cb.innerHTML = `<div class="bchamp">${champHtml}</div>`;
+    cc.appendChild(cb);
+    bracket.appendChild(cc);
     wrap.appendChild(bracket);
+
+    // 3rd place
+    const tp = allKo.find((m) => m.round === "Match for third place");
+    if (tp) {
+      const box = el("div", "thirdplace");
+      box.innerHTML = `<span class="tplabel">🥉 Tercer lugar</span>`;
+      box.appendChild(bnode(tp));
+      wrap.appendChild(box);
+    }
     return wrap;
   }
 
