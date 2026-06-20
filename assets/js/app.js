@@ -32,7 +32,7 @@
     return rows;
   }
 
-  let state = { bets: null, results: null, teams: {}, view: "posiciones", player: null, countLive: true };
+  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, cls, html) => {
@@ -86,11 +86,11 @@
     const wrap = el("div");
 
     wrap.appendChild(el("div", "prizes",
-      `<div class="pot">💰 Bote total: <strong>${fmtMXN(POT)}</strong></div>
+      `<div class="pot">💰 Bolsa: <strong>${fmtMXN(POT)}</strong></div>
        <div class="splits">
-         <span class="sp"><span class="med">🥇</span> 1º · 60% · ${fmtMXN(POT * 0.60)}</span>
-         <span class="sp"><span class="med">🥈</span> 2º · 25% · ${fmtMXN(POT * 0.25)}</span>
-         <span class="sp"><span class="med">🥉</span> 3º · 15% · ${fmtMXN(POT * 0.15)}</span>
+         <span class="sp"><span class="med">🥇</span> <b class="spmoney">${fmtMXN(POT * 0.60)}</b></span>
+         <span class="sp"><span class="med">🥈</span> <b class="spmoney">${fmtMXN(POT * 0.25)}</b></span>
+         <span class="sp"><span class="med">🥉</span> <b class="spmoney">${fmtMXN(POT * 0.15)}</b></span>
        </div>
        <div class="prizenote">Empates: se reparten el premio del lugar en partes iguales.</div>`));
 
@@ -104,9 +104,6 @@
     const table = el("table", "standings");
     table.innerHTML = `<thead><tr>
         <th>#</th><th>Jugador</th><th>Pts</th>
-        <th title="Marcadores exactos (2 pts)">Exactos</th>
-        <th title="Solo resultado (1 pt)">Resultados</th>
-        <th title="Partidos puntuados">PJ</th>
         <th title="Premio según posición actual">Premio</th>
       </tr></thead>`;
     const tb = el("tbody");
@@ -118,7 +115,6 @@
       tr.innerHTML = `<td class="rank">${medal}${r.rank}</td>
         <td class="pname">${r.player}</td>
         <td class="pts"><strong>${r.points}</strong>${prov}</td>
-        <td>${r.exact}</td><td>${r.outcome}</td><td>${r.played}</td>
         <td class="prize">${prize}</td>`;
       tr.addEventListener("click", () => { state.player = r.player; switchView("jugador"); });
       tb.appendChild(tr);
@@ -144,12 +140,7 @@
       .map((k) => state.results.matches[k].group))).sort()];
     const bar = el("div", "filters");
     bar.innerHTML = `<select id="fgroup">${groups.map((g) => `<option>${g}</option>`).join("")}</select>
-      <select id="fstate">
-        <option value="all">Todos los estados</option>
-        <option value="live">En vivo</option>
-        <option value="finished">Finalizados</option>
-        <option value="scheduled">Próximos</option>
-      </select>`;
+      <label class="chk"><input type="checkbox" id="fdone"> Incluir finalizados</label>`;
     wrap.appendChild(bar);
 
     const list = el("div", "matches");
@@ -157,14 +148,14 @@
 
     function paint() {
       const g = $("#fgroup", bar).value;
-      const st = $("#fstate", bar).value;
+      const showDone = $("#fdone", bar).checked; // default off: only En Vivo + Próximos
       list.innerHTML = "";
       let lastDay = null;
       let shown = 0;
       sortedMatchKeys().forEach((k) => {
         const m = state.results.matches[k];
         if (g !== "Todos" && m.group !== g) return;
-        if (st !== "all" && m.status !== st) return;
+        if (!showDone && m.status === "finished") return;
         if (m.date !== lastDay) {
           lastDay = m.date;
           list.appendChild(el("h3", "dayhdr", fmtDay(m.date)));
@@ -332,13 +323,25 @@
 
   /* ---------- Cuotas (estimated odds) ---------- */
 
+  const ODDS_MARGIN = 0.07; // small overround so numbers read like a sportsbook
+
   function renderOdds() {
     const wrap = el("div");
-    wrap.appendChild(el("p", "hint oddsnote",
-      "🎲 Cuotas <strong>estimadas</strong> con un modelo (forma de cada equipo + predicciones del grupo). No son de casa de apuestas."));
 
-    const S = Odds.teamStrengths(Object.values(state.results.matches));
-    const dec = Odds.dec, pct = (p) => Math.round(p * 100);
+    // How-to-read panel (top)
+    wrap.appendChild(el("div", "oddshelp",
+      `<p class="ohb">⚠️ <strong>Cuotas estimadas — NO son de casa de apuestas.</strong></p>
+       <p>Cómo leerlas (cuota decimal estilo momio europeo): si apuestas $100 a una cuota de
+       <b>2.00</b>, recibes $200 (ganancia $100). Cuanto <b>más baja</b> la cuota, más probable según el modelo.
+       El <b>%</b> es la probabilidad estimada.</p>
+       <ul class="ohl">
+         <li><b>1X2</b> — resultado: gana <b>Local</b>, <b>Empate</b> o gana <b>Visitante</b>.</li>
+         <li><b>Total 2.5</b> — <b>Más</b> = 3+ goles en el partido; <b>Menos</b> = 2 o menos.</li>
+         <li><b>Marcador más probable</b> — los 3 marcadores con mayor probabilidad.</li>
+       </ul>`));
+
+    const form = Odds.teamStrengths(Object.values(state.results.matches));
+    const dec = (p) => Odds.dec(p, ODDS_MARGIN), pct = (p) => Math.round(p * 100);
 
     // Live + upcoming matches with two known teams, soonest first.
     const keys = Object.keys(state.results.matches).filter((k) => {
@@ -358,18 +361,7 @@
     let lastDay = null;
     keys.forEach((k) => {
       const m = state.results.matches[k];
-
-      // Crowd signal: average predicted scoreline from the group (group matches).
-      let crowd = null;
-      const preds = state.bets.predictions[k];
-      if (preds) {
-        const v = Object.values(preds);
-        if (v.length) crowd = {
-          home: v.reduce((s, x) => s + x[0], 0) / v.length,
-          away: v.reduce((s, x) => s + x[1], 0) / v.length,
-        };
-      }
-      const { lh, la } = Odds.lambdasFor(m, S, crowd);
+      const { lh, la } = Odds.lambdasFor(m, state.ratings, form);
 
       let remFrac = 1, curH = 0, curA = 0;
       if (m.status === "live") {
@@ -400,6 +392,17 @@
       list.appendChild(card);
     });
     wrap.appendChild(list);
+
+    // Model description (bottom)
+    wrap.appendChild(el("div", "oddsmodel",
+      `<h3>Modelo in-house</h3>
+       <p>Estas cuotas las genera un <b>modelo propio (in-house)</b>, no provienen de una casa de
+       apuestas. Cada equipo tiene un <i>rating</i> de fuerza calibrado a partir de cuotas de
+       referencia del Mundial; con la diferencia de ratings (más una ventaja de localía) estimamos
+       los goles esperados de cada lado y aplicamos un modelo de <b>Poisson</b> para obtener las
+       probabilidades de 1X2, Más/Menos 2.5 y los marcadores más probables. En partidos en vivo se
+       ajusta por el minuto y el marcador actual. Se añade un pequeño margen para que las cuotas se
+       lean como las de un libro. <b>Solo para diversión del grupo.</b></p>`));
     return wrap;
   }
 
@@ -427,7 +430,7 @@
   async function refresh() {
     try {
       const d = await DataLayer.load();
-      state.bets = d.bets; state.results = d.results; state.teams = d.teams;
+      state.bets = d.bets; state.results = d.results; state.teams = d.teams; state.ratings = d.ratings || {};
       render(); // paint committed data immediately (fast, same-origin only)
     } catch (e) {
       console.error(e);

@@ -8,7 +8,7 @@
   "use strict";
 
   const MAXG = 8;        // goals grid per team
-  const HOME_ADV = 1.08; // mild edge for the listed home team
+  const HOME_ADV = 0.25; // listed-home edge, in goals
   const PRIOR_K = 1.5;   // pseudo-matches of shrinkage toward the mean
 
   function poisson(k, lambda) {
@@ -17,7 +17,8 @@
     return p;
   }
 
-  // Per-team attack/defense from finished group-stage matches.
+  // Per-team attack/defense from finished group-stage matches (kept for reference;
+  // the live model below uses bundled ratings calibrated to bookmaker odds).
   function teamStrengths(matches) {
     const t = {};
     let goals = 0, teamMatches = 0;
@@ -31,7 +32,7 @@
       t[m.away].gf += a; t[m.away].ga += h; t[m.away].pj++;
       goals += h + a; teamMatches += 2;
     }
-    const mu = teamMatches ? goals / teamMatches : 1.3; // avg goals per team per match
+    const mu = teamMatches ? goals / teamMatches : 1.3;
     const teams = {};
     for (const [name, s] of Object.entries(t)) {
       const af = (s.gf + PRIOR_K * mu) / (s.pj + PRIOR_K);
@@ -41,20 +42,20 @@
     return { mu, teams };
   }
 
-  // Expected goals (λ) for a match. crowd = {home, away} avg predicted goals (optional).
-  function lambdasFor(match, S, crowd) {
-    const mu = S.mu || 1.3;
-    const dh = S.teams[match.home], da = S.teams[match.away];
-    let lh, la;
-    if (dh && da) {
-      lh = dh.atk * da.def * mu * HOME_ADV;
-      la = da.atk * dh.def * mu;
-    } else {
-      lh = mu * HOME_ADV; la = mu;
+  // Expected goals (λ) from bundled team ratings (goal-supremacy units, fitted to
+  // bookmaker 1X2 odds). `ratings` is name->number; unknown teams default to 0.
+  // Optional `form` (from teamStrengths) nudges ratings by recent tournament form.
+  function lambdasFor(match, ratings, form) {
+    ratings = ratings || {};
+    let rh = ratings[match.home] || 0, ra = ratings[match.away] || 0;
+    if (form && form.teams) {
+      const fh = form.teams[match.home], fa = form.teams[match.away];
+      if (fh && fh.pj) rh += 0.15 * Math.log((fh.atk || 1) / (fh.def || 1));
+      if (fa && fa.pj) ra += 0.15 * Math.log((fa.atk || 1) / (fa.def || 1));
     }
-    if (crowd) { lh = 0.6 * lh + 0.4 * crowd.home; la = 0.6 * la + 0.4 * crowd.away; }
-    const clamp = (x) => Math.max(0.2, Math.min(4, x));
-    return { lh: clamp(lh), la: clamp(la) };
+    const sup = (rh - ra) + HOME_ADV;
+    const T = Math.max(2.2, Math.min(3.6, 2.5 + 0.12 * Math.abs(sup)));
+    return { lh: Math.max(0.12, (T + sup) / 2), la: Math.max(0.12, (T - sup) / 2) };
   }
 
   // Markets from λ. For live games pass remFrac (remaining time fraction) and the
@@ -83,8 +84,9 @@
     return { p1, pX, p2, over, under, scores };
   }
 
-  // Fair decimal odds from a probability (no bookmaker margin).
-  const dec = (p) => (p > 0 ? Math.max(1.01, 1 / p) : 99);
+  // Decimal odds from a probability, with an optional bookmaker margin so the
+  // numbers read like a sportsbook (default ~7% overround).
+  const dec = (p, margin) => (p > 0 ? Math.max(1.01, (1 / p) / (1 + (margin || 0))) : 99);
 
   global.Odds = { poisson, teamStrengths, lambdasFor, matchOdds, dec };
 })(typeof window !== "undefined" ? window : globalThis);
