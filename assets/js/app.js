@@ -32,6 +32,61 @@
     return rows;
   }
 
+  // Monte Carlo: probability each player finishes 1st (wins the quiniela).
+  // Simulates the remaining matches' scorelines from the odds model, scores every
+  // player, and credits the winner(s) of each sim (ties split). Σ = 100%.
+  let _winCache = { sig: null, probs: null };
+  function poissonSample(l) {           // Knuth
+    if (l <= 0) return 0;
+    const L = Math.exp(-l); let k = 0, p = 1;
+    do { k++; p *= Math.random(); } while (p > L);
+    return k - 1;
+  }
+  function computeWinProbs() {
+    const players = state.bets.players;
+    const base = {}; players.forEach((p) => (base[p] = 0));
+    const remaining = [];
+    let liveGoals = 0;
+    for (const [k, preds] of Object.entries(state.bets.predictions)) {
+      const m = state.results.matches[k];
+      if (!m) continue;
+      if (m.status === "finished" && m.score) {
+        for (const pl in preds) base[pl] += Scoring.scoreOne(preds[pl], m.score).points;
+      } else {
+        const { lh, la } = Odds.lambdasFor(m, state.ratings, null);
+        let rem = 1, cH = 0, cA = 0;
+        if (m.status === "live") {
+          const n = parseInt(m.minute, 10);
+          const mm = Number.isFinite(n) ? n : (String(m.minute).toUpperCase() === "HT" ? 45 : 0);
+          rem = Math.max(0.02, (90 - Math.min(mm, 90)) / 90);
+          if (m.score) { cH = m.score[0]; cA = m.score[1]; liveGoals += cH + cA; }
+        }
+        remaining.push({ lh: lh * rem, la: la * rem, cH, cA, preds });
+      }
+    }
+    const baseSum = Object.values(base).reduce((a, b) => a + b, 0);
+    const sig = `${players.length}|${baseSum}|${remaining.length}|${liveGoals}`;
+    if (_winCache.sig === sig) return _winCache.probs;
+
+    const N = 5000, wins = {}, tmp = {};
+    players.forEach((p) => (wins[p] = 0));
+    for (let n = 0; n < N; n++) {
+      for (const p of players) tmp[p] = base[p];
+      for (const rm of remaining) {
+        const sc = [rm.cH + poissonSample(rm.lh), rm.cA + poissonSample(rm.la)];
+        for (const pl in rm.preds) tmp[pl] += Scoring.scoreOne(rm.preds[pl], sc).points;
+      }
+      let mx = -Infinity;
+      for (const p of players) if (tmp[p] > mx) mx = tmp[p];
+      const w = players.filter((p) => tmp[p] === mx);
+      const credit = 1 / w.length;
+      for (const p of w) wins[p] += credit;
+    }
+    const probs = {}; players.forEach((p) => (probs[p] = wins[p] / N));
+    _winCache = { sig, probs };
+    return probs;
+  }
+
   let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -101,9 +156,13 @@
     });
     wrap.appendChild(ctrl);
 
+    const winp = computeWinProbs();
+    const fmtWin = (p) => (p >= 0.005 ? Math.round(p * 100) + "%" : (p > 0 ? "<1%" : "—"));
+
     const table = el("table", "standings");
     table.innerHTML = `<thead><tr>
         <th>#</th><th>Jugador</th><th>Pts</th>
+        <th title="Probabilidad de terminar 1º (simulación de los partidos que faltan)">Gana</th>
         <th title="Premio según posición actual (MXN)">Premio<span class="thmxn"> (MXN)</span></th>
       </tr></thead>`;
     const tb = el("tbody");
@@ -115,13 +174,14 @@
       tr.innerHTML = `<td class="rank">${medal}${r.rank}</td>
         <td class="pname">${r.player}</td>
         <td class="pts"><strong>${r.points}</strong>${prov}</td>
+        <td class="winp">${fmtWin(winp[r.player] || 0)}</td>
         <td class="prize">${prize}</td>`;
       tr.addEventListener("click", () => { state.player = r.player; switchView("jugador"); });
       tb.appendChild(tr);
     });
     table.appendChild(tb);
     wrap.appendChild(table);
-    wrap.appendChild(el("p", "hint", "Toca un jugador para ver su detalle. Acertar ganador/empate: +1 · Marcador exacto: +2 (3 en total)."));
+    wrap.appendChild(el("p", "hint", "Toca un jugador para ver su detalle. <b>Gana</b> = prob. de terminar 1º (simulación Monte Carlo de los juegos restantes con el modelo de odds; suma 100%). Puntos: acertar ganador/empate +1 · marcador exacto +2."));
     return wrap;
   }
 

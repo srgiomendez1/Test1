@@ -104,6 +104,8 @@ body > * { position: relative; z-index: 1; }
   background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 .standings td.prize { font-weight: 700; white-space: nowrap; }
 .standings td.prize .money { color: var(--gold); }
+.standings td.winp { font-weight: 700; color: var(--accent); white-space: nowrap; }
+.standings .thmxn { font-weight: 400; color: var(--muted); font-size: 0.85em; }
 
 /* Filters */
 .filters { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
