@@ -53,9 +53,12 @@
       if (fh && fh.pj) rh += 0.15 * Math.log((fh.atk || 1) / (fh.def || 1));
       if (fa && fa.pj) ra += 0.15 * Math.log((fa.atk || 1) / (fa.def || 1));
     }
-    const sup = (rh - ra) + HOME_ADV;
+    // Compress supremacy a touch and floor the underdog's λ so extreme outsiders
+    // aren't priced too long (Poisson otherwise under-rates upsets).
+    const COMPRESS = 0.95, FLOOR = 0.22;
+    const sup = ((rh - ra) + HOME_ADV) * COMPRESS;
     const T = Math.max(2.2, Math.min(3.6, 2.5 + 0.12 * Math.abs(sup)));
-    return { lh: Math.max(0.12, (T + sup) / 2), la: Math.max(0.12, (T - sup) / 2) };
+    return { lh: Math.max(FLOOR, (T + sup) / 2), la: Math.max(FLOOR, (T - sup) / 2) };
   }
 
   // Markets from λ. For live games pass remFrac (remaining time fraction) and the
