@@ -1,0 +1,5 @@
+{
+  "_comment": "Para CUOTAS REALES (opcional): elige un proveedor con plan gratis (ej. OddsPapi/SportsGameOdds), saca tu API key y, como worldcup26, pásala por tu Cloudflare Worker para evitar CORS. Pega aquí la URL del Worker de odds en 'proxy'. Si queda vacío, el sitio usa las cuotas ESTIMADAS por el modelo.",
+  "provider": "",
+  "proxy": ""
+}

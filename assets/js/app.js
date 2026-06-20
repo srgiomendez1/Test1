@@ -273,6 +273,8 @@
     ["Match for third place", "Tercer lugar"],
     ["Final", "Final"],
   ];
+  const KO_ES = Object.fromEntries(KO_ROUNDS);
+  const roundES = (r) => KO_ES[r] || r || "";
 
   function renderGrupos() {
     const wrap = el("div");
@@ -328,6 +330,79 @@
     return wrap;
   }
 
+  /* ---------- Cuotas (estimated odds) ---------- */
+
+  function renderOdds() {
+    const wrap = el("div");
+    wrap.appendChild(el("p", "hint oddsnote",
+      "🎲 Cuotas <strong>estimadas</strong> con un modelo (forma de cada equipo + predicciones del grupo). No son de casa de apuestas."));
+
+    const S = Odds.teamStrengths(Object.values(state.results.matches));
+    const dec = Odds.dec, pct = (p) => Math.round(p * 100);
+
+    // Live + upcoming matches with two known teams, soonest first.
+    const keys = Object.keys(state.results.matches).filter((k) => {
+      const m = state.results.matches[k];
+      return (m.status === "live" || m.status === "scheduled") &&
+        state.teams[m.home] && state.teams[m.away];
+    }).sort((a, b) =>
+      (Date.parse(state.results.matches[a].kickoff_utc) || 0) -
+      (Date.parse(state.results.matches[b].kickoff_utc) || 0));
+
+    if (!keys.length) {
+      wrap.appendChild(el("p", "hint", "No hay partidos en vivo o próximos con equipos definidos."));
+      return wrap;
+    }
+
+    const list = el("div", "oddslist");
+    let lastDay = null;
+    keys.forEach((k) => {
+      const m = state.results.matches[k];
+
+      // Crowd signal: average predicted scoreline from the group (group matches).
+      let crowd = null;
+      const preds = state.bets.predictions[k];
+      if (preds) {
+        const v = Object.values(preds);
+        if (v.length) crowd = {
+          home: v.reduce((s, x) => s + x[0], 0) / v.length,
+          away: v.reduce((s, x) => s + x[1], 0) / v.length,
+        };
+      }
+      const { lh, la } = Odds.lambdasFor(m, S, crowd);
+
+      let remFrac = 1, curH = 0, curA = 0;
+      if (m.status === "live") {
+        const n = parseInt(m.minute, 10);
+        const mm = Number.isFinite(n) ? n : (String(m.minute).toUpperCase() === "HT" ? 45 : 0);
+        remFrac = Math.max(0.02, (90 - Math.min(mm, 90)) / 90);
+        if (m.score) { curH = m.score[0]; curA = m.score[1]; }
+      }
+      const od = Odds.matchOdds({ lh, la, curH, curA, remFrac });
+
+      if (m.date !== lastDay) { lastDay = m.date; list.appendChild(el("h3", "dayhdr", fmtDay(m.date))); }
+
+      const chip = (label, p) =>
+        `<span class="ochip">${label ? `<span class="ol">${label}</span>` : ""}<b>${dec(p).toFixed(2)}</b><i>${pct(p)}%</i></span>`;
+      const card = el("div", "oddscard");
+      card.innerHTML = `
+        <div class="mhead">
+          <span class="mgroup">${m.group ? m.group.replace("Group", "Grupo") : roundES(m.round)}</span>
+          <span class="mtime">${fmtKickoffTime(m)}</span>${statusBadge(m)}
+        </div>
+        <div class="oteams">${koTeamHTML(m.home)}<span class="ovs">${m.score ? m.score[0] + "–" + m.score[1] : "vs"}</span>${koTeamHTML(m.away)}</div>
+        <div class="omkt"><div class="omh">Resultado (1X2)</div>
+          <div class="orow">${chip("Local", od.p1)}${chip("Empate", od.pX)}${chip("Visit.", od.p2)}</div></div>
+        <div class="omkt"><div class="omh">Total de goles 2.5</div>
+          <div class="orow">${chip("Más", od.over)}${chip("Menos", od.under)}</div></div>
+        <div class="omkt"><div class="omh">Marcador más probable</div>
+          <div class="orow">${od.scores.map((s) => `<span class="ochip"><b>${s.s}</b><i>${pct(s.p)}%</i></span>`).join("")}</div></div>`;
+      list.appendChild(card);
+    });
+    wrap.appendChild(list);
+    return wrap;
+  }
+
   /* ---------- Shell ---------- */
 
   function switchView(v) { state.view = v; render(); window.scrollTo(0, 0); }
@@ -338,6 +413,7 @@
     if (state.view === "posiciones") main.appendChild(renderPosiciones());
     else if (state.view === "partidos") main.appendChild(renderPartidos());
     else if (state.view === "grupos") main.appendChild(renderGrupos());
+    else if (state.view === "odds") main.appendChild(renderOdds());
     else main.appendChild(renderJugador());
 
     document.querySelectorAll(".tab").forEach((t) =>

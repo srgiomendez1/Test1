@@ -59,12 +59,14 @@ body > * { position: relative; z-index: 1; }
   display: flex; gap: 6px; padding: 10px 14px 0;
   position: sticky; top: 0; z-index: 5;
   background: #2e0b08;
+  overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-  flex: 1; padding: 10px 8px; border: 1px solid var(--line);
+  flex: 1 0 auto; white-space: nowrap; padding: 10px 12px; border: 1px solid var(--line);
   border-bottom: none; border-radius: 10px 10px 0 0;
   background: #34110d; color: var(--muted);
-  font-size: 0.9rem; cursor: pointer; transition: 0.15s;
+  font-size: 0.88rem; cursor: pointer; transition: 0.15s;
 }
 .tab.active { background: var(--card); color: var(--gold); font-weight: 600; box-shadow: inset 0 2px 0 var(--accent); }
 
@@ -181,6 +183,23 @@ body > * { position: relative; z-index: 1; }
 .tscore { font-weight: 800; min-width: 42px; text-align: center; color: var(--muted); }
 .tscore.finished, .tscore.live { color: var(--txt); }
 .tscore.live { color: var(--live); }
+
+/* Cuotas (odds) */
+.oddsnote { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.oddscard { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 10px; }
+.oddscard .oteams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 8px 0 4px; }
+.oddscard .oteams .team:last-child { justify-content: flex-end; }
+.oddscard .ovs { font-weight: 800; color: var(--muted); padding: 0 6px; }
+.omkt { margin-top: 10px; }
+.omh { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin-bottom: 5px; }
+.orow { display: flex; flex-wrap: wrap; gap: 6px; }
+.ochip {
+  flex: 1 1 auto; min-width: 64px; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 9px; padding: 6px 8px;
+}
+.ochip .ol { font-size: 0.7rem; color: var(--muted); }
+.ochip b { font-size: 1.05rem; color: var(--gold); }
+.ochip i { font-size: 0.68rem; color: var(--muted); font-style: normal; }
 
 .foot { text-align: center; padding: 20px; color: var(--muted); font-size: 0.75rem; }
 .foot a { color: var(--accent); }
