@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T23:45:45.210650+00:00",
+  "generated_at": "2026-06-20T01:55:24.612254+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -226,9 +226,8 @@
         0,
         1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-19|Brazil|Haiti": {
       "date": "2026-06-19",
@@ -239,9 +238,13 @@
       "group": "Group C",
       "round": "Matchday 9",
       "ground": "Philadelphia",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        3,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-24|Scotland|Brazil": {
       "date": "2026-06-24",
