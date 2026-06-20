@@ -303,10 +303,32 @@
     wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro →"));
     const allKo = Object.values(state.results.matches).filter((m) => m.round && (!m.group || m.group.indexOf("Group") !== 0));
 
-    const brTeam = (name, score, win) => {
-      const t = state.teams[name];
-      const inner = t ? `<span class="flag">${t.flag}</span><span class="bn">${t.es}</span>`
-                      : `<span class="bn ph">${name || "?"}</span>`;
+    // Resolve bracket slot codes to real teams (projected from current standings):
+    //  1X/2X -> winner/runner-up of group X; 3-slots & W/L codes stay as labels
+    //  until decided (openfootball fills real team names into the feed by then).
+    const gt = tables; // group tables computed above (Group X -> sorted rows)
+    const resolveSlot = (code) => {
+      if (state.teams[code]) return { name: code, proj: false };
+      const m = /^([12])([A-L])$/.exec(code || "");
+      if (m) {
+        const arr = gt["Group " + m[2]];
+        if (arr && arr[+m[1] - 1]) return { name: arr[+m[1] - 1].team, proj: true };
+      }
+      return { name: null, code: code };
+    };
+    const slotLabel = (code) => /^3/.test(code || "")
+      ? "3º " + code.slice(1).replace(/\//g, "·")
+      : "Por definir";
+
+    const brTeam = (code, score, win) => {
+      const r = resolveSlot(code);
+      let inner;
+      if (r.name && state.teams[r.name]) {
+        const t = state.teams[r.name];
+        inner = `<span class="flag">${t.flag}</span><span class="bn ${r.proj ? "proj" : ""}">${t.es}</span>`;
+      } else {
+        inner = `<span class="bn ph">${slotLabel(code)}</span>`;
+      }
       return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}</span></div>`;
     };
     const bnode = (m) => {
