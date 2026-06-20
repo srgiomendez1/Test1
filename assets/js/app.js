@@ -86,13 +86,13 @@
     const wrap = el("div");
 
     wrap.appendChild(el("div", "prizes",
-      `<div class="pot">💰 Bolsa: <strong>${fmtMXN(POT)}</strong></div>
+      `<div class="pot">💰 Bolsa: <strong>${fmtMXN(POT)} MXN</strong></div>
        <div class="splits">
          <span class="sp"><span class="med">🥇</span> <b class="spmoney">${fmtMXN(POT * 0.60)}</b></span>
          <span class="sp"><span class="med">🥈</span> <b class="spmoney">${fmtMXN(POT * 0.25)}</b></span>
          <span class="sp"><span class="med">🥉</span> <b class="spmoney">${fmtMXN(POT * 0.15)}</b></span>
        </div>
-       <div class="prizenote">Empates: se reparten el premio del lugar en partes iguales.</div>`));
+       <div class="prizenote">Montos en pesos mexicanos (MXN). Empates: se reparten el premio del lugar en partes iguales.</div>`));
 
     const ctrl = el("label", "live-toggle",
       `<input type="checkbox" ${state.countLive ? "checked" : ""}> Incluir partidos en vivo (puntos provisionales)`);
@@ -104,7 +104,7 @@
     const table = el("table", "standings");
     table.innerHTML = `<thead><tr>
         <th>#</th><th>Jugador</th><th>Pts</th>
-        <th title="Premio según posición actual">Premio</th>
+        <th title="Premio según posición actual (MXN)">Premio<span class="thmxn"> (MXN)</span></th>
       </tr></thead>`;
     const tb = el("tbody");
     rows.forEach((r, i) => {
