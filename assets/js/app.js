@@ -191,9 +191,10 @@
 
   function renderJugador() {
     const wrap = el("div");
-    state.player = state.player || state.bets.players[0];
+    const players = state.bets.players.slice().sort((a, b) => a.localeCompare(b, "es"));
+    state.player = state.player || players[0];
     const sel = el("select", "pselect",
-      state.bets.players.map((p) => `<option ${p === state.player ? "selected" : ""}>${p}</option>`).join(""));
+      players.map((p) => `<option ${p === state.player ? "selected" : ""}>${p}</option>`).join(""));
     sel.addEventListener("change", (e) => { state.player = e.target.value; render(); });
     wrap.appendChild(sel);
 
