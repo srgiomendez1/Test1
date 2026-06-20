@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T01:55:24.612254+00:00",
+  "generated_at": "2026-06-20T06:25:00.578974+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -242,9 +242,8 @@
         3,
         0
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-24|Scotland|Brazil": {
       "date": "2026-06-24",
@@ -329,9 +328,12 @@
       "group": "Group D",
       "round": "Matchday 9",
       "ground": "San Francisco Bay Area (Santa Clara)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        1
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-25|Turkey|USA": {
       "date": "2026-06-25",
