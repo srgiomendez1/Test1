@@ -24,18 +24,20 @@ const done = matchOdds({ lh: 2, la: 2, curH: 2, curA: 1, remFrac: 0 });
 close(done.p1, 1, 1e-9, "remFrac 0 => home (leading) wins for sure");
 assert.strictEqual(done.scores[0].s, "2-1", "certain final score");
 
-// Strengths + lambdas from a tiny fixture set
-const matches = [
-  { group: "Group A", status: "finished", score: [3, 0], home: "A", away: "B" },
-  { group: "Group A", status: "finished", score: [2, 0], home: "A", away: "C" },
-  { group: "Group A", status: "finished", score: [0, 1], home: "B", away: "C" },
-];
-const S = teamStrengths(matches);
-assert.ok(S.teams["A"].atk > S.teams["B"].atk, "A attacks better than B");
-const { lh, la } = lambdasFor({ home: "A", away: "B" }, S);
-assert.ok(lh > la, "A favored at home vs B");
+// Ratings-based lambdas: stronger rating => favored
+const ratings = { A: 1.0, B: -1.0 };
+const { lh, la } = lambdasFor({ home: "A", away: "B" }, ratings);
+assert.ok(lh > la, "higher-rated home favored");
+const oA = matchOdds(lambdasFor({ home: "A", away: "B" }, ratings));
+const oB = matchOdds(lambdasFor({ home: "B", away: "A" }, ratings));
+assert.ok(oA.p1 > 0.6 && oB.p1 < 0.4, "rating gap drives result prob");
 
-// decimal odds
-close(dec(0.5), 2, 1e-9, "p .5 => 2.00");
+// teamStrengths still works
+const S = teamStrengths([{ group: "Group A", status: "finished", score: [3, 0], home: "A", away: "B" }]);
+assert.ok(S.teams["A"].atk > S.teams["B"].atk, "A attacks better than B");
+
+// decimal odds: fair vs with margin
+close(dec(0.5), 2, 1e-9, "p .5 => 2.00 fair");
+assert.ok(dec(0.5, 0.07) < 2, "margin shortens odds");
 
 console.log("All odds tests passed ✔");
