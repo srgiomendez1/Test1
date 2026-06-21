@@ -1,0 +1,132 @@
+name: Lab Results Entry
+description: Log new blood work or hair test results
+title: "Lab Results — [DATE]"
+labels: ["lab-results"]
+body:
+  - type: markdown
+    attributes:
+      value: "## New Lab Results"
+
+  - type: input
+    id: test_date
+    attributes:
+      label: Test Date
+      placeholder: "e.g., June 21, 2026"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### Cardiovascular (LPA · CTH · CDKN2)"
+
+  - type: input
+    id: lpa
+    attributes:
+      label: "Lp(a) — Target: < 65 nmol/L or < 30 mg/dL"
+      placeholder: "Result and units"
+
+  - type: input
+    id: homocysteine
+    attributes:
+      label: "Homocysteine — Target: < 7 µmol/L"
+      placeholder: "Result"
+
+  - type: input
+    id: hscrp
+    attributes:
+      label: "hsCRP — Target: < 1.0 mg/L"
+      placeholder: "Result"
+
+  - type: markdown
+    attributes:
+      value: "### Thyroid (TG · DIO2)"
+
+  - type: input
+    id: tsh
+    attributes:
+      label: "TSH — Target: 0.5–1.5 mIU/L"
+      placeholder: "Result"
+
+  - type: input
+    id: free_t3
+    attributes:
+      label: "Free T3 — Target: Upper range"
+      placeholder: "Result"
+
+  - type: input
+    id: tpo_ab
+    attributes:
+      label: "TPO Antibodies — Target: Negative"
+      placeholder: "Result"
+
+  - type: input
+    id: tgab
+    attributes:
+      label: "TGAb — Target: Negative"
+      placeholder: "Result"
+
+  - type: markdown
+    attributes:
+      value: "### Hormones (FAM9B)"
+
+  - type: input
+    id: total_t
+    attributes:
+      label: "Total Testosterone — Target: 500–1,500 ng/dL"
+      placeholder: "Result"
+
+  - type: input
+    id: free_t
+    attributes:
+      label: "Free Testosterone — Target: 15–25 pg/mL"
+      placeholder: "Result"
+
+  - type: markdown
+    attributes:
+      value: "### Nutrients (CYP2R1 · SOD2)"
+
+  - type: input
+    id: vit_d
+    attributes:
+      label: "Vitamin D3 — Target: 50–100 ng/mL"
+      placeholder: "Result"
+
+  - type: input
+    id: ferritin
+    attributes:
+      label: "Ferritin — Target: 50–100 ng/mL"
+      placeholder: "Result"
+
+  - type: markdown
+    attributes:
+      value: "### Metabolic"
+
+  - type: input
+    id: glucose
+    attributes:
+      label: "Fasting Glucose — Target: < 85 mg/dL"
+      placeholder: "Result"
+
+  - type: input
+    id: hba1c
+    attributes:
+      label: "HbA1c — Target: < 5.4%"
+      placeholder: "Result"
+
+  - type: textarea
+    id: supplements_at_test
+    attributes:
+      label: Active Supplements at Time of Test
+      description: List all supplements currently taking
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Doctor Notes / Next Steps
+      placeholder: "Any recommendations from physician, adjustments to make..."
+
+  - type: textarea
+    id: protocol_changes
+    attributes:
+      label: Protocol Changes Based on Results
+      placeholder: "Increasing 5-MTHF dose, adding niacin, etc."

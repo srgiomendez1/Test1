@@ -1,0 +1,129 @@
+name: Weekly Check-In
+description: Weekly health protocol tracking
+title: "Weekly Check-In — [DATE]"
+labels: ["weekly-checkin"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Weekly DNA Protocol Check-In"
+
+  - type: input
+    id: week
+    attributes:
+      label: Week of
+      placeholder: "e.g., June 21, 2026"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: daily_non_negotiables
+    attributes:
+      label: "Daily Non-Negotiables (check if completed 5+/7 days)"
+      options:
+        - label: "Morning sunlight (10-20 min) [HTR2A/CYP2R1]"
+        - label: "16+ hour fast / skipped breakfast [ADIPOQ/CLU]"
+        - label: "5-MTHF methylfolate taken daily [MTHFR C677T CRITICAL]"
+        - label: "Zero cow dairy this week [MCM6]"
+        - label: "Zero seed oils this week [PON1/GSTP1]"
+        - label: "Caffeine cutoff before 1 PM [CYP1A2]"
+        - label: "Zero folic acid products [MTHFR]"
+        - label: "Evening magnesium glycinate [ABCC9/Wnt16]"
+        - label: "Berries eaten daily [CDKAL1 PRIORITY]"
+        - label: "Omega-3 source eaten (fish or supplement) [LPA/CDKN2]"
+        - label: "Vitamin D3 + K2 taken daily [CYP2R1]"
+        - label: "Selenium taken [TG thyroid / GSTP1]"
+
+  - type: checkboxes
+    id: exercise
+    attributes:
+      label: Exercise This Week
+      options:
+        - label: "Resistance training 3+ sessions [ACTN3/Wnt16/FAM9B]"
+        - label: "Deadlifts completed [Wnt16 bone density]"
+        - label: "Zone 2 cardio 3+ sessions [CLU/CDKN2/HTR2A]"
+        - label: "Daily joint mobility work [HLA/ITGAV]"
+        - label: "No sitting > 45 min without movement [ITGAV]"
+
+  - type: dropdown
+    id: energy
+    attributes:
+      label: Energy Level (average this week)
+      options:
+        - "1 — Very low"
+        - "2 — Low"
+        - "3 — Fair"
+        - "4 — Good"
+        - "5 — Excellent"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mood
+    attributes:
+      label: Mood / Mental Clarity
+      options:
+        - "1 — Very poor"
+        - "2 — Poor"
+        - "3 — Fair"
+        - "4 — Good"
+        - "5 — Excellent"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sleep
+    attributes:
+      label: Sleep Quality
+      options:
+        - "1 — Very poor"
+        - "2 — Poor"
+        - "3 — Fair"
+        - "4 — Good"
+        - "5 — Excellent"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: joints
+    attributes:
+      label: Joint Comfort
+      options:
+        - "1 — Painful"
+        - "2 — Uncomfortable"
+        - "3 — Neutral"
+        - "4 — Good"
+        - "5 — Pain-free"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gut
+    attributes:
+      label: Gut / Digestion
+      options:
+        - "1 — Very problematic"
+        - "2 — Some issues"
+        - "3 — Fair"
+        - "4 — Good"
+        - "5 — Excellent"
+    validations:
+      required: true
+
+  - type: textarea
+    id: observations
+    attributes:
+      label: Observations & Notes
+      description: Food reactions, sleep changes, energy patterns, anything notable
+      placeholder: "This week I noticed..."
+
+  - type: textarea
+    id: next_week
+    attributes:
+      label: Focus for Next Week
+      placeholder: "One thing to improve or experiment with..."
+
+  - type: input
+    id: next_labs
+    attributes:
+      label: Next Lab Test Due
+      placeholder: "e.g., September 2026 — Lp(a) recheck"
