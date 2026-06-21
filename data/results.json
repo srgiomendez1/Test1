@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T20:21:11.644070+00:00",
+  "generated_at": "2026-06-21T21:50:28.135895+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -582,9 +582,12 @@
       "group": "Group G",
       "round": "Matchday 11",
       "ground": "Los Angeles (Inglewood)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-21|New Zealand|Egypt": {
       "date": "2026-06-21",
@@ -671,7 +674,7 @@
         0
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-21|Uruguay|Cape Verde": {
       "date": "2026-06-21",
