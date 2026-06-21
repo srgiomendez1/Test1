@@ -43,6 +43,7 @@
     "korea republic": "south korea", "republic of korea": "south korea",
     "czechia": "czech republic",
     "united states": "usa", "united states of america": "usa",
+    "ir iran": "iran", "cabo verde": "cape verde",
     "bosnia and herzegovina": "bosnia herzegovina", "turkiye": "turkey",
   };
   function normTeam(name) {
@@ -110,30 +111,66 @@
     return results;
   }
 
-  // Best-effort: overlay fresher live scores straight from the live API (mirrors
-  // scripts/fetch_results.py). Never throws; on CORS/network failure we keep the
-  // committed data. worldcup26.ir schema: home_team_name_en / away_team_name_en,
-  // home_score / away_score (strings), finished "TRUE"/"FALSE", time_elapsed.
-  async function overlayLiveClient(results) {
-    // Try each endpoint (Worker, then direct, then public proxies) until one yields games.
-    let games = null;
-    for (const url of liveEndpoints()) {
-      try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 8000);
-        const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
-        clearTimeout(t);
-        if (!res.ok) continue;
-        let raw = await res.json();
-        // allorigins (non-/raw) wraps the body in {contents:"<json string>"}
-        if (raw && typeof raw.contents === "string") {
-          try { raw = JSON.parse(raw.contents); } catch (e) { continue; }
-        }
-        const g = Array.isArray(raw) ? raw : (raw.games || raw.matches || raw.data || []);
-        if (g && g.length) { games = g; break; }
-      } catch (e) { /* try next endpoint */ }
+  // ESPN's free, no-key scoreboard — reliable live scores (usually CORS-enabled).
+  const ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300";
+
+  async function fetchJSONTimed(url, ms) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms || 8000);
+    try {
+      const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
+      clearTimeout(t);
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) { clearTimeout(t); return null; }
+  }
+
+  // Normalize ESPN scoreboard -> [{home,away,hs,as,finished,started,minute}].
+  function gamesFromEspn(raw) {
+    if (!raw || !raw.events) return null;
+    const out = [];
+    for (const e of raw.events) {
+      const comp = e.competitions && e.competitions[0];
+      if (!comp) continue;
+      const cs = comp.competitors || [];
+      const H = cs.find((c) => c.homeAway === "home"), A = cs.find((c) => c.homeAway === "away");
+      if (!H || !A) continue;
+      const st = (e.status && e.status.type) || {};
+      const state = st.state; // pre | in | post
+      const finished = state === "post" || st.completed === true;
+      const started = finished || state === "in";
+      const hs = parseInt(H.score, 10), as = parseInt(A.score, 10);
+      out.push({
+        home: (H.team && (H.team.displayName || H.team.name)) || "",
+        away: (A.team && (A.team.displayName || A.team.name)) || "",
+        hs: Number.isFinite(hs) ? hs : null, as: Number.isFinite(as) ? as : null,
+        finished, started,
+        minute: st.shortDetail || st.detail || "",
+      });
     }
-    if (!games) return false; // all endpoints blocked/unreachable — keep committed results
+    return out;
+  }
+
+  // Normalize worldcup26.ir -> same shape.
+  function gamesFromWorldcup26(raw) {
+    const arr = Array.isArray(raw) ? raw : (raw && (raw.games || raw.matches || raw.data));
+    if (!arr) return null;
+    return arr.map((g) => {
+      const finished = String(g.finished || "").toUpperCase() === "TRUE";
+      const elapsed = String(g.time_elapsed || "").trim();
+      const hs = parseInt(g.home_score, 10), as = parseInt(g.away_score, 10);
+      return {
+        home: g.home_team_name_en || g.home || g.team1 || "",
+        away: g.away_team_name_en || g.away || g.team2 || "",
+        hs: Number.isFinite(hs) ? hs : null, as: Number.isFinite(as) ? as : null,
+        finished,
+        started: finished || !["", "notstarted", "null", "none"].includes(elapsed.toLowerCase()),
+        minute: elapsed,
+      };
+    });
+  }
+
+  function applyGames(results, games) {
     const idx = {};
     for (const [key, m] of Object.entries(results.matches)) {
       idx[[normTeam(m.home), normTeam(m.away)].sort().join("|")] = key;
@@ -141,25 +178,39 @@
     let n = 0;
     for (const g of games) {
       try {
-        const lh = g.home_team_name_en || g.home || g.team1 || "";
-        const la = g.away_team_name_en || g.away || g.team2 || "";
-        const key = idx[[normTeam(lh), normTeam(la)].sort().join("|")];
+        if (!g.started) continue;
+        const nlh = normTeam(g.home), nla = normTeam(g.away);
+        const key = idx[[nlh, nla].sort().join("|")];
         if (!key) continue;
         const m = results.matches[key];
-        const finished = String(g.finished || "").toUpperCase() === "TRUE";
-        const elapsed = String(g.time_elapsed || "").trim();
-        const started = finished || !["", "notstarted", "null", "none"].includes(elapsed.toLowerCase());
-        if (!started) continue;
-        const hs = parseInt(g.home_score, 10), as = parseInt(g.away_score, 10);
-        if (Number.isFinite(hs) && Number.isFinite(as)) {
-          m.score = normTeam(lh) === normTeam(m.home) ? [hs, as] : [as, hs];
+        if (g.hs != null && g.as != null) {
+          m.score = nlh === normTeam(m.home) ? [g.hs, g.as] : [g.as, g.hs];
           m.source = "live";
         }
-        if (finished) { m.status = "finished"; }
-        else { m.status = "live"; m.minute = elapsed; }
+        if (g.finished) m.status = "finished";
+        else { m.status = "live"; if (g.minute) m.minute = g.minute; }
         n++;
       } catch (e) { /* skip a malformed game */ }
     }
+    return n;
+  }
+
+  // Best-effort live overlay. Tries ESPN first (reliable), then worldcup26 via the
+  // configured Worker / public proxies. Never throws; on failure keeps committed data.
+  async function overlayLiveClient(results) {
+    let games = gamesFromEspn(await fetchJSONTimed(ESPN_URL, 8000));
+    if (!games || !games.length) {
+      for (const url of liveEndpoints()) {
+        let raw = await fetchJSONTimed(url, 8000);
+        if (raw && typeof raw.contents === "string") {        // allorigins wrapper
+          try { raw = JSON.parse(raw.contents); } catch (e) { raw = null; }
+        }
+        games = gamesFromWorldcup26(raw);
+        if (games && games.length) break;
+      }
+    }
+    if (!games || !games.length) return false;
+    const n = applyGames(results, games);
     if (n) results.generated_at = new Date().toISOString();
     return n > 0;
   }
