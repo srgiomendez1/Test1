@@ -66,13 +66,13 @@ Standard doctors often only order TSH. For your TG and DIO2 variants, you need t
 
 ---
 
-## Hair Heavy Metals Test (One-Time + After Interventions)
+## Heavy Metals Test (Optional Baseline)
 
-For your GSTP1 +/+ and CYP2A6 +/+ variants, a baseline heavy metals test is essential:
-- **Collection:** Hair sample (3–4 cm root end)
-- **Metals to assess:** Mercury, lead, arsenic, cadmium, aluminum, nickel, tin
+CYP2A6 +/+ does impair clearance of certain volatile compounds (including some mycotoxins). For a general baseline or if you have known environmental exposures (occupational, dental amalgams, high fish consumption), a metals test is reasonable but not urgent:
+- **Collection:** Hair sample (3–4 cm root end) or urine
+- **Metals to assess:** Mercury, lead, arsenic, cadmium, aluminum
 - **Normal ranges:** Lab-specific; look for anything in red/elevated tier
-- **Re-test:** 6 months after implementing NAC, ALA, and exposure reduction
+- **Note:** GSTP1 Val/Val does NOT clearly increase mercury burden — evidence is mixed and one study found Val/Val associated with *lower* blood mercury. Heavy metals testing is a general precaution, not a direct GSTP1 indication.
 
 ---
 

@@ -17,7 +17,7 @@
 | ITGAV +/+ | Joint bloodflow requires movement throughout the day |
 | IL2RA +/+ | Testosterone-sensitive joint inflammation; training maintains T |
 | SCN9A +/+ | Low pain sensitivity — don't train through structural pain blindly |
-| CLU +/+ | Aerobic exercise triggers autophagy; brain protection |
+| CLU +/+ | Aerobic exercise triggers autophagy and increases BDNF; complementary brain protection pathway alongside CLU extracellular amyloid clearance |
 | ADIPOQ +/+ | Training in a fasted state yields superior metabolic benefits |
 
 ---
@@ -81,7 +81,7 @@ Progressive overload: add weight or reps every 2–4 weeks. Bone responds to inc
 
 **Why Zone 2 specifically:**
 - Triggers mitochondrial biogenesis → compensates for SOD2 oxidative stress
-- Drives autophagy → CLU Alzheimer's protection
+- Drives intracellular autophagy → brain cleanup complementary to CLU extracellular amyloid clearance
 - Increases BDNF → brain health and neurogenesis
 - Sustained serotonin release → HTR2A/SLC6A4 mood support
 - Cardiovascular protection → LPA, CDKN2 risk reduction
@@ -130,7 +130,7 @@ Progressive overload: add weight or reps every 2–4 weeks. Bone responds to inc
 | Ignoring joint pain as "normal soreness" | SCN9A low pain sensitivity — investigate any sharp/localized pain |
 | Skipping deadlifts when training | Wnt16 bone density requires this stimulus |
 | Long sedentary periods (even on rest days) | ITGAV bloodflow to joints requires movement |
-| NSAIDs (ibuprofen) routinely for exercise soreness | Directly increases intestinal permeability (CDKAL1 leaky gut) |
+| NSAIDs (ibuprofen) routinely for exercise soreness | Increases intestinal permeability and worsens gut inflammation risk (CDKAL1 IBD variant) |
 
 ---
 

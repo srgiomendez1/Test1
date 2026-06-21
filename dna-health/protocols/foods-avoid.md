@@ -7,17 +7,20 @@
 ## Absolute Avoidances (Zero Tolerance)
 
 ### Cow Dairy — MCM6 +/+ (rs4988235 G/G · rs182549 C/C)
-You are homozygous lactase non-persistent and cow casein-A1 intolerant.
+You are homozygous lactase non-persistent — meaning you produce little to no lactase enzyme and cannot digest lactose (cow milk sugar) effectively.
+
+> **Accuracy note:** MCM6/LCT variants determine lactase enzyme activity only. They are not associated with casein A1 sensitivity — that is a separate, unrelated mechanism. Avoid dairy here because of lactose intolerance, not casein.
 
 | ❌ Avoid | Why |
 |----------|-----|
-| Cow milk (whole, skim, 2%) | Casein A1 + lactose → gut inflammation, leaky gut |
-| Cow cheese (all types) | Even aged/hard cheese; casein triggers immune response |
-| Whey protein (cow-derived) | Common in protein powders, bars; same inflammatory pathway |
-| Cow yogurt / kefir | Fermentation reduces lactose but not casein |
-| Butter (from cow) | Small amounts of ghee are fine (pure fat, no protein) |
-| Ice cream | Sugar + dairy double-hit |
-| Casein protein powder | Direct casein source |
+| Cow milk (whole, skim, 2%) | High lactose → bloating, gut inflammation, GI distress |
+| Soft cheeses, ricotta, cottage cheese | High residual lactose |
+| Whey protein (cow-derived) | Contains lactose; common in protein powders and bars |
+| Cow yogurt (non-fermented) | Fermentation reduces but doesn't eliminate lactose |
+| Ice cream | High lactose + sugar double-hit |
+| Cream soups, cream sauces | Hidden dairy |
+
+**Tolerable exceptions:** Hard aged cheeses (cheddar, parmesan, gouda) are nearly lactose-free and may be fine in small amounts. Ghee is pure fat with no lactose or protein — fine. Test goat and sheep dairy individually as they contain different lactose structures.
 
 **Alternatives:** Goat or sheep dairy (test individually), ghee, plant-based milks (unsweetened), coconut yogurt
 
@@ -57,7 +60,7 @@ Your reduced PON1 activity means oxidized lipids from seed oils are NOT neutrali
 ## Avoid / Minimize (Significant Impact)
 
 ### Excess Sugar and High-Glycemic Carbohydrates
-*Triggers:* HLA RA variants (+/-), CDKN2 cardiovascular (+/+), CDKAL1 leaky gut (+/+), CLU Alzheimer's (+/+)
+*Triggers:* HLA RA variants (+/-), CDKN2 cardiovascular (+/+), CDKAL1 IBD/gut inflammation (+/+), CLU Alzheimer's (+/+)
 
 | Minimize | Impact |
 |----------|--------|
@@ -76,14 +79,14 @@ Your reduced PON1 activity means oxidized lipids from seed oils are NOT neutrali
 
 - Alcohol directly depletes B-vitamins needed for your methylation pathway
 - Raises homocysteine even in people without MTHFR — compounding for you
-- Disrupts gut microbiome (CDKAL1 gut variant)
+- Disrupts gut microbiome and increases IBD flare risk (CDKAL1 gut inflammation variant)
 - Disrupts sleep architecture (ABCC9 sleep variant)
 - **If drinking:** Red wine in moderation (quercetin/resveratrol content partially compensates); never on an empty stomach; take B-vitamins day before and after
 
 ---
 
-### Large Predatory Fish (Mercury Load) — GSTP1 +/+
-Your reduced heavy metal clearance makes mercury accumulation especially harmful.
+### Large Predatory Fish (Mercury Load) — General Precaution
+Limit high-mercury fish as a general health measure. Note: GSTP1 Val/Val's relationship to mercury clearance specifically is not well-established — the primary GSTP1 impairment is oxidized lipid and ROS detoxification, not heavy metal clearance. Limiting high-mercury fish is still prudent general advice.
 
 | Limit | Notes |
 |-------|-------|
@@ -115,9 +118,9 @@ Your reduced heavy metal clearance makes mercury accumulation especially harmful
 
 | Food | Why | Guidance |
 |------|-----|----------|
-| Nightshades (tomatoes, peppers, eggplant) | May trigger leaky gut in CDKAL1 variants; individual variation | Test 30-day elimination if joints/gut are problematic |
+| Nightshades (tomatoes, peppers, eggplant) | May worsen gut inflammation in CDKAL1 IBD-risk variants; individual variation | Test 30-day elimination if joints/gut are problematic |
 | Raw spinach/greens (large quantities) | Oxalates compete with mineral absorption (calcium, zinc, magnesium) | Steaming reduces oxalates; cooked is better |
-| Legumes/beans | Lectins may worsen leaky gut (CDKAL1) | Pressure-cook to denature lectins; or sprout |
+| Legumes/beans | Lectins can increase gut permeability; worth testing in CDKAL1 IBD-risk individuals | Pressure-cook to denature lectins; or sprout |
 | High-fructose foods | Fructose is metabolized differently; can raise uric acid → joint risk | Limit; fruit in moderation is fine if blood sugar controlled |
 
 ---

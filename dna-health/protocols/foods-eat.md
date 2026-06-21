@@ -6,13 +6,13 @@
 
 ## Your Power Foods (Eat These Regularly)
 
-### Berries — CDKAL1 PRIORITY + CDKN2A/B + CLU + HTR2A
+### Berries — CDKN2A/B + CLU + CDKAL1 + HTR2A
 **Eat: ½–1 cup daily**
 
 Berries are your single most important dietary recommendation, appearing across 5 different genetic variants:
-- Blueberries: highest anthocyanin content; brain protection (CLU), gut healing (CDKAL1)
-- Blackberries: high quercetin; cardiovascular (CDKN2A/B)
-- Raspberries: ellagic acid; gut microbiome support
+- Blueberries: highest anthocyanin content; brain protection (CLU amyloid clearance), anti-inflammatory (CDKAL1 IBD risk)
+- Blackberries: high quercetin; cardiovascular (CDKN2A/B ANRIL locus)
+- Raspberries: ellagic acid; gut microbiome + anti-inflammatory support
 - Strawberries: vitamin C; Lp(a) oxidation protection (LPA)
 
 Frozen is equally effective. Year-round access. Add to fasted morning water (if tolerated during fast) or first meal.

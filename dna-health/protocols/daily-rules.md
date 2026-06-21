@@ -8,7 +8,7 @@
 
 ### Non-Negotiables
 - [ ] **Get morning sunlight** (10–20 min within 1 hour of waking) — triggers serotonin synthesis (HTR2A/SLC6A4), sets circadian rhythm (CYP1A2 caffeine metabolism), natural Vitamin D (CYP2R1)
-- [ ] **Fast until at least 12–1 PM** — ADIPOQ variant means you get superior metabolic and anti-inflammatory benefit from skipping breakfast; also triggers autophagy for CLU Alzheimer's protection
+- [ ] **Fast until at least 12–1 PM** — ADIPOQ variant means you get superior metabolic and anti-inflammatory benefit from skipping breakfast; also triggers intracellular autophagy (brain cleanup) complementary to CLU extracellular amyloid clearance
 - [ ] **Take morning supplements** (see [Supplement Stack](supplements.md)):
   - 5-MTHF (methylfolate) 800 mcg — **critical for MTHFR C677T**
   - Vitamin D3 + K2 — 3,000–5,000 IU D3 + 100–200 mcg K2 MK-7
@@ -28,7 +28,7 @@
 - [ ] **First meal: protein first** — eggs, fish, meat, or legumes before carbs/fruit
 - [ ] **No cow dairy** (MCM6 +/+ — drives inflammation in you specifically)
 - [ ] **No seed oils** (PON1 +/+ — extra damaging to gut and arteries; ask at restaurants)
-- [ ] **Eat berries** — blueberries, blackberries, or raspberries (CDKAL1 PRIORITY gut health + CDKN2A cardiovascular)
+- [ ] **Eat berries** — blueberries, blackberries, or raspberries (CDKN2A cardiovascular + CDKAL1 anti-inflammatory + CLU brain)
 
 ### Movement
 - [ ] **No sitting > 45 minutes** without a 5–10 min movement break (ITGAV bloodflow to joints; HLA joint inflammation is worsened by stasis)
@@ -39,7 +39,7 @@
 
 - [ ] **Higher rep ranges (8–20 reps)** — ACTN3 T/T slow-twitch profile; this is your muscle-building sweet spot
 - [ ] **Include deadlifts or heavy hip hinge** — Wnt16 bone density + FAM9B testosterone optimization
-- [ ] **Cardio: 30–60 min Zone 2** (conversation pace) at least 3x/week — CLU autophagy, CDKN2 cardiovascular protection, HTR2A serotonin
+- [ ] **Cardio: 30–60 min Zone 2** (conversation pace) at least 3x/week — SOD2 mitochondrial health, CDKN2 cardiovascular protection, CLU brain protection, HTR2A serotonin
 - [ ] **Post-workout body scan** — SCN9A low pain sensitivity; actively check for joint signals you might miss
 - [ ] **Infrared light or sauna post-workout** — ITGAV joint bloodflow; LPA Lp(a) reduction
 
@@ -101,7 +101,7 @@
 | BPA plastics / xenoestrogens | ESR1 estrogen sensitivity |
 | Mold exposure | CYP2A6 + GSTP1 — severely impaired clearance |
 | Alcohol in excess | Destroys methylation (MTHFR), raises homocysteine, depletes B-vitamins |
-| Excess iron supplements | SOD2 — iron overload drives oxidative stress |
+| Excess iron supplements | SOD2 — free iron generates superoxide; your reduced SOD2 activity makes this more damaging |
 
 ---
 

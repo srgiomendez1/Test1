@@ -12,7 +12,7 @@
 | **Vitamin D3** | 3,000–5,000 IU | Morning with fat | CYP2R1 +/+ | Poor D3 conversion; target 50–100 ng/mL blood level |
 | **Vitamin K2 (MK-7)** | 100–200 mcg | With D3 | CYP2R1 / Wnt16 | Directs calcium into bones, prevents arterial calcification |
 | **Magnesium Glycinate** | 200–400 mg | Evening | ABCC9 sleep · thyroid · bone | Sleep, bone, 400+ enzyme reactions; most people are deficient |
-| **NAC (N-Acetylcysteine)** | 600–1,200 mg | Morning | GSTP1 +/+ | Glutathione precursor; heavy metal detox support |
+| **NAC (N-Acetylcysteine)** | 600–1,200 mg | Morning | GSTP1 +/+ | Glutathione precursor; supports clearance of oxidized lipids and ROS |
 
 ---
 
@@ -47,9 +47,9 @@
 |-----------|------|--------|---------|-----|
 | **Quercetin** | 500–1,000 mg | With meal | CDKN2A/B +/+ | Cardiovascular flavonoid; most studied for 9p21 locus |
 | **Resveratrol / Pterostilbene** | 100–250 mg resveratrol or 50–100 mg pterostilbene | Morning | CDKN2 · CLU | Activates SIRT1/autophagy; cardiovascular + Alzheimer's protection |
-| **Alpha-Lipoic Acid (ALA)** | 300–600 mg | With meals | GSTP1 · SOD2 | Chelates metals; regenerates glutathione; antioxidant |
-| **Zinc Carnosine** | 75–150 mg | With food | CDKAL1 +/+ | Strongest evidence-backed supplement for gut barrier integrity |
-| **L-Glutamine** | 5–10 g | Morning / post-workout | CDKAL1 +/+ | Primary fuel for intestinal epithelial cells |
+| **Alpha-Lipoic Acid (ALA)** | 300–600 mg | With meals | GSTP1 · SOD2 | Regenerates glutathione; mitochondrial antioxidant; reduces oxidative stress load |
+| **Zinc Carnosine** | 75–150 mg | With food | CDKAL1 +/+ | Strong evidence for GI mucosal support; reduces gut inflammation in IBD risk variants |
+| **L-Glutamine** | 5–10 g | Morning / post-workout | CDKAL1 +/+ | Primary fuel for intestinal epithelial cells; supports gut mucosa |
 | **5-HTP** | 50–100 mg | Evening | HTR2A · SLC6A4 | Serotonin precursor; sleep and mood support |
 | **Boron** | 3–6 mg | With dinner | Wnt16 +/+ | Bone mineral density support |
 | **Berberine** | 500 mg x2/day | With main meals | ATM (metformin non-responder) | Natural metformin alternative; blood sugar regulation |
