@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T21:50:28.135895+00:00",
+  "generated_at": "2026-06-21T22:59:46.447593+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -685,9 +685,13 @@
       "group": "Group H",
       "round": "Matchday 11",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        2,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-26|Cape Verde|Saudi Arabia": {
       "date": "2026-06-26",
