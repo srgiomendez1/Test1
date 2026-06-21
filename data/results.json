@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T17:08:41.346988+00:00",
+  "generated_at": "2026-06-21T18:51:22.776268+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -666,8 +666,11 @@
       "group": "Group H",
       "round": "Matchday 11",
       "ground": "Atlanta",
-      "score": null,
-      "status": "scheduled",
+      "score": [
+        4,
+        0
+      ],
+      "status": "finished",
       "source": "openfootball"
     },
     "2026-06-21|Uruguay|Cape Verde": {
