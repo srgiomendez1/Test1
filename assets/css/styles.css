@@ -247,6 +247,9 @@ body > * { position: relative; z-index: 1; }
 .foot a { color: var(--accent); }
 
 @media (max-width: 480px) {
-  .tname { display: none; }   /* flags-only on narrow screens to keep cards tidy */
-  .jmatch .tname { display: inline; }
+  /* Show country names everywhere on phones; just shrink them a touch in
+     match cards so they fit alongside the score. */
+  .match .tname, .oddscard .tname { font-size: 0.78rem; }
+  .mscore .side { min-width: 0; }
+  .mscore .tname { white-space: normal; overflow-wrap: anywhere; }
 }
