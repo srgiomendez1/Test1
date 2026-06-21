@@ -9,11 +9,21 @@
 
 ## What This Means
 
-The CDKN2A/2B region (chromosome 9p21) is the **single most replicated cardiovascular GWAS locus** — it has appeared in essentially every large-scale heart disease genetic study since 2007. Having all three variants homozygous (+/+) indicates meaningfully elevated risk for:
+The CDKN2A/2B region (chromosome 9p21.3) is the **single most replicated cardiovascular GWAS locus** — it has appeared in essentially every large-scale heart disease genetic study since 2007.
+
+**Important accuracy note on mechanism and effect size:**
+- rs1333049, rs2383206, and rs10757272 are located in **CDKN2B-AS1 (also called ANRIL)** — a *non-coding RNA* gene that regulates the nearby CDKN2A and CDKN2B genes. These are not coding mutations in CDKN2A/B themselves.
+- The mechanism is **regulatory**: ANRIL controls transcription of CDKN2A/B, which in turn regulate cell cycle progression in vascular smooth muscle and endothelial cells — contributing to atherosclerosis via altered arterial cell renewal rates
+- **Actual per-allele effect size from GWAS: approximately 20–30% increased CAD risk per risk allele.** This is statistically robust at the population level but moderate at the individual level. Multiple homozygous risk alleles (your case) compound this.
+- This means these variants are population-significant risk markers but not individually deterministic
+
+Having all three variants homozygous (+/+) increases cardiovascular disease risk:
 - Coronary artery disease (CAD)
 - Myocardial infarction (heart attack)
 - Peripheral artery disease
-- This region also influences cell senescence — aging of blood vessel cells
+- Early-onset atherosclerosis
+
+This is compounded by your LPA and CTH cardiovascular variants, which are more individually impactful.
 
 The specific intervention flagged by your genetic analysis is **flavonoids** — a class of plant compounds with direct evidence for protecting the cardiovascular system, particularly at this locus.
 

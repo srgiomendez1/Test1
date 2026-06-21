@@ -1,4 +1,4 @@
-# 🟡 CDKAL1 + PON1 — Leaky Gut & Seed Oil Sensitivity
+# 🟡 CDKAL1 + PON1 — Inflammatory Bowel Disease Risk & Seed Oil Sensitivity
 
 | Genes | CDKAL1 · PON1 |
 |-------|----------------|
@@ -7,17 +7,20 @@
 | Chromosome | CDKAL1: 6 · PON1: 7 |
 | Priority | CDKAL1 marked as PRIORITY in report |
 
+> **Accuracy Note:** The original report labeled CDKAL1 rs6908425 a "leaky gut / GI distress" gene. Published evidence actually associates rs6908425 (C allele) with **Crohn's disease, ulcerative colitis, psoriasis, and Type 2 diabetes**. The direct connection to intestinal permeability ("leaky gut") specifically is not established in the literature — the gene is involved in gut immune regulation and beta-cell function. The label has been corrected; gut health recommendations remain valid but the "leaky gut" framing was an overreach.
+
 ## What This Means
 
-### CDKAL1 (rs6908425) — Leaky Gut / GI Distress
-CDKAL1 encodes CDK5 regulatory subunit associated protein 1-like 1, involved in intestinal cell integrity and gut microbiome health. The C/C variant is associated with:
-- **Increased intestinal permeability** ("leaky gut")
-- Higher susceptibility to GI inflammation
-- Connection to your serotonin variants (90% of serotonin made in gut)
-- Connection to your thyroid variants (leaky gut → molecular mimicry → Hashimoto's attacks)
-- Connection to your HLA RA variants (leaky gut → immune dysregulation → joint attacks)
+### CDKAL1 (rs6908425) — Inflammatory Bowel Disease & Metabolic Risk
+CDKAL1 (CDK5 Regulatory Subunit Associated Protein 1-Like 1) plays a role in:
+- **Inflammatory bowel disease risk**: The C/C variant at rs6908425 has been associated with Crohn's disease and ulcerative colitis in multiple GWAS studies
+- **Psoriasis risk**: The C allele is a confirmed susceptibility variant for psoriasis
+- **Type 2 diabetes risk**: CDKAL1 is one of the most replicated T2D GWAS loci, affecting pancreatic beta-cell function
+- **Gut immune regulation**: Indirectly connects to systemic inflammation that compounds your HLA RA and TG thyroid variants
 
-This is a foundational variant — fixing gut health improves nearly every other risk in your profile.
+The evidence does NOT specifically establish that this variant causes intestinal permeability ("leaky gut") as a distinct mechanism. What it does establish is susceptibility to inflammatory gut conditions more broadly.
+
+This is a foundational variant — gut and metabolic inflammation from this locus compounds nearly every other inflammatory risk in your profile.
 
 ### PON1 (rs854560) — Seed Oil Sensitivity
 Paraoxonase 1 (PON1) is an antioxidant enzyme carried on HDL cholesterol that neutralizes oxidized lipids. The A/A (Leu55Met) variant significantly reduces PON1 activity, meaning:

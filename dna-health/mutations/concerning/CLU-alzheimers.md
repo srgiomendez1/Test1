@@ -9,12 +9,17 @@
 
 ## What This Means
 
-CLU (clusterin) is a molecular chaperone and **autophagy regulator** — it helps clear misfolded proteins and cellular debris from the brain. The C/C variant (rs11136000) is one of the most replicated genetic associations with late-onset Alzheimer's disease in GWAS studies, second only to APOE4.
+CLU (clusterin, also known as apolipoprotein J) is a **secreted molecular chaperone** — it operates primarily in the **extracellular space**, binding to and solubilizing misfolded proteins and amyloid-beta aggregates, preventing their accumulation in brain tissue.
+
+> **Mechanism correction:** The original PDF report called CLU an "autophagy gene." This is inaccurate. Clusterin works in the extracellular space (not inside cells via autophagy). It functions more like a physiological "cleanup crew" outside cells, particularly relevant to amyloid plaque clearance. Intermittent fasting DOES boost autophagy (intracellular cleanup), which is independently beneficial — but that benefit is not specifically from CLU. Both pathways (CLU extracellular clearance and autophagy-mediated intracellular clearance) are complementary for brain health.
+
+The C/C variant (rs11136000) is **one of the most replicated genetic associations with late-onset Alzheimer's disease** in GWAS studies, confirmed in analyses of 74,248+ samples. Association is stronger in Caucasian populations; less consistent in other ethnic groups.
 
 Specifically, this variant:
-- Reduces the brain's clearance of amyloid-beta (the plaque that accumulates in Alzheimer's)
-- Impairs autophagy (cellular self-cleaning)
-- Increases neuroinflammation when systemic inflammation is present
+- Is associated with **lower CLU gene expression** in brain tissue → less clusterin protein available → reduced extracellular amyloid-beta clearance
+- The T allele (protective) upregulates CLU1 expression; C/C means lower expression baseline
+- Increases neuroinflammation indirectly when systemic inflammation is present
+- Effect is population-specific and more robustly established in Caucasian ancestry
 
 **Critical context:** Like most of your risk variants, this is *inflammation-dependent*. A brain that isn't inflamed clears amyloid effectively even with this variant. The systemic inflammation from your gut (CDKAL1), cardiovascular (LPA, CTH), and dairy (MCM6) variants is the fuel that would actualize this risk.
 

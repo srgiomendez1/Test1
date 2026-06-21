@@ -8,9 +8,11 @@
 
 | Category | Mutations | Priority |
 |----------|-----------|----------|
-| 🔴 **Dangerous** | MTHFR C677T, LPA, CTH, TG (Thyroid), GSTP1 | Act Now |
-| 🟡 **Concerning** | SOD2, MTHFD1, DIO2, HLA-RA, MCM6, FAM9B, HTR2A, CDKAL1 | Monitor |
+| 🔴 **Dangerous** | MTHFR C677T, LPA, CTH | Act Now |
+| 🟡 **Concerning** | TG (Thyroid)*, GSTP1*, SOD2*, MTHFD1, DIO2, HLA-RA, MCM6, FAM9B, HTR2A, CDKAL1, CDKN2* | Monitor |
 | 🟢 **Advantageous** | ACTN3, NRF2, ADIPOQ, SCN9A | Leverage |
+
+> *Original report's risk claims for these variants were corrected after literature review — see individual files for accuracy notes.*
 
 ---
 

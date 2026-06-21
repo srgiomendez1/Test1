@@ -24,7 +24,7 @@ MTHFR converts folate (vitamin B9) into 5-methyltetrahydrofolate (5-MTHF), the a
 
 ## What the C677T +/+ Means for You
 
-The T/T (homozygous) variant reduces MTHFR enzyme activity by **60–70%** compared to normal. This means:
+The T/T (homozygous) variant reduces MTHFR enzyme activity by approximately **70%** — retaining only ~30% of normal enzyme function. (Heterozygous C/T retains ~65% activity.) This means:
 - Your body cannot efficiently convert folic acid → active folate
 - Homocysteine builds up (cardiovascular and neurological toxin)
 - Methylation across the body is impaired
