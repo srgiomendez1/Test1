@@ -35,11 +35,10 @@
 
 ## Leverage This
 
-Your cardiovascular genetics are excellent. The primary cardiovascular risk to manage is the downstream effect of:
-- PON1 (+/+): oxidized LDL from seed oils
-- CDKAL1 (+/+): systemic inflammation affecting vessels
+Your cardiovascular genetics are excellent — and this extends to PON1 (rs854560 T/T = Leu/Leu, the favorable oxidized-lipid-defense genotype). The main residual cardiovascular risk to manage is the downstream effect of:
+- CDKAL1 (+/+): systemic inflammation affecting vessels, plus T2D susceptibility (keep fasting glucose < 85)
 
-Both are dietary. You have the genetics for excellent cardiovascular longevity if you eat well.
+This is dietary and controllable. You have the genetics for excellent cardiovascular longevity if you eat well.
 
 ---
 

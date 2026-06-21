@@ -11,7 +11,7 @@
 
 | Rule | Why Both |
 |------|----------|
-| No seed oils | PON1 +/+ in both |
+| No seed oils | Sergio: PON1 +/+ (impaired). Ashley: CDKAL1 gut + autoimmune (her PON1 is favorable) |
 | No folic acid | MTHFR impaired in both (different variants) |
 | Take methylfolate (5-MTHF) | Core methylation fix for both |
 | Berries daily | CDKAL1 +/+ in both |

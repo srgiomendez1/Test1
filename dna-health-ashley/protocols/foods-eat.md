@@ -57,10 +57,10 @@ Your GSTP1 is fully functional — cruciferous vegetables give you MAXIMUM benef
 
 ---
 
-### Olive Oil (Extra Virgin) — PON1 · Inflammation
+### Olive Oil (Extra Virgin) — Anti-Inflammatory
 **Use: as primary cooking/dressing oil (2–3 tbsp/day)**
 
-EVOO directly *increases* PON1 activity — your primary dietary defense against oxidized LDL. 3–4 weeks of consistent EVOO use measurably boosts PON1 enzyme levels in serum. Also contains oleocanthal (COX inhibitor, anti-inflammatory) directly relevant for HLA joint and STAT4 autoimmune risk.
+EVOO contains oleocanthal (a natural COX inhibitor, ibuprofen-like anti-inflammatory) directly relevant for your HLA joint and STAT4 autoimmune risk. It also supports PON1 activity and healthy HDL function — a bonus on top of your already-favorable PON1 genetics. Use it as your default fat in place of seed oils.
 
 ---
 

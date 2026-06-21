@@ -27,7 +27,7 @@
 | **Iron + ferritin** | Ferritin 50–100 ng/mL | HFE clear (no hemochromatosis); monitor for deficiency |
 | **CBC (complete blood count)** | Normal | Including MCV (B12/folate deficiency marker) |
 | **Comprehensive metabolic panel** | Normal | Liver/kidney function, electrolytes |
-| **Lipid panel (with LDL-P)** | LDL < 100, HDL > 60, TG < 100 | PON1 +/+ (oxidized LDL); no LPA concern |
+| **Lipid panel (with LDL-P)** | LDL < 100, HDL > 60, TG < 100 | General cardiovascular baseline; no LPA or PON1 concern (favorable genetics) |
 | **ANA screen** | Negative | HLA + STAT4 autoimmune |
 
 ---

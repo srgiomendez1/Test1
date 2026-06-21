@@ -1,31 +1,20 @@
-# 🟡 PON1 + CDKAL1 — Oxidized Lipid Sensitivity & Gut Inflammation
+# 🟡 CDKAL1 — Gut Inflammation Risk (+ PON1 Note)
 
 | Gene | rsID | Your Genotype | Classification |
 |------|------|---------------|----------------|
-| PON1 (L55M) | rs854560 | T/T | +/+ Homozygous |
-| PON1 (Q192R) | rs662 | T/T | Arg/Arg |
-| CDKAL1 | rs6908425 | C/C | +/+ Homozygous |
+| CDKAL1 | rs6908425 | C/C | +/+ Homozygous risk |
+| PON1 (L55M) | rs854560 | T/T | Leu55/Leu55 — **normal/favorable, NOT a risk** |
+| PON1 (Q192R) | rs662 | T/T | Substrate-dependent; not clearly deleterious |
 
-## PON1 — Oxidized Lipid Defense
+## PON1 — Correction: This Is NOT a Risk for You
 
-PON1 (Paraoxonase 1) is a liver-produced enzyme that circulates on HDL cholesterol and neutralizes oxidized lipids before they can damage arterial walls and cellular membranes.
+> **Accuracy correction:** An earlier draft of this tracker flagged your PON1 as a reduced-activity risk variant (copied from Sergio's template). That was an error. Sergio is A/A at rs854560 (Met/Met, the reduced-activity genotype). **You are T/T — the Leu55/Leu55 genotype, which is associated with normal-to-higher PON1 secretion and activity.** This is the favorable allele.
 
-**rs854560 T/T (Leu55Met variant):** The T allele (Leu55) is associated with **reduced PON1 secretion and activity** compared to the Met allele. T/T means your baseline PON1 enzyme output is approximately 30–50% lower than optimal.
+PON1 (Paraoxonase 1) circulates on HDL and neutralizes oxidized lipids before they damage arterial walls. The L55M literature (e.g., the "163T>A" coding) indicates the **Met55 (A) allele lowers mRNA stability and enzyme activity**, while the Leu55 (T) allele preserves it. Your Leu/Leu means your PON1 oxidized-lipid defense is intact — this is part of your strong cardiovascular genetic baseline, alongside your clear LPA and clotting genetics.
 
-**What this means:** Oxidized lipids — primarily from seed oils (polyunsaturated fatty acids that oxidize easily under heat), fried foods, and rancid fats — are *not neutralized effectively* in your system. They accumulate on HDL and LDL particles, leading to:
-- Increased oxidized LDL (ox-LDL), the truly atherogenic form of cholesterol
-- Gut wall inflammation when consumed via diet
-- Higher cardiovascular risk in the presence of poor diet (protective with a good diet)
+Your Q192R (rs662 T/T) maps to the Gln192 (Q) isoform. The Q vs. R question is substrate-specific — Q192 hydrolyzes some compounds better, R192 others — and is not a clear risk in either direction. No action needed.
 
-**The good news:** EVOO (extra virgin olive oil) directly *increases* PON1 activity. Studies show 3–4 weeks of consistent EVOO use measurably boosts PON1 enzyme output — making diet the most powerful intervention here.
-
-### PON1 Protocol
-- **Use ONLY: EVOO, avocado oil, ghee, coconut oil, tallow/lard**
-- **Eliminate: canola, soybean, sunflower, corn, cottonseed, "vegetable oil," grapeseed**
-- EVOO daily (2–3 tbsp): raises PON1 activity directly
-- Pomegranate and pomegranate juice: strongest single food for PON1 upregulation
-- Green tea (2–3 cups/day): polyphenols upregulate PON1 in liver
-- Avoid deep-fried anything in restaurants (seed oil default)
+**Bottom line:** PON1 is not a concern for you. Avoiding seed oils is still sensible general advice (they oxidize easily and feed inflammation), and it matters for your CDKAL1 gut and autoimmune risk below — but it is not driven by a PON1 defect the way it is for Sergio.
 
 ---
 
@@ -47,7 +36,7 @@ CDKAL1 rs6908425 C/C is one of the most replicated genetic associations with **C
 - **Avoid NSAIDs routinely** — ibuprofen and aspirin increase gut wall permeability and worsen inflammatory gut conditions; use for acute pain only
 - **Omega-3 EPA (2–4 g/day)** — anti-inflammatory cytokine suppression; fish oil specifically studied in IBD
 - **Zinc carnosine 75–150 mg** — clinical evidence for gut mucosal support in IBD
-- **Minimize:** Alcohol, processed foods, excess sugar, seed oils (doubly important with PON1)
+- **Minimize:** Alcohol, processed foods, excess sugar, seed oils (they feed gut and autoimmune inflammation)
 
 ---
 

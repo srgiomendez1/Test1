@@ -6,7 +6,9 @@
 
 ## Absolute Avoidances (Zero Tolerance)
 
-### Seed Oils — PON1 +/+ (rs854560 T/T)
+### Seed Oils — CDKAL1 Gut + Autoimmune + General Health
+
+> Note: Unlike Sergio, your PON1 is favorable (Leu/Leu), so this isn't driven by a PON1 defect. But seed oils oxidize easily and feed inflammation — directly relevant to your CDKAL1 gut and HLA/STAT4 autoimmune risk — so eliminating them is still strongly recommended.
 
 | ❌ Avoid | Common Hiding Places |
 |----------|---------------------|

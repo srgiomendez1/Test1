@@ -40,7 +40,7 @@ You are more susceptible than average to:
 2. **Autoimmune thyroiditis (Hashimoto's)** — HLA shared epitope is also associated; see TG file
 3. **General autoimmune reactivity** — infections, high-stress periods, or gut dysbiosis can trigger autoimmune flares more easily
 
-The **actualization of this risk depends almost entirely on systemic inflammation levels**. Many people carry these genes and never develop autoimmune disease because they keep inflammation low. Your CDKAL1 and PON1 variants mean that dietary inflammation (seed oils, processed food) is a particularly strong trigger for you.
+The **actualization of this risk depends almost entirely on systemic inflammation levels**. Many people carry these genes and never develop autoimmune disease because they keep inflammation low. Your CDKAL1 gut variant means that dietary inflammation (seed oils, processed food, sugar) is a particularly strong trigger for you.
 
 ---
 

@@ -27,7 +27,7 @@
 ## Midday (12 PM → 6 PM)
 
 - [ ] **Eat berries with or after lunch** — ½–1 cup blueberries/raspberries (CDKAL1 gut + cardiovascular + brain protection)
-- [ ] **Seed oils: zero tolerance** — PON1 T/T means these are acutely damaging; ask about cooking oil at restaurants
+- [ ] **Seed oils: zero tolerance** — they feed CDKAL1 gut + HLA/STAT4 autoimmune inflammation; ask about cooking oil at restaurants
 - [ ] **Cruciferous vegetable at lunch or dinner** — broccoli, cauliflower, kale, Brussels sprouts (GSTP1 upregulation + DIM for estrogen clearance + COMT support)
 - [ ] **No sitting > 45 minutes** without a 5–10 min movement break — HLA + IL2RA joint inflammation risk
 
@@ -87,7 +87,7 @@
 
 | Avoid | Why |
 |-------|-----|
-| Seed oils (canola, soy, sunflower, corn) | PON1 +/+ — oxidized lipid damage |
+| Seed oils (canola, soy, sunflower, corn) | Feed CDKAL1 gut + HLA/STAT4 autoimmune inflammation |
 | Folic acid (synthetic) | MTHFR A1298C — cannot process; blocks methylfolate |
 | Alcohol in excess | Depletes methylation (MTHFR), disrupts serotonin rebound (HTR2A), worsens estrogen metabolism (COMT) |
 | Caffeine after noon | ADORA2A sensitivity + HTR2A anxiety amplification |
