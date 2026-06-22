@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T16:09:33.484948+00:00",
+  "generated_at": "2026-06-22T19:47:22.720310+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -846,8 +846,11 @@
       "group": "Group J",
       "round": "Matchday 12",
       "ground": "Dallas (Arlington)",
-      "score": null,
-      "status": "scheduled",
+      "score": [
+        2,
+        0
+      ],
+      "status": "finished",
       "source": "openfootball"
     },
     "2026-06-22|Jordan|Algeria": {
