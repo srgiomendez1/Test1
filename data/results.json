@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T21:09:47.900211+00:00",
+  "generated_at": "2026-06-23T22:39:12.736946+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1033,9 +1033,8 @@
         0,
         0
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-23|Panama|Croatia": {
       "date": "2026-06-23",
