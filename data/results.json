@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T14:41:05.133490+00:00",
+  "generated_at": "2026-06-23T17:06:51.451662+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -942,9 +942,13 @@
       "group": "Group K",
       "round": "Matchday 13",
       "ground": "Houston",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-23|Colombia|DR Congo": {
       "date": "2026-06-23",
