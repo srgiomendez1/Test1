@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T01:26:04.965472+00:00",
+  "generated_at": "2026-06-23T05:45:05.010573+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -780,11 +780,10 @@
       "ground": "New York/New Jersey (East Rutherford)",
       "score": [
         3,
-        1
+        2
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-26|Norway|France": {
       "date": "2026-06-26",
@@ -869,9 +868,12 @@
       "group": "Group J",
       "round": "Matchday 12",
       "ground": "San Francisco Bay Area (Santa Clara)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        2
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-27|Algeria|Austria": {
       "date": "2026-06-27",
