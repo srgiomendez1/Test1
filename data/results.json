@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T17:06:51.451662+00:00",
+  "generated_at": "2026-06-23T19:18:37.862880+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -943,12 +943,11 @@
       "round": "Matchday 13",
       "ground": "Houston",
       "score": [
-        0,
+        5,
         0
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-23|Colombia|DR Congo": {
       "date": "2026-06-23",
