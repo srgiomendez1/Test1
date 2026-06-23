@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T19:18:37.862880+00:00",
+  "generated_at": "2026-06-23T21:09:47.900211+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1029,9 +1029,13 @@
       "group": "Group L",
       "round": "Matchday 13",
       "ground": "Boston (Foxborough)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-23|Panama|Croatia": {
       "date": "2026-06-23",
