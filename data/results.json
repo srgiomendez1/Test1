@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T22:39:12.736946+00:00",
+  "generated_at": "2026-06-23T23:41:19.855695+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1045,9 +1045,13 @@
       "group": "Group L",
       "round": "Matchday 13",
       "ground": "Toronto",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-27|Panama|England": {
       "date": "2026-06-27",
