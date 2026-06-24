@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T01:33:21.412264+00:00",
+  "generated_at": "2026-06-24T05:47:52.504625+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -958,9 +958,12 @@
       "group": "Group K",
       "round": "Matchday 13",
       "ground": "Guadalajara (Zapopan)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        0
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-27|Colombia|Portugal": {
       "date": "2026-06-27",
