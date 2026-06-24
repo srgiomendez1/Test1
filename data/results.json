@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T21:48:29.879616+00:00",
+  "generated_at": "2026-06-24T22:56:35.395280+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -260,9 +260,13 @@
       "group": "Group C",
       "round": "Matchday 14",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        2
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-24|Morocco|Haiti": {
       "date": "2026-06-24",
@@ -273,9 +277,13 @@
       "group": "Group C",
       "round": "Matchday 14",
       "ground": "Atlanta",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        2,
+        2
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-12|USA|Paraguay": {
       "date": "2026-06-12",
