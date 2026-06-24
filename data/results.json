@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T18:11:55.813888+00:00",
+  "generated_at": "2026-06-24T20:12:23.798930+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -164,9 +164,13 @@
       "group": "Group B",
       "round": "Matchday 14",
       "ground": "Vancouver",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-24|Bosnia & Herzegovina|Qatar": {
       "date": "2026-06-24",
@@ -177,9 +181,13 @@
       "group": "Group B",
       "round": "Matchday 14",
       "ground": "Seattle",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        2,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-13|Brazil|Morocco": {
       "date": "2026-06-13",
