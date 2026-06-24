@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T23:41:19.855695+00:00",
+  "generated_at": "2026-06-24T01:33:21.412264+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1047,11 +1047,10 @@
       "ground": "Toronto",
       "score": [
         0,
-        0
+        1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-27|Panama|England": {
       "date": "2026-06-27",
