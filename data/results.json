@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T20:17:48.332230+00:00",
+  "generated_at": "2026-06-25T21:56:10.693736+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -454,7 +454,7 @@
       "ground": "Philadelphia",
       "score": [
         0,
-        1
+        2
       ],
       "status": "live",
       "source": "live",
@@ -470,7 +470,7 @@
       "round": "Matchday 15",
       "ground": "New York/New Jersey (East Rutherford)",
       "score": [
-        1,
+        2,
         1
       ],
       "status": "live",
