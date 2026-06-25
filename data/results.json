@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T00:18:40.112365+00:00",
+  "generated_at": "2026-06-25T04:38:46.365968+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -74,9 +74,12 @@
       "group": "Group A",
       "round": "Matchday 14",
       "ground": "Mexico City",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        3
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-24|South Africa|South Korea": {
       "date": "2026-06-24",
@@ -87,9 +90,12 @@
       "group": "Group A",
       "round": "Matchday 14",
       "ground": "Monterrey (Guadalupe)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        0
+      ],
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-12|Canada|Bosnia & Herzegovina": {
       "date": "2026-06-12",
