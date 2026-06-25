@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T21:56:10.693736+00:00",
+  "generated_at": "2026-06-25T23:23:16.029942+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -456,9 +456,8 @@
         0,
         2
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-25|Ecuador|Germany": {
       "date": "2026-06-25",
@@ -473,9 +472,8 @@
         2,
         1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-14|Netherlands|Japan": {
       "date": "2026-06-14",
@@ -550,9 +548,13 @@
       "group": "Group F",
       "round": "Matchday 15",
       "ground": "Dallas (Arlington)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-25|Tunisia|Netherlands": {
       "date": "2026-06-25",
@@ -563,9 +565,13 @@
       "group": "Group F",
       "round": "Matchday 15",
       "ground": "Kansas City",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        2
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-15|Belgium|Egypt": {
       "date": "2026-06-15",
