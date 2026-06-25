@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T13:13:51.342470+00:00",
+  "generated_at": "2026-06-25T15:47:36.800110+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1099,12 +1099,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-28|2A|2B": {
+    "2026-06-28|South Africa|Canada": {
       "date": "2026-06-28",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-28T19:00:00+00:00",
-      "home": "2A",
-      "away": "2B",
+      "home": "South Africa",
+      "away": "Canada",
       "group": null,
       "round": "Round of 32",
       "ground": "Los Angeles (Inglewood)",
@@ -1125,12 +1125,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-29|1F|2C": {
+    "2026-06-29|1F|Morocco": {
       "date": "2026-06-29",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-30T01:00:00+00:00",
       "home": "1F",
-      "away": "2C",
+      "away": "Morocco",
       "group": null,
       "round": "Round of 32",
       "ground": "Monterrey (Guadalupe)",
@@ -1138,11 +1138,11 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-29|1C|2F": {
+    "2026-06-29|Brazil|2F": {
       "date": "2026-06-29",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-29T17:00:00+00:00",
-      "home": "1C",
+      "home": "Brazil",
       "away": "2F",
       "group": null,
       "round": "Round of 32",
@@ -1255,11 +1255,11 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-02|1B|3E/F/G/I/J": {
+    "2026-07-02|Switzerland|3E/F/G/I/J": {
       "date": "2026-07-02",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-07-03T03:00:00+00:00",
-      "home": "1B",
+      "home": "Switzerland",
       "away": "3E/F/G/I/J",
       "group": null,
       "round": "Round of 32",
