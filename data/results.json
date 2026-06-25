@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T17:58:04.072825+00:00",
+  "generated_at": "2026-06-25T20:17:48.332230+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -452,9 +452,13 @@
       "group": "Group E",
       "round": "Matchday 15",
       "ground": "Philadelphia",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-25|Ecuador|Germany": {
       "date": "2026-06-25",
@@ -465,9 +469,13 @@
       "group": "Group E",
       "round": "Matchday 15",
       "ground": "New York/New Jersey (East Rutherford)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-14|Netherlands|Japan": {
       "date": "2026-06-14",
