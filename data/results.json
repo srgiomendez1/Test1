@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T23:23:16.029942+00:00",
+  "generated_at": "2026-06-26T01:36:22.374619+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -549,12 +549,11 @@
       "round": "Matchday 15",
       "ground": "Dallas (Arlington)",
       "score": [
-        0,
-        0
+        1,
+        1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-25|Tunisia|Netherlands": {
       "date": "2026-06-25",
@@ -566,12 +565,11 @@
       "round": "Matchday 15",
       "ground": "Kansas City",
       "score": [
-        0,
-        2
+        1,
+        3
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-15|Belgium|Egypt": {
       "date": "2026-06-15",
