@@ -497,6 +497,112 @@
 
   /* ---------- Cuotas (estimated odds) ---------- */
 
+  /* ---------- Title Pie: P(champion) via full-tournament Monte Carlo ---------- */
+  let _titleCache = { sig: null, probs: null };
+  function buildTitleProbs() {
+    const ratings = state.ratings || {};
+    const ms = Object.values(state.results.matches);
+    const sampleScore = (h, a) => {
+      const { lh, la } = Odds.lambdasFor({ home: h, away: a }, ratings);
+      return [poissonSample(lh), poissonSample(la)];
+    };
+    const koWinner = (a, b) => {
+      const s = sampleScore(a, b);
+      if (s[0] > s[1]) return a; if (s[1] > s[0]) return b;
+      const ra = ratings[a] || 0, rb = ratings[b] || 0;       // penalties: rating-weighted
+      return Math.random() < 1 / (1 + Math.exp(-(ra - rb))) ? a : b;
+    };
+    const ap = (st, h, a, s) => {
+      const [hs, as] = s;
+      st[h].gf += hs; st[h].gd += hs - as; st[a].gf += as; st[a].gd += as - hs;
+      if (hs > as) st[h].pts += 3; else if (hs < as) st[a].pts += 3; else { st[h].pts++; st[a].pts++; }
+    };
+    const cmp = (a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.t.localeCompare(b.t);
+
+    const groupTeams = {}, base = {}, rem = [], KO32 = [];
+    let finishedG = 0;
+    for (const m of ms) {
+      if (m.group && m.group.indexOf("Group") === 0) {
+        const g = m.group;
+        (groupTeams[g] = groupTeams[g] || new Set()).add(m.home); groupTeams[g].add(m.away);
+        base[m.home] = base[m.home] || { g, pts: 0, gd: 0, gf: 0 };
+        base[m.away] = base[m.away] || { g, pts: 0, gd: 0, gf: 0 };
+        if (m.status === "finished" && m.score) { ap(base, m.home, m.away, m.score); finishedG++; }
+        else rem.push([m.home, m.away]);
+      } else if (m.round === "Round of 32") KO32.push([m.home, m.away]);
+    }
+    const sig = `${finishedG}|${KO32.length}|${state.bets.players.length}`;
+    if (_titleCache.sig === sig) return _titleCache.probs;
+    if (!KO32.length) { _titleCache = { sig, probs: {} }; return {}; }
+
+    const resolve = (code, W, Ru, tbg, used) => {
+      let m;
+      if ((m = /^1([A-L])$/.exec(code))) return W[m[1]];
+      if ((m = /^2([A-L])$/.exec(code))) return Ru[m[1]];
+      if (/^3/.test(code)) {
+        const gs = code.slice(1).split("/");
+        for (const g of gs) if (tbg[g] && !used.has(g)) { used.add(g); return tbg[g]; }
+        for (const g in tbg) if (!used.has(g)) { used.add(g); return tbg[g]; }
+      }
+      return code; // already a real team (knockout under way)
+    };
+
+    const N = 2500, champ = {};
+    for (let n = 0; n < N; n++) {
+      const st = {}; for (const k in base) st[k] = { ...base[k] };
+      for (const [h, a] of rem) ap(st, h, a, sampleScore(h, a));
+      const W = {}, Ru = {}, thirds = [];
+      for (const g in groupTeams) {
+        const arr = [...groupTeams[g]].map((t) => ({ t, ...(st[t] || { pts: 0, gd: 0, gf: 0 }) }));
+        arr.sort(cmp);
+        const gl = g.slice(6);
+        W[gl] = arr[0].t; Ru[gl] = arr[1].t;
+        thirds.push({ t: arr[2].t, g: gl, pts: arr[2].pts, gd: arr[2].gd, gf: arr[2].gf });
+      }
+      thirds.sort(cmp);
+      const tbg = {}; thirds.slice(0, 8).forEach((x) => (tbg[x.g] = x.t));
+      const used = new Set();
+      let pairs = KO32.map(([h, a]) => [resolve(h, W, Ru, tbg, used), resolve(a, W, Ru, tbg, used)]);
+      while (true) {
+        const wn = pairs.map(([a, b]) => koWinner(a, b));
+        if (wn.length === 1) { champ[wn[0]] = (champ[wn[0]] || 0) + 1; break; }
+        pairs = []; for (let i = 0; i < wn.length; i += 2) pairs.push([wn[i], wn[i + 1]]);
+      }
+    }
+    const probs = {}; for (const t in champ) probs[t] = champ[t] / N;
+    _titleCache = { sig, probs };
+    return probs;
+  }
+
+  function buildTitlePie(probs) {
+    const box = el("div", "titlepie");
+    const entries = Object.entries(probs).sort((a, b) => b[1] - a[1]);
+    const n = entries.length || 1;
+    const cx = 180, cy = 180, r = 160;
+    const color = (i) => `hsl(${Math.round(i * 360 / n)} 70% 55%)`;
+    let ang = -Math.PI / 2, svg = `<svg viewBox="0 0 360 360" class="pie">`;
+    entries.forEach(([t, v], i) => {
+      const a0 = ang, a1 = ang + v * 2 * Math.PI; ang = a1;
+      const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+      const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+      const large = (a1 - a0) > Math.PI ? 1 : 0;
+      svg += `<path d="M${cx} ${cy} L${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z" fill="${color(i)}" stroke="#1b0705" stroke-width="0.6"/>`;
+    });
+    svg += `</svg>`;
+    box.innerHTML = svg;
+    const leg = el("div", "pieleg");
+    let otros = 0;
+    entries.forEach(([t, v], i) => {
+      if (v < 0.01) { otros += v; return; }
+      const tm = state.teams[t];
+      leg.insertAdjacentHTML("beforeend",
+        `<span class="pli"><span class="psw" style="background:${color(i)}"></span>${tm ? tm.flag + " " + tm.es : t} <i>${Math.round(v * 100)}%</i></span>`);
+    });
+    if (otros > 0.005) leg.insertAdjacentHTML("beforeend", `<span class="pli"><span class="psw" style="background:#6b6b6b"></span>Otros <i>${Math.round(otros * 100)}%</i></span>`);
+    box.appendChild(leg);
+    return box;
+  }
+
   const ODDS_MARGIN = 0.07; // small overround so numbers read like a sportsbook
 
   function renderOdds() {
@@ -513,6 +619,14 @@
          <li><b>Total 2.5</b> — <b>Más</b> = 3+ goles en el partido; <b>Menos</b> = 2 o menos.</li>
          <li><b>Marcador más probable</b> — los 3 marcadores con mayor probabilidad.</li>
        </ul>`));
+
+    // Title Pie — probability of being crowned champion (full-tournament sim).
+    const title = buildTitleProbs();
+    if (Object.keys(title).length) {
+      wrap.appendChild(el("h3", "sechdr", "🏆 Title Pie — Probabilidad de ser campeón"));
+      wrap.appendChild(el("p", "hint", "Simulación del torneo completo (grupos restantes → eliminatorias) con el modelo in-house. Suma 100%."));
+      wrap.appendChild(buildTitlePie(title));
+    }
 
     const form = Odds.teamStrengths(Object.values(state.results.matches));
     const dec = (p) => Odds.dec(p, ODDS_MARGIN), pct = (p) => Math.round(p * 100);
