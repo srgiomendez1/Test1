@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T11:59:42.141405+00:00",
+  "generated_at": "2026-06-26T14:42:20.887369+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1143,11 +1143,11 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-29|1F|Morocco": {
+    "2026-06-29|Netherlands|Morocco": {
       "date": "2026-06-29",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-30T01:00:00+00:00",
-      "home": "1F",
+      "home": "Netherlands",
       "away": "Morocco",
       "group": null,
       "round": "Round of 32",
@@ -1156,12 +1156,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-29|Brazil|2F": {
+    "2026-06-29|Brazil|Japan": {
       "date": "2026-06-29",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-29T17:00:00+00:00",
       "home": "Brazil",
-      "away": "2F",
+      "away": "Japan",
       "group": null,
       "round": "Round of 32",
       "ground": "Houston",
@@ -1182,11 +1182,11 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-30|2E|2I": {
+    "2026-06-30|Ivory Coast|2I": {
       "date": "2026-06-30",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-30T17:00:00+00:00",
-      "home": "2E",
+      "home": "Ivory Coast",
       "away": "2I",
       "group": null,
       "round": "Round of 32",
@@ -1312,11 +1312,11 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-03|2D|2G": {
+    "2026-07-03|Australia|2G": {
       "date": "2026-07-03",
       "time": "13:00 UTC-5",
       "kickoff_utc": "2026-07-03T18:00:00+00:00",
-      "home": "2D",
+      "home": "Australia",
       "away": "2G",
       "group": null,
       "round": "Round of 32",
