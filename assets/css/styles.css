@@ -217,6 +217,14 @@ body > * { position: relative; z-index: 1; }
 .thirdplace { margin-top: 14px; max-width: 320px; }
 .thirdplace .tplabel { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; }
 
+/* Title Pie */
+.titlepie { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
+.pie { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; }
+.pieleg { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; justify-content: center; }
+.pli { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--txt); }
+.pli i { color: var(--gold); font-style: normal; font-weight: 700; }
+.psw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: 0 0 auto; }
+
 /* Cuotas (odds) */
 .oddshelp { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 12px; font-size: 0.82rem; color: var(--muted); }
 .oddshelp .ohb { color: var(--live); font-size: 0.92rem; margin: 0 0 6px; }
