@@ -1,0 +1,44 @@
+name: Update odds
+
+# Fetches OddsPapi data server-side (GitHub runners, not Cloudflare) and commits
+# data/odds.json. Needs the ODDSPAPI_KEY repository secret.
+# NOTE: scheduled workflows only run from the default branch (main); cron is also
+# best-effort/throttled by GitHub. ~every 2h keeps well under the free-tier quota.
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main, claude/world-cup-bet-tracker-i5xyab]
+    paths: [scripts/fetch_odds.py]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-odds
+  cancel-in-progress: true
+
+jobs:
+  odds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Fetch odds
+        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python3 scripts/fetch_odds.py
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- data/odds.json; then
+            git add data/odds.json
+            git commit -m "chore: update odds $(date -u +%FT%TZ)"
+            git push
+          else
+            echo "No changes."
+          fi
