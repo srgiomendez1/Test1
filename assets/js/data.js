@@ -243,8 +243,11 @@
     // Bundled team ratings for the odds model (calibrated to bookmaker odds).
     let ratings = {};
     try { ratings = await getJSON("data/team-ratings.json"); } catch (e) { /* ignore */ }
+    // Elo power ranking (drives the Title Pie / tournament sim).
+    let elo = {};
+    try { elo = await getJSON("data/team-elo.json"); } catch (e) { /* ignore */ }
 
-    return { bets, results, teams, ratings };
+    return { bets, results, teams, ratings, elo };
   }
 
   // Overlay live scores onto already-loaded results, then re-apply the clock.
