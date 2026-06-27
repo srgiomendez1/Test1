@@ -137,7 +137,7 @@
     return box;
   }
 
-  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true };
+  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true, elo: {} };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, cls, html) => {
@@ -499,8 +499,18 @@
 
   /* ---------- Title Pie: P(champion) via full-tournament Monte Carlo ---------- */
   let _titleCache = { sig: null, probs: null };
+  const ELO_K = 0.0022; // Elo points -> goal-supremacy rating scale (tuned for a consensus spread)
   function buildTitleProbs() {
-    const ratings = state.ratings || {};
+    // Title Pie uses an Elo power ranking (not the bookmaker-fit match ratings).
+    const elo = state.elo || {};
+    const en = Object.keys(elo);
+    let ratings;
+    if (en.length) {
+      const mean = en.reduce((s, n) => s + elo[n], 0) / en.length;
+      ratings = {}; en.forEach((n) => (ratings[n] = (elo[n] - mean) * ELO_K));
+    } else {
+      ratings = state.ratings || {}; // fallback if the Elo file is missing
+    }
     const ms = Object.values(state.results.matches);
     const sampleScore = (h, a) => {
       const { lh, la } = Odds.lambdasFor({ home: h, away: a }, ratings);
@@ -624,7 +634,7 @@
     const title = buildTitleProbs();
     if (Object.keys(title).length) {
       wrap.appendChild(el("h3", "sechdr", "🏆 Title Pie — Probabilidad de ser campeón"));
-      wrap.appendChild(el("p", "hint", "Simulación del torneo completo (grupos restantes → eliminatorias) con el modelo in-house. Suma 100%."));
+      wrap.appendChild(el("p", "hint", "Simulación del torneo completo (grupos restantes → eliminatorias) usando un <b>power ranking estilo Elo</b> + resultados actuales. Suma 100%."));
       wrap.appendChild(buildTitlePie(title));
     }
 
@@ -718,7 +728,7 @@
   async function refresh() {
     try {
       const d = await DataLayer.load();
-      state.bets = d.bets; state.results = d.results; state.teams = d.teams; state.ratings = d.ratings || {};
+      state.bets = d.bets; state.results = d.results; state.teams = d.teams; state.ratings = d.ratings || {}; state.elo = d.elo || {};
       render(); // paint committed data immediately (fast, same-origin only)
     } catch (e) {
       console.error(e);
