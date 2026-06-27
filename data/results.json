@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T22:55:40.294306+00:00",
+  "generated_at": "2026-06-27T00:13:06.638551+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -740,9 +740,13 @@
       "group": "Group H",
       "round": "Matchday 16",
       "ground": "Houston",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-26|Uruguay|Spain": {
       "date": "2026-06-26",
@@ -753,9 +757,13 @@
       "group": "Group H",
       "round": "Matchday 16",
       "ground": "Guadalajara (Zapopan)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-16|France|Senegal": {
       "date": "2026-06-16",
