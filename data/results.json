@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T22:45:04.333679+00:00",
+  "generated_at": "2026-06-27T23:45:25.602351+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1028,9 +1028,13 @@
       "group": "Group K",
       "round": "Matchday 17",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-27|DR Congo|Uzbekistan": {
       "date": "2026-06-27",
@@ -1041,9 +1045,13 @@
       "group": "Group K",
       "round": "Matchday 17",
       "ground": "Atlanta",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-17|England|Croatia": {
       "date": "2026-06-17",
@@ -1122,9 +1130,8 @@
         0,
         2
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-27|Croatia|Ghana": {
       "date": "2026-06-27",
@@ -1136,12 +1143,11 @@
       "round": "Matchday 17",
       "ground": "Philadelphia",
       "score": [
-        1,
+        2,
         1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-28|South Africa|Canada": {
       "date": "2026-06-28",
