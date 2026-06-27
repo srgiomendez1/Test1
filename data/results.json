@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T20:34:34.519949+00:00",
+  "generated_at": "2026-06-27T21:42:17.147682+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1118,9 +1118,13 @@
       "group": "Group L",
       "round": "Matchday 17",
       "ground": "New York/New Jersey (East Rutherford)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-27|Croatia|Ghana": {
       "date": "2026-06-27",
@@ -1131,9 +1135,13 @@
       "group": "Group L",
       "round": "Matchday 17",
       "ground": "Philadelphia",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-28|South Africa|Canada": {
       "date": "2026-06-28",
