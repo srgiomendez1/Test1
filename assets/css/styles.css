@@ -199,7 +199,7 @@ body > * { position: relative; z-index: 1; }
 .bbody { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 10px; }
 .bmatch { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; position: relative; }
 .bmatch.blive { border-color: var(--live); }
-.bmatch .bdate { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.02em; text-align: center;
+.bmatch .bdate { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.02em; text-align: center; white-space: nowrap;
   color: var(--muted); padding: 2px 6px; background: var(--bg2); border-bottom: 1px solid var(--line); text-transform: uppercase; }
 .bmatch .bdate:empty { display: none; }
 /* connector stub to the next round */
