@@ -194,37 +194,39 @@ body > * { position: relative; z-index: 1; }
 .bracket2.mirror { min-width: max-content; }
 .bracket2::-webkit-scrollbar { height: 8px; }
 .bracket2::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
-.bround { flex: 0 0 auto; min-width: 86px; padding: 0 7px; display: flex; flex-direction: column; }
-.brh { font-size: 0.66rem; color: var(--gold); text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
-.bbody { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 8px; }
-.bmatch { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; position: relative; }
+.bround { flex: 0 0 auto; min-width: 0; padding: 0 2px; display: flex; flex-direction: column; }
+.brh { font-size: 0.62rem; color: var(--gold); text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; }
+.bbody { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 5px; }
+.bmatch { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; position: relative; }
 .bmatch.blive { border-color: var(--live); }
-.bmatch .bdate { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.02em; text-align: center; white-space: nowrap;
-  color: var(--muted); padding: 2px 6px; background: var(--bg2); border-bottom: 1px solid var(--line); text-transform: uppercase; }
+/* date + time stacked on two tiny lines to keep columns narrow */
+.bmatch .bdate { display: flex; flex-direction: column; align-items: center; line-height: 1.1; font-size: 0.5rem; font-weight: 700;
+  letter-spacing: 0.01em; white-space: nowrap; color: var(--muted); padding: 1px 3px; background: var(--bg2); border-bottom: 1px solid var(--line); text-transform: uppercase; }
 .bmatch .bdate:empty { display: none; }
+.bmatch .bdate .bd-t { color: var(--txt); }
 /* connector stubs point inward (toward the center column) */
-.bround.left .bmatch::after { content: ""; position: absolute; left: 100%; top: 50%; width: 9px; height: 2px; background: var(--line); }
-.bround.right .bmatch::after { content: ""; position: absolute; right: 100%; top: 50%; width: 9px; height: 2px; background: var(--line); }
-.bteam { display: flex; align-items: center; gap: 6px; padding: 6px 8px; font-size: 0.8rem; }
+.bround.left .bmatch::after { content: ""; position: absolute; left: 100%; top: 50%; width: 5px; height: 2px; background: var(--line); }
+.bround.right .bmatch::after { content: ""; position: absolute; right: 100%; top: 50%; width: 5px; height: 2px; background: var(--line); }
+.bteam { display: flex; align-items: center; gap: 3px; padding: 3px 4px; font-size: 0.75rem; }
 .bteam + .bteam { border-top: 1px solid var(--line); }
-.bteam .flag { font-size: 1.4rem; line-height: 1; }
+.bteam .flag { font-size: 1.2rem; line-height: 1; }
 .bteam .flag.proj { opacity: 0.5; }
 .bteam .bn { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bteam .bn.ph { font-size: 0.72rem; color: var(--muted); }
-.bteam .bsc { font-weight: 800; color: var(--muted); min-width: 14px; text-align: right; margin-left: auto; }
+.bteam .bn.ph { font-size: 0.68rem; color: var(--muted); }
+.bteam .bsc { font-weight: 800; color: var(--muted); min-width: 11px; text-align: right; margin-left: auto; }
 .bteam.bw { background: rgba(232, 198, 106, 0.12); }
 .bteam.bw .bsc { color: var(--gold); }
 /* mirror the right half so flags face inward like the poster */
 .bround.right .bteam { flex-direction: row-reverse; }
 .bround.right .bteam .bsc { margin-left: 0; margin-right: auto; text-align: left; }
 /* center column: trophy + Final + champion + 3rd place */
-.center-col { min-width: 132px; justify-content: center; align-items: stretch; }
-.center-col .btrophy { font-size: 2rem; text-align: center; line-height: 1; margin-bottom: 2px; }
+.center-col { min-width: 0; justify-content: center; align-items: stretch; padding: 0 4px; }
+.center-col .btrophy { font-size: 1.7rem; text-align: center; line-height: 1; margin-bottom: 2px; }
 .center-col .bmatch { border-color: var(--gold-deep); }
-.bchamp { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; font-weight: 800; color: var(--gold); margin-top: 8px;
-  background: linear-gradient(180deg, rgba(232,198,106,0.18), rgba(232,198,106,0.05)); border: 1px solid var(--gold-deep); border-radius: 10px; padding: 12px 10px; }
-.bchamp .flag { font-size: 1.3rem; }
-.center-col .b3rdlabel { font-size: 0.7rem; color: var(--muted); text-align: center; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: 0.02em; }
+.bchamp { display: flex; align-items: center; justify-content: center; gap: 5px; text-align: center; font-weight: 800; font-size: 0.78rem; color: var(--gold); margin-top: 6px;
+  background: linear-gradient(180deg, rgba(232,198,106,0.18), rgba(232,198,106,0.05)); border: 1px solid var(--gold-deep); border-radius: 8px; padding: 9px 6px; }
+.bchamp .flag { font-size: 1.2rem; }
+.center-col .b3rdlabel { font-size: 0.62rem; color: var(--muted); text-align: center; margin: 10px 0 5px; text-transform: uppercase; letter-spacing: 0.02em; }
 
 /* Title Pie */
 .titlepie { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
