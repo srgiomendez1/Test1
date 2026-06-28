@@ -98,6 +98,7 @@ def normalize_openfootball(data):
         ft = score.get("ft")
         key = f"{date}|{home}|{away}"
         out[key] = {
+            "num": m.get("num"),  # FIFA match number (drives the knockout bracket tree)
             "date": date,
             "time": m.get("time"),
             "kickoff_utc": kickoff_utc(date, m.get("time")),

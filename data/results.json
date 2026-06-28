@@ -1,7 +1,8 @@
 {
-  "generated_at": "2026-06-28T18:48:10.166895+00:00",
+  "generated_at": "2026-06-28T19:39:16.058814+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
+      "num": null,
       "date": "2026-06-11",
       "time": "13:00 UTC-6",
       "kickoff_utc": "2026-06-11T19:00:00+00:00",
@@ -18,6 +19,7 @@
       "source": "live"
     },
     "2026-06-11|South Korea|Czech Republic": {
+      "num": null,
       "date": "2026-06-11",
       "time": "20:00 UTC-6",
       "kickoff_utc": "2026-06-12T02:00:00+00:00",
@@ -34,6 +36,7 @@
       "source": "live"
     },
     "2026-06-18|Czech Republic|South Africa": {
+      "num": null,
       "date": "2026-06-18",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-06-18T16:00:00+00:00",
@@ -50,6 +53,7 @@
       "source": "live"
     },
     "2026-06-18|Mexico|South Korea": {
+      "num": null,
       "date": "2026-06-18",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-19T01:00:00+00:00",
@@ -66,6 +70,7 @@
       "source": "live"
     },
     "2026-06-24|Czech Republic|Mexico": {
+      "num": null,
       "date": "2026-06-24",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-25T01:00:00+00:00",
@@ -82,6 +87,7 @@
       "source": "live"
     },
     "2026-06-24|South Africa|South Korea": {
+      "num": null,
       "date": "2026-06-24",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-25T01:00:00+00:00",
@@ -98,6 +104,7 @@
       "source": "live"
     },
     "2026-06-12|Canada|Bosnia & Herzegovina": {
+      "num": null,
       "date": "2026-06-12",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-06-12T19:00:00+00:00",
@@ -114,6 +121,7 @@
       "source": "live"
     },
     "2026-06-13|Qatar|Switzerland": {
+      "num": null,
       "date": "2026-06-13",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-13T19:00:00+00:00",
@@ -130,6 +138,7 @@
       "source": "live"
     },
     "2026-06-18|Switzerland|Bosnia & Herzegovina": {
+      "num": null,
       "date": "2026-06-18",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-18T19:00:00+00:00",
@@ -146,6 +155,7 @@
       "source": "live"
     },
     "2026-06-18|Canada|Qatar": {
+      "num": null,
       "date": "2026-06-18",
       "time": "15:00 UTC-7",
       "kickoff_utc": "2026-06-18T22:00:00+00:00",
@@ -162,6 +172,7 @@
       "source": "live"
     },
     "2026-06-24|Switzerland|Canada": {
+      "num": null,
       "date": "2026-06-24",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-24T19:00:00+00:00",
@@ -178,6 +189,7 @@
       "source": "live"
     },
     "2026-06-24|Bosnia & Herzegovina|Qatar": {
+      "num": null,
       "date": "2026-06-24",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-24T19:00:00+00:00",
@@ -194,6 +206,7 @@
       "source": "live"
     },
     "2026-06-13|Brazil|Morocco": {
+      "num": null,
       "date": "2026-06-13",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-13T22:00:00+00:00",
@@ -210,6 +223,7 @@
       "source": "live"
     },
     "2026-06-13|Haiti|Scotland": {
+      "num": null,
       "date": "2026-06-13",
       "time": "21:00 UTC-4",
       "kickoff_utc": "2026-06-14T01:00:00+00:00",
@@ -226,6 +240,7 @@
       "source": "live"
     },
     "2026-06-19|Scotland|Morocco": {
+      "num": null,
       "date": "2026-06-19",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-19T22:00:00+00:00",
@@ -242,6 +257,7 @@
       "source": "live"
     },
     "2026-06-19|Brazil|Haiti": {
+      "num": null,
       "date": "2026-06-19",
       "time": "20:30 UTC-4",
       "kickoff_utc": "2026-06-20T00:30:00+00:00",
@@ -258,6 +274,7 @@
       "source": "live"
     },
     "2026-06-24|Scotland|Brazil": {
+      "num": null,
       "date": "2026-06-24",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-24T22:00:00+00:00",
@@ -274,6 +291,7 @@
       "source": "live"
     },
     "2026-06-24|Morocco|Haiti": {
+      "num": null,
       "date": "2026-06-24",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-24T22:00:00+00:00",
@@ -290,6 +308,7 @@
       "source": "live"
     },
     "2026-06-12|USA|Paraguay": {
+      "num": null,
       "date": "2026-06-12",
       "time": "18:00 UTC-7",
       "kickoff_utc": "2026-06-13T01:00:00+00:00",
@@ -306,6 +325,7 @@
       "source": "live"
     },
     "2026-06-13|Australia|Turkey": {
+      "num": null,
       "date": "2026-06-13",
       "time": "21:00 UTC-7",
       "kickoff_utc": "2026-06-14T04:00:00+00:00",
@@ -322,6 +342,7 @@
       "source": "live"
     },
     "2026-06-19|USA|Australia": {
+      "num": null,
       "date": "2026-06-19",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-19T19:00:00+00:00",
@@ -338,6 +359,7 @@
       "source": "live"
     },
     "2026-06-19|Turkey|Paraguay": {
+      "num": null,
       "date": "2026-06-19",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-06-20T03:00:00+00:00",
@@ -354,6 +376,7 @@
       "source": "live"
     },
     "2026-06-25|Turkey|USA": {
+      "num": null,
       "date": "2026-06-25",
       "time": "19:00 UTC-7",
       "kickoff_utc": "2026-06-26T02:00:00+00:00",
@@ -370,6 +393,7 @@
       "source": "live"
     },
     "2026-06-25|Paraguay|Australia": {
+      "num": null,
       "date": "2026-06-25",
       "time": "19:00 UTC-7",
       "kickoff_utc": "2026-06-26T02:00:00+00:00",
@@ -386,6 +410,7 @@
       "source": "live"
     },
     "2026-06-14|Germany|Curaçao": {
+      "num": null,
       "date": "2026-06-14",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-14T17:00:00+00:00",
@@ -402,6 +427,7 @@
       "source": "live"
     },
     "2026-06-14|Ivory Coast|Ecuador": {
+      "num": null,
       "date": "2026-06-14",
       "time": "19:00 UTC-4",
       "kickoff_utc": "2026-06-14T23:00:00+00:00",
@@ -418,6 +444,7 @@
       "source": "live"
     },
     "2026-06-20|Germany|Ivory Coast": {
+      "num": null,
       "date": "2026-06-20",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-06-20T20:00:00+00:00",
@@ -434,6 +461,7 @@
       "source": "live"
     },
     "2026-06-20|Ecuador|Curaçao": {
+      "num": null,
       "date": "2026-06-20",
       "time": "19:00 UTC-5",
       "kickoff_utc": "2026-06-21T00:00:00+00:00",
@@ -450,6 +478,7 @@
       "source": "live"
     },
     "2026-06-25|Curaçao|Ivory Coast": {
+      "num": null,
       "date": "2026-06-25",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-06-25T20:00:00+00:00",
@@ -466,6 +495,7 @@
       "source": "live"
     },
     "2026-06-25|Ecuador|Germany": {
+      "num": null,
       "date": "2026-06-25",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-06-25T20:00:00+00:00",
@@ -482,6 +512,7 @@
       "source": "live"
     },
     "2026-06-14|Netherlands|Japan": {
+      "num": null,
       "date": "2026-06-14",
       "time": "15:00 UTC-5",
       "kickoff_utc": "2026-06-14T20:00:00+00:00",
@@ -498,6 +529,7 @@
       "source": "live"
     },
     "2026-06-14|Sweden|Tunisia": {
+      "num": null,
       "date": "2026-06-14",
       "time": "20:00 UTC-6",
       "kickoff_utc": "2026-06-15T02:00:00+00:00",
@@ -514,6 +546,7 @@
       "source": "live"
     },
     "2026-06-20|Netherlands|Sweden": {
+      "num": null,
       "date": "2026-06-20",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-20T17:00:00+00:00",
@@ -530,6 +563,7 @@
       "source": "live"
     },
     "2026-06-20|Tunisia|Japan": {
+      "num": null,
       "date": "2026-06-20",
       "time": "22:00 UTC-6",
       "kickoff_utc": "2026-06-21T04:00:00+00:00",
@@ -546,6 +580,7 @@
       "source": "live"
     },
     "2026-06-25|Japan|Sweden": {
+      "num": null,
       "date": "2026-06-25",
       "time": "18:00 UTC-5",
       "kickoff_utc": "2026-06-25T23:00:00+00:00",
@@ -562,6 +597,7 @@
       "source": "live"
     },
     "2026-06-25|Tunisia|Netherlands": {
+      "num": null,
       "date": "2026-06-25",
       "time": "18:00 UTC-5",
       "kickoff_utc": "2026-06-25T23:00:00+00:00",
@@ -578,6 +614,7 @@
       "source": "live"
     },
     "2026-06-15|Belgium|Egypt": {
+      "num": null,
       "date": "2026-06-15",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-15T19:00:00+00:00",
@@ -594,6 +631,7 @@
       "source": "live"
     },
     "2026-06-15|Iran|New Zealand": {
+      "num": null,
       "date": "2026-06-15",
       "time": "18:00 UTC-7",
       "kickoff_utc": "2026-06-16T01:00:00+00:00",
@@ -610,6 +648,7 @@
       "source": "live"
     },
     "2026-06-21|Belgium|Iran": {
+      "num": null,
       "date": "2026-06-21",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-21T19:00:00+00:00",
@@ -626,6 +665,7 @@
       "source": "live"
     },
     "2026-06-21|New Zealand|Egypt": {
+      "num": null,
       "date": "2026-06-21",
       "time": "18:00 UTC-7",
       "kickoff_utc": "2026-06-22T01:00:00+00:00",
@@ -642,6 +682,7 @@
       "source": "live"
     },
     "2026-06-26|Egypt|Iran": {
+      "num": null,
       "date": "2026-06-26",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-06-27T03:00:00+00:00",
@@ -658,6 +699,7 @@
       "source": "live"
     },
     "2026-06-26|New Zealand|Belgium": {
+      "num": null,
       "date": "2026-06-26",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-06-27T03:00:00+00:00",
@@ -674,6 +716,7 @@
       "source": "live"
     },
     "2026-06-15|Spain|Cape Verde": {
+      "num": null,
       "date": "2026-06-15",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-06-15T16:00:00+00:00",
@@ -690,6 +733,7 @@
       "source": "live"
     },
     "2026-06-15|Saudi Arabia|Uruguay": {
+      "num": null,
       "date": "2026-06-15",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-15T22:00:00+00:00",
@@ -706,6 +750,7 @@
       "source": "live"
     },
     "2026-06-21|Spain|Saudi Arabia": {
+      "num": null,
       "date": "2026-06-21",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-06-21T16:00:00+00:00",
@@ -722,6 +767,7 @@
       "source": "live"
     },
     "2026-06-21|Uruguay|Cape Verde": {
+      "num": null,
       "date": "2026-06-21",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-21T22:00:00+00:00",
@@ -738,6 +784,7 @@
       "source": "live"
     },
     "2026-06-26|Cape Verde|Saudi Arabia": {
+      "num": null,
       "date": "2026-06-26",
       "time": "19:00 UTC-5",
       "kickoff_utc": "2026-06-27T00:00:00+00:00",
@@ -754,6 +801,7 @@
       "source": "live"
     },
     "2026-06-26|Uruguay|Spain": {
+      "num": null,
       "date": "2026-06-26",
       "time": "18:00 UTC-6",
       "kickoff_utc": "2026-06-27T00:00:00+00:00",
@@ -770,6 +818,7 @@
       "source": "live"
     },
     "2026-06-16|France|Senegal": {
+      "num": null,
       "date": "2026-06-16",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-06-16T19:00:00+00:00",
@@ -786,6 +835,7 @@
       "source": "live"
     },
     "2026-06-16|Iraq|Norway": {
+      "num": null,
       "date": "2026-06-16",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-06-16T22:00:00+00:00",
@@ -802,6 +852,7 @@
       "source": "live"
     },
     "2026-06-22|France|Iraq": {
+      "num": null,
       "date": "2026-06-22",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-06-22T21:00:00+00:00",
@@ -818,6 +869,7 @@
       "source": "live"
     },
     "2026-06-22|Norway|Senegal": {
+      "num": null,
       "date": "2026-06-22",
       "time": "20:00 UTC-4",
       "kickoff_utc": "2026-06-23T00:00:00+00:00",
@@ -834,6 +886,7 @@
       "source": "live"
     },
     "2026-06-26|Norway|France": {
+      "num": null,
       "date": "2026-06-26",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-06-26T19:00:00+00:00",
@@ -850,6 +903,7 @@
       "source": "live"
     },
     "2026-06-26|Senegal|Iraq": {
+      "num": null,
       "date": "2026-06-26",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-06-26T19:00:00+00:00",
@@ -866,6 +920,7 @@
       "source": "live"
     },
     "2026-06-16|Argentina|Algeria": {
+      "num": null,
       "date": "2026-06-16",
       "time": "20:00 UTC-5",
       "kickoff_utc": "2026-06-17T01:00:00+00:00",
@@ -882,6 +937,7 @@
       "source": "live"
     },
     "2026-06-16|Austria|Jordan": {
+      "num": null,
       "date": "2026-06-16",
       "time": "21:00 UTC-7",
       "kickoff_utc": "2026-06-17T04:00:00+00:00",
@@ -898,6 +954,7 @@
       "source": "live"
     },
     "2026-06-22|Argentina|Austria": {
+      "num": null,
       "date": "2026-06-22",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-22T17:00:00+00:00",
@@ -914,6 +971,7 @@
       "source": "live"
     },
     "2026-06-22|Jordan|Algeria": {
+      "num": null,
       "date": "2026-06-22",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-06-23T03:00:00+00:00",
@@ -930,6 +988,7 @@
       "source": "live"
     },
     "2026-06-27|Algeria|Austria": {
+      "num": null,
       "date": "2026-06-27",
       "time": "21:00 UTC-5",
       "kickoff_utc": "2026-06-28T02:00:00+00:00",
@@ -946,6 +1005,7 @@
       "source": "live"
     },
     "2026-06-27|Jordan|Argentina": {
+      "num": null,
       "date": "2026-06-27",
       "time": "21:00 UTC-5",
       "kickoff_utc": "2026-06-28T02:00:00+00:00",
@@ -962,6 +1022,7 @@
       "source": "live"
     },
     "2026-06-17|Portugal|DR Congo": {
+      "num": null,
       "date": "2026-06-17",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-17T17:00:00+00:00",
@@ -978,6 +1039,7 @@
       "source": "live"
     },
     "2026-06-17|Uzbekistan|Colombia": {
+      "num": null,
       "date": "2026-06-17",
       "time": "20:00 UTC-6",
       "kickoff_utc": "2026-06-18T02:00:00+00:00",
@@ -994,6 +1056,7 @@
       "source": "live"
     },
     "2026-06-23|Portugal|Uzbekistan": {
+      "num": null,
       "date": "2026-06-23",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-23T17:00:00+00:00",
@@ -1010,6 +1073,7 @@
       "source": "live"
     },
     "2026-06-23|Colombia|DR Congo": {
+      "num": null,
       "date": "2026-06-23",
       "time": "20:00 UTC-6",
       "kickoff_utc": "2026-06-24T02:00:00+00:00",
@@ -1026,6 +1090,7 @@
       "source": "live"
     },
     "2026-06-27|Colombia|Portugal": {
+      "num": null,
       "date": "2026-06-27",
       "time": "19:30 UTC-4",
       "kickoff_utc": "2026-06-27T23:30:00+00:00",
@@ -1042,6 +1107,7 @@
       "source": "live"
     },
     "2026-06-27|DR Congo|Uzbekistan": {
+      "num": null,
       "date": "2026-06-27",
       "time": "19:30 UTC-4",
       "kickoff_utc": "2026-06-27T23:30:00+00:00",
@@ -1058,6 +1124,7 @@
       "source": "live"
     },
     "2026-06-17|England|Croatia": {
+      "num": null,
       "date": "2026-06-17",
       "time": "15:00 UTC-5",
       "kickoff_utc": "2026-06-17T20:00:00+00:00",
@@ -1074,6 +1141,7 @@
       "source": "live"
     },
     "2026-06-17|Ghana|Panama": {
+      "num": null,
       "date": "2026-06-17",
       "time": "19:00 UTC-4",
       "kickoff_utc": "2026-06-17T23:00:00+00:00",
@@ -1090,6 +1158,7 @@
       "source": "live"
     },
     "2026-06-23|England|Ghana": {
+      "num": null,
       "date": "2026-06-23",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-06-23T20:00:00+00:00",
@@ -1106,6 +1175,7 @@
       "source": "live"
     },
     "2026-06-23|Panama|Croatia": {
+      "num": null,
       "date": "2026-06-23",
       "time": "19:00 UTC-4",
       "kickoff_utc": "2026-06-23T23:00:00+00:00",
@@ -1122,6 +1192,7 @@
       "source": "live"
     },
     "2026-06-27|Panama|England": {
+      "num": null,
       "date": "2026-06-27",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-06-27T21:00:00+00:00",
@@ -1138,6 +1209,7 @@
       "source": "live"
     },
     "2026-06-27|Croatia|Ghana": {
+      "num": null,
       "date": "2026-06-27",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-06-27T21:00:00+00:00",
@@ -1154,6 +1226,7 @@
       "source": "live"
     },
     "2026-06-28|South Africa|Canada": {
+      "num": 73,
       "date": "2026-06-28",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-06-28T19:00:00+00:00",
@@ -1162,11 +1235,16 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Los Angeles (Inglewood)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-29|Germany|Paraguay": {
+      "num": 74,
       "date": "2026-06-29",
       "time": "16:30 UTC-4",
       "kickoff_utc": "2026-06-29T20:30:00+00:00",
@@ -1180,6 +1258,7 @@
       "source": "openfootball"
     },
     "2026-06-29|Netherlands|Morocco": {
+      "num": 75,
       "date": "2026-06-29",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-06-30T01:00:00+00:00",
@@ -1193,6 +1272,7 @@
       "source": "openfootball"
     },
     "2026-06-29|Brazil|Japan": {
+      "num": 76,
       "date": "2026-06-29",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-29T17:00:00+00:00",
@@ -1206,6 +1286,7 @@
       "source": "openfootball"
     },
     "2026-06-30|France|Sweden": {
+      "num": 77,
       "date": "2026-06-30",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-06-30T21:00:00+00:00",
@@ -1219,6 +1300,7 @@
       "source": "openfootball"
     },
     "2026-06-30|Ivory Coast|Norway": {
+      "num": 78,
       "date": "2026-06-30",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-30T17:00:00+00:00",
@@ -1232,6 +1314,7 @@
       "source": "openfootball"
     },
     "2026-06-30|Mexico|Ecuador": {
+      "num": 79,
       "date": "2026-06-30",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-07-01T01:00:00+00:00",
@@ -1245,6 +1328,7 @@
       "source": "openfootball"
     },
     "2026-07-01|England|DR Congo": {
+      "num": 80,
       "date": "2026-07-01",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-07-01T16:00:00+00:00",
@@ -1258,6 +1342,7 @@
       "source": "openfootball"
     },
     "2026-07-01|USA|Bosnia & Herzegovina": {
+      "num": 81,
       "date": "2026-07-01",
       "time": "17:00 UTC-7",
       "kickoff_utc": "2026-07-02T00:00:00+00:00",
@@ -1271,6 +1356,7 @@
       "source": "openfootball"
     },
     "2026-07-01|Belgium|Senegal": {
+      "num": 82,
       "date": "2026-07-01",
       "time": "13:00 UTC-7",
       "kickoff_utc": "2026-07-01T20:00:00+00:00",
@@ -1284,6 +1370,7 @@
       "source": "openfootball"
     },
     "2026-07-02|Portugal|Croatia": {
+      "num": 83,
       "date": "2026-07-02",
       "time": "19:00 UTC-4",
       "kickoff_utc": "2026-07-02T23:00:00+00:00",
@@ -1297,6 +1384,7 @@
       "source": "openfootball"
     },
     "2026-07-02|Spain|Austria": {
+      "num": 84,
       "date": "2026-07-02",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-07-02T19:00:00+00:00",
@@ -1310,6 +1398,7 @@
       "source": "openfootball"
     },
     "2026-07-02|Switzerland|Algeria": {
+      "num": 85,
       "date": "2026-07-02",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-07-03T03:00:00+00:00",
@@ -1323,6 +1412,7 @@
       "source": "openfootball"
     },
     "2026-07-03|Argentina|Cape Verde": {
+      "num": 86,
       "date": "2026-07-03",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-07-03T22:00:00+00:00",
@@ -1336,6 +1426,7 @@
       "source": "openfootball"
     },
     "2026-07-03|Colombia|Ghana": {
+      "num": 87,
       "date": "2026-07-03",
       "time": "20:30 UTC-5",
       "kickoff_utc": "2026-07-04T01:30:00+00:00",
@@ -1349,6 +1440,7 @@
       "source": "openfootball"
     },
     "2026-07-03|Australia|Egypt": {
+      "num": 88,
       "date": "2026-07-03",
       "time": "13:00 UTC-5",
       "kickoff_utc": "2026-07-03T18:00:00+00:00",
@@ -1362,6 +1454,7 @@
       "source": "openfootball"
     },
     "2026-07-04|W74|W77": {
+      "num": 89,
       "date": "2026-07-04",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-04T21:00:00+00:00",
@@ -1375,6 +1468,7 @@
       "source": "openfootball"
     },
     "2026-07-04|W73|W75": {
+      "num": 90,
       "date": "2026-07-04",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-07-04T17:00:00+00:00",
@@ -1388,6 +1482,7 @@
       "source": "openfootball"
     },
     "2026-07-05|W76|W78": {
+      "num": 91,
       "date": "2026-07-05",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-07-05T20:00:00+00:00",
@@ -1401,6 +1496,7 @@
       "source": "openfootball"
     },
     "2026-07-05|W79|W80": {
+      "num": 92,
       "date": "2026-07-05",
       "time": "18:00 UTC-6",
       "kickoff_utc": "2026-07-06T00:00:00+00:00",
@@ -1414,6 +1510,7 @@
       "source": "openfootball"
     },
     "2026-07-06|W83|W84": {
+      "num": 93,
       "date": "2026-07-06",
       "time": "14:00 UTC-5",
       "kickoff_utc": "2026-07-06T19:00:00+00:00",
@@ -1427,6 +1524,7 @@
       "source": "openfootball"
     },
     "2026-07-06|W81|W82": {
+      "num": 94,
       "date": "2026-07-06",
       "time": "17:00 UTC-7",
       "kickoff_utc": "2026-07-07T00:00:00+00:00",
@@ -1440,6 +1538,7 @@
       "source": "openfootball"
     },
     "2026-07-07|W86|W88": {
+      "num": 95,
       "date": "2026-07-07",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-07-07T16:00:00+00:00",
@@ -1453,6 +1552,7 @@
       "source": "openfootball"
     },
     "2026-07-07|W85|W87": {
+      "num": 96,
       "date": "2026-07-07",
       "time": "13:00 UTC-7",
       "kickoff_utc": "2026-07-07T20:00:00+00:00",
@@ -1466,6 +1566,7 @@
       "source": "openfootball"
     },
     "2026-07-09|W89|W90": {
+      "num": 97,
       "date": "2026-07-09",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-07-09T20:00:00+00:00",
@@ -1479,6 +1580,7 @@
       "source": "openfootball"
     },
     "2026-07-10|W93|W94": {
+      "num": 98,
       "date": "2026-07-10",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-07-10T19:00:00+00:00",
@@ -1492,6 +1594,7 @@
       "source": "openfootball"
     },
     "2026-07-11|W91|W92": {
+      "num": 99,
       "date": "2026-07-11",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-11T21:00:00+00:00",
@@ -1505,6 +1608,7 @@
       "source": "openfootball"
     },
     "2026-07-11|W95|W96": {
+      "num": 100,
       "date": "2026-07-11",
       "time": "20:00 UTC-5",
       "kickoff_utc": "2026-07-12T01:00:00+00:00",
@@ -1518,6 +1622,7 @@
       "source": "openfootball"
     },
     "2026-07-14|W97|W98": {
+      "num": 101,
       "date": "2026-07-14",
       "time": "14:00 UTC-5",
       "kickoff_utc": "2026-07-14T19:00:00+00:00",
@@ -1531,6 +1636,7 @@
       "source": "openfootball"
     },
     "2026-07-15|W99|W100": {
+      "num": 102,
       "date": "2026-07-15",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-07-15T19:00:00+00:00",
@@ -1544,6 +1650,7 @@
       "source": "openfootball"
     },
     "2026-07-18|L101|L102": {
+      "num": 103,
       "date": "2026-07-18",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-18T21:00:00+00:00",
@@ -1557,6 +1664,7 @@
       "source": "openfootball"
     },
     "2026-07-19|W101|W102": {
+      "num": 104,
       "date": "2026-07-19",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-07-19T19:00:00+00:00",
