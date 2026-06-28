@@ -548,7 +548,7 @@
     const champBox = el("div", "bchamp");
     champBox.innerHTML = champ
       ? (state.teams[champ] ? `<span class="flag">${state.teams[champ].flag}</span> ${state.teams[champ].es}` : champ)
-      : "Campeón ¿?";
+      : "Campeón";
     center.appendChild(champBox);
     const tp = byNum[103];
     if (tp) {
