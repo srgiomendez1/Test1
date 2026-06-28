@@ -219,14 +219,14 @@ body > * { position: relative; z-index: 1; }
 /* mirror the right half so flags face inward like the poster */
 .bround.right .bteam { flex-direction: row-reverse; }
 .bround.right .bteam .bsc { margin-left: 0; margin-right: auto; text-align: left; }
-/* center column: trophy + Final + champion + 3rd place */
-.center-col { min-width: 0; justify-content: center; align-items: stretch; padding: 0 4px; }
-.center-col .btrophy { font-size: 1.7rem; text-align: center; line-height: 1; margin-bottom: 2px; }
+/* center column: trophy + Final + champion + 3rd place (max compressed) */
+.center-col { min-width: 0; justify-content: center; align-items: stretch; padding: 0 3px; }
+.center-col .btrophy { font-size: 1.25rem; text-align: center; line-height: 1; margin-bottom: 1px; }
 .center-col .bmatch { border-color: var(--gold-deep); }
-.bchamp { display: flex; align-items: center; justify-content: center; gap: 5px; text-align: center; font-weight: 800; font-size: 0.78rem; color: var(--gold); margin-top: 6px;
-  background: linear-gradient(180deg, rgba(232,198,106,0.18), rgba(232,198,106,0.05)); border: 1px solid var(--gold-deep); border-radius: 8px; padding: 9px 6px; }
-.bchamp .flag { font-size: 1.2rem; }
-.center-col .b3rdlabel { font-size: 0.62rem; color: var(--muted); text-align: center; margin: 10px 0 5px; text-transform: uppercase; letter-spacing: 0.02em; }
+.bchamp { display: flex; align-items: center; justify-content: center; gap: 3px; text-align: center; font-weight: 800; font-size: 0.56rem; color: var(--gold); margin-top: 4px;
+  background: linear-gradient(180deg, rgba(232,198,106,0.18), rgba(232,198,106,0.05)); border: 1px solid var(--gold-deep); border-radius: 6px; padding: 5px 4px; }
+.bchamp .flag { font-size: 0.9rem; }
+.center-col .b3rdlabel { font-size: 0.54rem; color: var(--muted); text-align: center; margin: 6px 0 4px; text-transform: uppercase; letter-spacing: 0.01em; }
 
 /* Title Pie */
 .titlepie { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
