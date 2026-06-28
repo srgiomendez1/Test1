@@ -163,6 +163,22 @@
     return new Date(ko).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
   }
 
+  // Compact "28 jun · 3:00 PM ET" for the knockout bracket nodes (Eastern time).
+  function bracketWhen(m) {
+    const ko = m.kickoff_utc ? (typeof m.kickoff_utc === "number" ? m.kickoff_utc : Date.parse(m.kickoff_utc)) : 0;
+    if (ko) {
+      const d = new Date(ko);
+      const dayStr = d.toLocaleDateString("es-MX", { timeZone: "America/New_York", day: "numeric", month: "short" });
+      const time = d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit", hour12: true });
+      return `${dayStr} · ${time} ET`;
+    }
+    if (m.date) {
+      const d = new Date(m.date + "T12:00:00");
+      return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+    }
+    return "";
+  }
+
   function statusBadge(m) {
     if (m.status === "live") {
       const raw = m.minute != null ? String(m.minute) : "";
@@ -452,8 +468,7 @@
       const fin = m.status === "finished" && m.score;
       const w0 = fin && m.score[0] > m.score[1], w1 = fin && m.score[1] > m.score[0];
       const n = el("div", "bmatch" + (m.status === "live" ? " blive" : ""));
-      const d = m.date ? new Date(m.date + "T12:00:00") : null;
-      const ds = d ? `${d.getDate()} ${MONTHS[d.getMonth()]}` : "";
+      const ds = bracketWhen(m);
       n.innerHTML = `<div class="bdate">${ds}</div>` +
         brTeam(m.home, m.score ? m.score[0] : null, w0) + brTeam(m.away, m.score ? m.score[1] : null, w1);
       return n;
