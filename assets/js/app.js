@@ -137,7 +137,7 @@
     return box;
   }
 
-  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "posiciones", player: null, countLive: true, elo: {} };
+  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "eliminatorias", player: null, countLive: true, elo: {} };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, cls, html) => {
@@ -432,14 +432,33 @@
     wrap.appendChild(grid);
 
     // --- Knockout bracket (horizontal, rounds → Campeón) ---
+    appendKnockout(wrap, tables, { header: true });
+    return wrap;
+  }
+
+  // Dedicated "Eliminatorias" view: the knockout bracket with live scores.
+  function renderEliminatorias() {
+    const wrap = el("div");
     wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
-    wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro →"));
+    wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro → · Marcadores en vivo conforme se juegan."));
+    appendKnockout(wrap, computeGroupTables(), { header: false });
+    return wrap;
+  }
+
+  // Builds the horizontal knockout bracket into `wrap`. `tables` = group
+  // standings (resolves undecided slot codes like 1A). Scores/live status come
+  // from each match's data and update as games are played.
+  function appendKnockout(wrap, tables, opts) {
+    if (opts && opts.header) {
+      wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
+      wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro →"));
+    }
     const allKo = Object.values(state.results.matches).filter((m) => m.round && (!m.group || m.group.indexOf("Group") !== 0));
 
     // Resolve bracket slot codes to real teams (projected from current standings):
     //  1X/2X -> winner/runner-up of group X; 3-slots & W/L codes stay as labels
     //  until decided (openfootball fills real team names into the feed by then).
-    const gt = tables; // group tables computed above (Group X -> sorted rows)
+    const gt = tables; // group tables (Group X -> sorted rows)
     const resolveSlot = (code) => {
       if (state.teams[code]) return { name: code, proj: false };
       const m = /^([12])([A-L])$/.exec(code || "");
@@ -514,7 +533,6 @@
       box.appendChild(bnode(tp));
       wrap.appendChild(box);
     }
-    return wrap;
   }
 
   /* ---------- Cuotas (estimated odds) ---------- */
@@ -733,7 +751,8 @@
   function render() {
     const main = $("#content");
     main.innerHTML = "";
-    if (state.view === "posiciones") main.appendChild(renderPosiciones());
+    if (state.view === "eliminatorias") main.appendChild(renderEliminatorias());
+    else if (state.view === "posiciones") main.appendChild(renderPosiciones());
     else if (state.view === "partidos") main.appendChild(renderPartidos());
     else if (state.view === "grupos") main.appendChild(renderGrupos());
     else if (state.view === "odds") main.appendChild(renderOdds());
