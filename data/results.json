@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T06:26:25.264746+00:00",
+  "generated_at": "2026-06-28T09:43:29.088482+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1166,12 +1166,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-29|Germany|3A/B/C/D/F": {
+    "2026-06-29|Germany|Paraguay": {
       "date": "2026-06-29",
       "time": "16:30 UTC-4",
       "kickoff_utc": "2026-06-29T20:30:00+00:00",
       "home": "Germany",
-      "away": "3A/B/C/D/F",
+      "away": "Paraguay",
       "group": null,
       "round": "Round of 32",
       "ground": "Boston (Foxborough)",
@@ -1205,12 +1205,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-30|1I|3C/D/F/G/H": {
+    "2026-06-30|France|Sweden": {
       "date": "2026-06-30",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-06-30T21:00:00+00:00",
-      "home": "1I",
-      "away": "3C/D/F/G/H",
+      "home": "France",
+      "away": "Sweden",
       "group": null,
       "round": "Round of 32",
       "ground": "New York/New Jersey (East Rutherford)",
@@ -1218,12 +1218,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-30|Ivory Coast|2I": {
+    "2026-06-30|Ivory Coast|Norway": {
       "date": "2026-06-30",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-06-30T17:00:00+00:00",
       "home": "Ivory Coast",
-      "away": "2I",
+      "away": "Norway",
       "group": null,
       "round": "Round of 32",
       "ground": "Dallas (Arlington)",
@@ -1231,12 +1231,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-06-30|Mexico|3C/E/F/H/I": {
+    "2026-06-30|Mexico|Ecuador": {
       "date": "2026-06-30",
       "time": "19:00 UTC-6",
       "kickoff_utc": "2026-07-01T01:00:00+00:00",
       "home": "Mexico",
-      "away": "3C/E/F/H/I",
+      "away": "Ecuador",
       "group": null,
       "round": "Round of 32",
       "ground": "Mexico City",
@@ -1244,12 +1244,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-01|1L|3E/H/I/J/K": {
+    "2026-07-01|England|DR Congo": {
       "date": "2026-07-01",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-07-01T16:00:00+00:00",
-      "home": "1L",
-      "away": "3E/H/I/J/K",
+      "home": "England",
+      "away": "DR Congo",
       "group": null,
       "round": "Round of 32",
       "ground": "Atlanta",
@@ -1257,12 +1257,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-01|USA|3B/E/F/I/J": {
+    "2026-07-01|USA|Bosnia & Herzegovina": {
       "date": "2026-07-01",
       "time": "17:00 UTC-7",
       "kickoff_utc": "2026-07-02T00:00:00+00:00",
       "home": "USA",
-      "away": "3B/E/F/I/J",
+      "away": "Bosnia & Herzegovina",
       "group": null,
       "round": "Round of 32",
       "ground": "San Francisco Bay Area (Santa Clara)",
@@ -1270,12 +1270,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-01|1G|3A/E/H/I/J": {
+    "2026-07-01|Belgium|Senegal": {
       "date": "2026-07-01",
       "time": "13:00 UTC-7",
       "kickoff_utc": "2026-07-01T20:00:00+00:00",
-      "home": "1G",
-      "away": "3A/E/H/I/J",
+      "home": "Belgium",
+      "away": "Senegal",
       "group": null,
       "round": "Round of 32",
       "ground": "Seattle",
@@ -1283,12 +1283,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-02|2K|2L": {
+    "2026-07-02|Portugal|Croatia": {
       "date": "2026-07-02",
       "time": "19:00 UTC-4",
       "kickoff_utc": "2026-07-02T23:00:00+00:00",
-      "home": "2K",
-      "away": "2L",
+      "home": "Portugal",
+      "away": "Croatia",
       "group": null,
       "round": "Round of 32",
       "ground": "Toronto",
@@ -1296,12 +1296,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-02|1H|2J": {
+    "2026-07-02|Spain|Austria": {
       "date": "2026-07-02",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-07-02T19:00:00+00:00",
-      "home": "1H",
-      "away": "2J",
+      "home": "Spain",
+      "away": "Austria",
       "group": null,
       "round": "Round of 32",
       "ground": "Los Angeles (Inglewood)",
@@ -1309,12 +1309,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-02|Switzerland|3E/F/G/I/J": {
+    "2026-07-02|Switzerland|Algeria": {
       "date": "2026-07-02",
       "time": "20:00 UTC-7",
       "kickoff_utc": "2026-07-03T03:00:00+00:00",
       "home": "Switzerland",
-      "away": "3E/F/G/I/J",
+      "away": "Algeria",
       "group": null,
       "round": "Round of 32",
       "ground": "Vancouver",
@@ -1322,12 +1322,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-03|1J|2H": {
+    "2026-07-03|Argentina|Cape Verde": {
       "date": "2026-07-03",
       "time": "18:00 UTC-4",
       "kickoff_utc": "2026-07-03T22:00:00+00:00",
-      "home": "1J",
-      "away": "2H",
+      "home": "Argentina",
+      "away": "Cape Verde",
       "group": null,
       "round": "Round of 32",
       "ground": "Miami (Miami Gardens)",
@@ -1335,12 +1335,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-03|1K|3D/E/I/J/L": {
+    "2026-07-03|Colombia|Ghana": {
       "date": "2026-07-03",
       "time": "20:30 UTC-5",
       "kickoff_utc": "2026-07-04T01:30:00+00:00",
-      "home": "1K",
-      "away": "3D/E/I/J/L",
+      "home": "Colombia",
+      "away": "Ghana",
       "group": null,
       "round": "Round of 32",
       "ground": "Kansas City",
@@ -1348,12 +1348,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-03|Australia|2G": {
+    "2026-07-03|Australia|Egypt": {
       "date": "2026-07-03",
       "time": "13:00 UTC-5",
       "kickoff_utc": "2026-07-03T18:00:00+00:00",
       "home": "Australia",
-      "away": "2G",
+      "away": "Egypt",
       "group": null,
       "round": "Round of 32",
       "ground": "Dallas (Arlington)",
