@@ -170,11 +170,11 @@
       const d = new Date(ko);
       const dayStr = d.toLocaleDateString("es-MX", { timeZone: "America/New_York", day: "numeric", month: "short" });
       const time = d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit", hour12: true });
-      return `${dayStr} · ${time} ET`;
+      return `<span class="bd-d">${dayStr}</span><span class="bd-t">${time}</span>`;
     }
     if (m.date) {
       const d = new Date(m.date + "T12:00:00");
-      return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+      return `<span class="bd-d">${d.getDate()} ${MONTHS[d.getMonth()]}</span>`;
     }
     return "";
   }
@@ -410,7 +410,7 @@
     97: [89, 90], 98: [93, 94], 99: [91, 92], 100: [95, 96],
     101: [97, 98], 102: [99, 100], 104: [101, 102],
   };
-  const KO_COL_ES = ["Dieciseisavos", "Octavos", "Cuartos", "Semifinal"]; // R32→SF
+  const KO_COL_ES = ["16", "8", "4", "SF"]; // R32→SF column headers (compact)
 
   function renderGrupos() {
     const wrap = el("div");
@@ -451,7 +451,7 @@
   function renderEliminatorias() {
     const wrap = el("div");
     wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
-    wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro → · Marcadores en vivo conforme se juegan."));
+    wrap.appendChild(el("p", "hint", "Marcadores en vivo conforme se juegan · Horarios en hora del Este (ET) · 16 = Dieciseisavos · 8 = Octavos · 4 = Cuartos · SF = Semifinal · F = Final."));
     appendKnockout(wrap, computeGroupTables(), { header: false });
     return wrap;
   }
@@ -542,7 +542,7 @@
     if (final && final.status === "finished" && final.score && final.score[0] !== final.score[1])
       champ = final.score[0] > final.score[1] ? final.home : final.away;
     const center = el("div", "bround center-col");
-    center.innerHTML = `<div class="btrophy">🏆</div><div class="brh">Final</div>`;
+    center.innerHTML = `<div class="btrophy">🏆</div><div class="brh">F</div>`;
     if (final) center.appendChild(bnode(final));
     const champBox = el("div", "bchamp");
     champBox.innerHTML = champ
