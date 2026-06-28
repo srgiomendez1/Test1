@@ -449,18 +449,22 @@
       }
       return { name: null, code: code };
     };
-    const slotLabel = (code) => /^3/.test(code || "")
-      ? "3º " + code.slice(1).replace(/\//g, "·")
-      : "Por definir";
+    // Condensed bracket: flags only (no country names). Short code when the slot
+    // isn't decided yet (e.g. "3º", "1A"); the full name stays on hover/long-press.
+    const slotShort = (code) => {
+      if (/^3/.test(code || "")) return "3º";
+      const m = /^([12])([A-L])$/.exec(code || "");
+      return m ? code : "—";
+    };
 
     const brTeam = (code, score, win) => {
       const r = resolveSlot(code);
       let inner;
       if (r.name && state.teams[r.name]) {
         const t = state.teams[r.name];
-        inner = `<span class="flag">${t.flag}</span><span class="bn ${r.proj ? "proj" : ""}">${t.es}</span>`;
+        inner = `<span class="flag ${r.proj ? "proj" : ""}" title="${t.es}">${t.flag}</span>`;
       } else {
-        inner = `<span class="bn ph">${slotLabel(code)}</span>`;
+        inner = `<span class="bn ph">${slotShort(code)}</span>`;
       }
       return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}</span></div>`;
     };
