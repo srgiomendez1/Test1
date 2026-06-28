@@ -1164,7 +1164,8 @@
       "ground": "Los Angeles (Inglewood)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 73
     },
     "2026-06-29|Germany|Paraguay": {
       "date": "2026-06-29",
@@ -1177,7 +1178,8 @@
       "ground": "Boston (Foxborough)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 74
     },
     "2026-06-29|Netherlands|Morocco": {
       "date": "2026-06-29",
@@ -1190,7 +1192,8 @@
       "ground": "Monterrey (Guadalupe)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 75
     },
     "2026-06-29|Brazil|Japan": {
       "date": "2026-06-29",
@@ -1203,7 +1206,8 @@
       "ground": "Houston",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 76
     },
     "2026-06-30|France|Sweden": {
       "date": "2026-06-30",
@@ -1216,7 +1220,8 @@
       "ground": "New York/New Jersey (East Rutherford)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 77
     },
     "2026-06-30|Ivory Coast|Norway": {
       "date": "2026-06-30",
@@ -1229,7 +1234,8 @@
       "ground": "Dallas (Arlington)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 78
     },
     "2026-06-30|Mexico|Ecuador": {
       "date": "2026-06-30",
@@ -1242,7 +1248,8 @@
       "ground": "Mexico City",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 79
     },
     "2026-07-01|England|DR Congo": {
       "date": "2026-07-01",
@@ -1255,7 +1262,8 @@
       "ground": "Atlanta",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 80
     },
     "2026-07-01|USA|Bosnia & Herzegovina": {
       "date": "2026-07-01",
@@ -1268,7 +1276,8 @@
       "ground": "San Francisco Bay Area (Santa Clara)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 81
     },
     "2026-07-01|Belgium|Senegal": {
       "date": "2026-07-01",
@@ -1281,7 +1290,8 @@
       "ground": "Seattle",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 82
     },
     "2026-07-02|Portugal|Croatia": {
       "date": "2026-07-02",
@@ -1294,7 +1304,8 @@
       "ground": "Toronto",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 83
     },
     "2026-07-02|Spain|Austria": {
       "date": "2026-07-02",
@@ -1307,7 +1318,8 @@
       "ground": "Los Angeles (Inglewood)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 84
     },
     "2026-07-02|Switzerland|Algeria": {
       "date": "2026-07-02",
@@ -1320,7 +1332,8 @@
       "ground": "Vancouver",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 85
     },
     "2026-07-03|Argentina|Cape Verde": {
       "date": "2026-07-03",
@@ -1333,7 +1346,8 @@
       "ground": "Miami (Miami Gardens)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 86
     },
     "2026-07-03|Colombia|Ghana": {
       "date": "2026-07-03",
@@ -1346,7 +1360,8 @@
       "ground": "Kansas City",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 87
     },
     "2026-07-03|Australia|Egypt": {
       "date": "2026-07-03",
@@ -1359,7 +1374,8 @@
       "ground": "Dallas (Arlington)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 88
     },
     "2026-07-04|W74|W77": {
       "date": "2026-07-04",
@@ -1372,7 +1388,8 @@
       "ground": "Philadelphia",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 89
     },
     "2026-07-04|W73|W75": {
       "date": "2026-07-04",
@@ -1385,7 +1402,8 @@
       "ground": "Houston",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 90
     },
     "2026-07-05|W76|W78": {
       "date": "2026-07-05",
@@ -1398,7 +1416,8 @@
       "ground": "New York/New Jersey (East Rutherford)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 91
     },
     "2026-07-05|W79|W80": {
       "date": "2026-07-05",
@@ -1411,7 +1430,8 @@
       "ground": "Mexico City",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 92
     },
     "2026-07-06|W83|W84": {
       "date": "2026-07-06",
@@ -1424,7 +1444,8 @@
       "ground": "Dallas (Arlington)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 93
     },
     "2026-07-06|W81|W82": {
       "date": "2026-07-06",
@@ -1437,7 +1458,8 @@
       "ground": "Seattle",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 94
     },
     "2026-07-07|W86|W88": {
       "date": "2026-07-07",
@@ -1450,7 +1472,8 @@
       "ground": "Atlanta",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 95
     },
     "2026-07-07|W85|W87": {
       "date": "2026-07-07",
@@ -1463,7 +1486,8 @@
       "ground": "Vancouver",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 96
     },
     "2026-07-09|W89|W90": {
       "date": "2026-07-09",
@@ -1476,7 +1500,8 @@
       "ground": "Boston (Foxborough)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 97
     },
     "2026-07-10|W93|W94": {
       "date": "2026-07-10",
@@ -1489,7 +1514,8 @@
       "ground": "Los Angeles (Inglewood)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 98
     },
     "2026-07-11|W91|W92": {
       "date": "2026-07-11",
@@ -1502,7 +1528,8 @@
       "ground": "Miami (Miami Gardens)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 99
     },
     "2026-07-11|W95|W96": {
       "date": "2026-07-11",
@@ -1515,7 +1542,8 @@
       "ground": "Kansas City",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 100
     },
     "2026-07-14|W97|W98": {
       "date": "2026-07-14",
@@ -1528,7 +1556,8 @@
       "ground": "Dallas (Arlington)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 101
     },
     "2026-07-15|W99|W100": {
       "date": "2026-07-15",
@@ -1541,7 +1570,8 @@
       "ground": "Atlanta",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 102
     },
     "2026-07-18|L101|L102": {
       "date": "2026-07-18",
@@ -1554,7 +1584,8 @@
       "ground": "Miami (Miami Gardens)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 103
     },
     "2026-07-19|W101|W102": {
       "date": "2026-07-19",
@@ -1567,7 +1598,8 @@
       "ground": "New York/New Jersey (East Rutherford)",
       "score": null,
       "status": "scheduled",
-      "source": "openfootball"
+      "source": "openfootball",
+      "num": 104
     }
   }
 }

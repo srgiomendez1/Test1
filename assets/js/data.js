@@ -82,6 +82,7 @@
       if (!home || !away || !date) continue;
       const ft = m.score && m.score.ft;
       matches[`${date}|${home}|${away}`] = {
+        num: m.num, // FIFA match number (knockout bracket tree)
         date, time: m.time, kickoff_utc: kickoffUtc(date, m.time),
         home, away, group: m.group, round: m.round, ground: m.ground,
         score: ft && ft.length === 2 ? [ft[0], ft[1]] : null,

@@ -401,6 +401,17 @@
   const KO_ES = Object.fromEntries(KO_ROUNDS);
   const roundES = (r) => KO_ES[r] || r || "";
 
+  // FIFA 2026 knockout tree: match num -> the two feeder match nums. Fixed
+  // structure (teams fill in as rounds are played). Left half feeds Semi 101,
+  // right half feeds Semi 102; the Final is 104, third place 103.
+  const KO_TREE = {
+    89: [74, 77], 90: [73, 75], 91: [76, 78], 92: [79, 80],
+    93: [83, 84], 94: [81, 82], 95: [86, 88], 96: [85, 87],
+    97: [89, 90], 98: [93, 94], 99: [91, 92], 100: [95, 96],
+    101: [97, 98], 102: [99, 100], 104: [101, 102],
+  };
+  const KO_COL_ES = ["Dieciseisavos", "Octavos", "Cuartos", "Semifinal"]; // R32→SF
+
   function renderGrupos() {
     const wrap = el("div");
 
@@ -445,19 +456,16 @@
     return wrap;
   }
 
-  // Builds the horizontal knockout bracket into `wrap`. `tables` = group
-  // standings (resolves undecided slot codes like 1A). Scores/live status come
-  // from each match's data and update as games are played.
+  // Builds the MIRRORED knockout bracket into `wrap`: left half flows left→right
+  // and right half right→left toward a center column (Final + 🏆 + 3er lugar), so
+  // it's clear which match winners meet next. `tables` = group standings (only
+  // used to label any still-undecided slot). Scores/live status come from each
+  // match and update as games are played.
   function appendKnockout(wrap, tables, opts) {
     if (opts && opts.header) {
       wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
-      wrap.appendChild(el("p", "hint", "Desliza horizontalmente para ver todo el cuadro →"));
     }
-    const allKo = Object.values(state.results.matches).filter((m) => m.round && (!m.group || m.group.indexOf("Group") !== 0));
 
-    // Resolve bracket slot codes to real teams (projected from current standings):
-    //  1X/2X -> winner/runner-up of group X; 3-slots & W/L codes stay as labels
-    //  until decided (openfootball fills real team names into the feed by then).
     const gt = tables; // group tables (Group X -> sorted rows)
     const resolveSlot = (code) => {
       if (state.teams[code]) return { name: code, proj: false };
@@ -468,8 +476,8 @@
       }
       return { name: null, code: code };
     };
-    // Condensed bracket: flags only (no country names). Short code when the slot
-    // isn't decided yet (e.g. "3º", "1A"); the full name stays on hover/long-press.
+    // Flags only (no country names). Short placeholder when the slot isn't
+    // decided yet ("3º", "1A"); W/L codes (winner/loser of a match) show "—".
     const slotShort = (code) => {
       if (/^3/.test(code || "")) return "3º";
       const m = /^([12])([A-L])$/.exec(code || "");
@@ -497,42 +505,61 @@
       return n;
     };
 
-    const order = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Final"];
-    const bracket = el("div", "bracket2");
-    order.forEach((rn) => {
-      const ms = allKo.filter((m) => m.round === rn); // keep feed (bracket) order
-      if (!ms.length) return;
-      const col = el("div", "bround");
-      col.innerHTML = `<div class="brh">${roundES(rn)}</div>`;
+    // Index every knockout match by its FIFA number.
+    const byNum = {};
+    Object.values(state.results.matches).forEach((m) => { if (m.num != null) byNum[m.num] = m; });
+
+    // One half of the draw, as columns [R32, R16, QF, SF] in vertical (DFS) order.
+    const sideColumns = (rootNum) => {
+      const levels = { 0: [], 1: [], 2: [], 3: [] };
+      const rec = (num, depth) => {
+        const kids = KO_TREE[num];
+        if (kids) { rec(kids[0], depth - 1); rec(kids[1], depth - 1); }
+        levels[depth].push(num);
+      };
+      rec(rootNum, 3);
+      return [levels[0], levels[1], levels[2], levels[3]];
+    };
+    const leftCols = sideColumns(101);  // R32,R16,QF,SF feeding Semi 101
+    const rightCols = sideColumns(102); // R32,R16,QF,SF feeding Semi 102
+
+    const makeCol = (nums, roundIdx, side) => {
+      const col = el("div", `bround ${side}`);
+      col.innerHTML = `<div class="brh">${KO_COL_ES[roundIdx]}</div>`;
       const body = el("div", "bbody");
-      ms.forEach((m) => body.appendChild(bnode(m)));
+      nums.forEach((n) => { if (byNum[n]) body.appendChild(bnode(byNum[n])); });
       col.appendChild(body);
-      bracket.appendChild(col);
-    });
-    // Champion column
-    const final = allKo.find((m) => m.round === "Final");
+      return col;
+    };
+
+    const bracket = el("div", "bracket2 mirror");
+    // Left half: R32 → SF (left to right)
+    leftCols.forEach((nums, i) => bracket.appendChild(makeCol(nums, i, "left")));
+
+    // Center: 🏆 + Final + Campeón + 3er lugar
+    const final = byNum[104];
     let champ = null;
     if (final && final.status === "finished" && final.score && final.score[0] !== final.score[1])
       champ = final.score[0] > final.score[1] ? final.home : final.away;
-    const cc = el("div", "bround champ-col");
-    cc.innerHTML = `<div class="brh">Campeón</div>`;
-    const cb = el("div", "bbody");
-    const champHtml = champ
+    const center = el("div", "bround center-col");
+    center.innerHTML = `<div class="btrophy">🏆</div><div class="brh">Final</div>`;
+    if (final) center.appendChild(bnode(final));
+    const champBox = el("div", "bchamp");
+    champBox.innerHTML = champ
       ? (state.teams[champ] ? `<span class="flag">${state.teams[champ].flag}</span> ${state.teams[champ].es}` : champ)
-      : "🏆 ¿?";
-    cb.innerHTML = `<div class="bchamp">${champHtml}</div>`;
-    cc.appendChild(cb);
-    bracket.appendChild(cc);
-    wrap.appendChild(bracket);
-
-    // 3rd place
-    const tp = allKo.find((m) => m.round === "Match for third place");
+      : "Campeón ¿?";
+    center.appendChild(champBox);
+    const tp = byNum[103];
     if (tp) {
-      const box = el("div", "thirdplace");
-      box.innerHTML = `<span class="tplabel">🥉 Tercer lugar</span>`;
-      box.appendChild(bnode(tp));
-      wrap.appendChild(box);
+      center.appendChild(el("div", "b3rdlabel", "🥉 Tercer lugar"));
+      center.appendChild(bnode(tp));
     }
+    bracket.appendChild(center);
+
+    // Right half: SF → R32 (center to right; columns reversed, content mirrored)
+    [3, 2, 1, 0].forEach((i) => bracket.appendChild(makeCol(rightCols[i], i, "right")));
+
+    wrap.appendChild(bracket);
   }
 
   /* ---------- Cuotas (estimated odds) ---------- */
