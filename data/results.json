@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T23:45:25.602351+00:00",
+  "generated_at": "2026-06-28T01:56:31.640344+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "date": "2026-06-11",
@@ -1032,9 +1032,8 @@
         0,
         0
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-27|DR Congo|Uzbekistan": {
       "date": "2026-06-27",
@@ -1046,12 +1045,11 @@
       "round": "Matchday 17",
       "ground": "Atlanta",
       "score": [
-        0,
+        3,
         1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-17|England|Croatia": {
       "date": "2026-06-17",
