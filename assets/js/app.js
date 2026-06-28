@@ -452,7 +452,10 @@
       const fin = m.status === "finished" && m.score;
       const w0 = fin && m.score[0] > m.score[1], w1 = fin && m.score[1] > m.score[0];
       const n = el("div", "bmatch" + (m.status === "live" ? " blive" : ""));
-      n.innerHTML = brTeam(m.home, m.score ? m.score[0] : null, w0) + brTeam(m.away, m.score ? m.score[1] : null, w1);
+      const d = m.date ? new Date(m.date + "T12:00:00") : null;
+      const ds = d ? `${d.getDate()} ${MONTHS[d.getMonth()]}` : "";
+      n.innerHTML = `<div class="bdate">${ds}</div>` +
+        brTeam(m.home, m.score ? m.score[0] : null, w0) + brTeam(m.away, m.score ? m.score[1] : null, w1);
       return n;
     };
 
