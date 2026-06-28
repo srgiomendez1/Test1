@@ -163,18 +163,19 @@
     return new Date(ko).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
   }
 
-  // Compact "28 jun · 3:00 PM ET" for the knockout bracket nodes (Eastern time).
+  // Ultra-compact "2806" / "1700" (DDMM + 24h, Eastern time) for bracket nodes.
   function bracketWhen(m) {
     const ko = m.kickoff_utc ? (typeof m.kickoff_utc === "number" ? m.kickoff_utc : Date.parse(m.kickoff_utc)) : 0;
     if (ko) {
       const d = new Date(ko);
-      const dayStr = d.toLocaleDateString("es-MX", { timeZone: "America/New_York", day: "numeric", month: "short" });
-      const time = d.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit", hour12: true });
-      return `<span class="bd-d">${dayStr}</span><span class="bd-t">${time}</span>`;
+      const ddmm = d.toLocaleDateString("en-GB", { timeZone: "America/New_York", day: "2-digit", month: "2-digit" }).replace("/", "");
+      const hhmm = d.toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }).replace(":", "");
+      return `<span class="bd-d">${ddmm}</span><span class="bd-t">${hhmm}</span>`;
     }
     if (m.date) {
       const d = new Date(m.date + "T12:00:00");
-      return `<span class="bd-d">${d.getDate()} ${MONTHS[d.getMonth()]}</span>`;
+      const ddmm = String(d.getDate()).padStart(2, "0") + String(d.getMonth() + 1).padStart(2, "0");
+      return `<span class="bd-d">${ddmm}</span>`;
     }
     return "";
   }
