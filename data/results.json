@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T16:08:06.581268+00:00",
+  "generated_at": "2026-06-29T18:22:25.354078+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1280,9 +1280,13 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Houston",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-30|France|Sweden": {
       "num": 77,
