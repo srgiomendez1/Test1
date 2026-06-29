@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T18:22:25.354078+00:00",
+  "generated_at": "2026-06-29T20:22:17.960069+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1281,12 +1281,11 @@
       "round": "Round of 32",
       "ground": "Houston",
       "score": [
-        1,
+        2,
         1
       ],
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-06-30|France|Sweden": {
       "num": 77,
