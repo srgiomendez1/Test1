@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T20:22:17.960069+00:00",
+  "generated_at": "2026-06-29T21:50:48.978015+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1252,9 +1252,13 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Boston (Foxborough)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        1,
+        1
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-29|Netherlands|Morocco": {
       "num": 75,
