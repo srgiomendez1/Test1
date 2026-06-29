@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T12:05:17.319706+00:00",
+  "generated_at": "2026-06-29T16:08:06.581268+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1466,12 +1466,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-04|W73|W75": {
+    "2026-07-04|Canada|W75": {
       "num": 90,
       "date": "2026-07-04",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-07-04T17:00:00+00:00",
-      "home": "W73",
+      "home": "Canada",
       "away": "W75",
       "group": null,
       "round": "Round of 16",
