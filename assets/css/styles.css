@@ -213,9 +213,10 @@ body > * { position: relative; z-index: 1; }
 .bteam .flag.proj { opacity: 0.5; }
 .bteam .bn { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bteam .bn.ph { font-size: 0.68rem; color: var(--muted); }
-.bteam .bsc { font-weight: 800; color: var(--muted); min-width: 11px; text-align: right; margin-left: auto; }
+.bteam .bsc { font-weight: 800; color: var(--muted); min-width: 11px; text-align: right; margin-left: auto; white-space: nowrap; }
+.bteam .bpen { font-size: 0.78em; font-weight: 700; color: var(--muted); margin-left: 1px; }
 .bteam.bw { background: rgba(232, 198, 106, 0.12); }
-.bteam.bw .bsc { color: var(--gold); }
+.bteam.bw .bsc, .bteam.bw .bpen { color: var(--gold); }
 /* mirror the right half so flags face inward like the poster */
 .bround.right .bteam { flex-direction: row-reverse; }
 .bround.right .bteam .bsc { margin-left: 0; margin-right: auto; text-align: left; }

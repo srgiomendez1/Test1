@@ -485,7 +485,8 @@
       return m ? code : "—";
     };
 
-    const brTeam = (code, score, win) => {
+    // pen = penalty-shootout count for this side (shown as "(4)"), or null.
+    const brTeam = (code, score, pen, win) => {
       const r = resolveSlot(code);
       let inner;
       if (r.name && state.teams[r.name]) {
@@ -494,15 +495,21 @@
       } else {
         inner = `<span class="bn ph">${slotShort(code)}</span>`;
       }
-      return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}</span></div>`;
+      const penHTML = pen != null ? `<span class="bpen">(${pen})</span>` : "";
+      return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}${penHTML}</span></div>`;
     };
     const bnode = (m) => {
       const fin = m.status === "finished" && m.score;
-      const w0 = fin && m.score[0] > m.score[1], w1 = fin && m.score[1] > m.score[0];
+      let w0 = false, w1 = false;
+      if (fin) {
+        if (m.score[0] !== m.score[1]) { w0 = m.score[0] > m.score[1]; w1 = !w0; }
+        else if (m.pens) { w0 = m.pens[0] > m.pens[1]; w1 = m.pens[1] > m.pens[0]; }
+      }
+      const p0 = m.pens ? m.pens[0] : null, p1 = m.pens ? m.pens[1] : null;
       const n = el("div", "bmatch" + (m.status === "live" ? " blive" : ""));
       const ds = bracketWhen(m);
       n.innerHTML = `<div class="bdate">${ds}</div>` +
-        brTeam(m.home, m.score ? m.score[0] : null, w0) + brTeam(m.away, m.score ? m.score[1] : null, w1);
+        brTeam(m.home, m.score ? m.score[0] : null, p0, w0) + brTeam(m.away, m.score ? m.score[1] : null, p1, w1);
       return n;
     };
 
@@ -540,8 +547,10 @@
     // Center: 🏆 + Final + Campeón + 3er lugar
     const final = byNum[104];
     let champ = null;
-    if (final && final.status === "finished" && final.score && final.score[0] !== final.score[1])
-      champ = final.score[0] > final.score[1] ? final.home : final.away;
+    if (final && final.status === "finished" && final.score) {
+      if (final.score[0] !== final.score[1]) champ = final.score[0] > final.score[1] ? final.home : final.away;
+      else if (final.pens) champ = final.pens[0] > final.pens[1] ? final.home : final.away;
+    }
     const center = el("div", "bround center-col");
     center.innerHTML = `<div class="btrophy">🏆</div><div class="brh">F</div>`;
     if (final) center.appendChild(bnode(final));

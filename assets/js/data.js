@@ -81,11 +81,13 @@
       const home = m.team1, away = m.team2, date = m.date;
       if (!home || !away || !date) continue;
       const ft = m.score && m.score.ft;
+      const pen = m.score && m.score.p; // penalty shootout result
       matches[`${date}|${home}|${away}`] = {
         num: m.num, // FIFA match number (knockout bracket tree)
         date, time: m.time, kickoff_utc: kickoffUtc(date, m.time),
         home, away, group: m.group, round: m.round, ground: m.ground,
         score: ft && ft.length === 2 ? [ft[0], ft[1]] : null,
+        pens: pen && pen.length === 2 ? [pen[0], pen[1]] : null,
         status: ft && ft.length === 2 ? "finished" : "scheduled",
         source: "openfootball",
       };
