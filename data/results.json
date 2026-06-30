@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T23:45:58.719048+00:00",
+  "generated_at": "2026-06-30T01:53:26.823530+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1269,9 +1269,13 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Monterrey (Guadalupe)",
-      "score": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "score": [
+        0,
+        0
+      ],
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-29|Brazil|Japan": {
       "num": 76,
