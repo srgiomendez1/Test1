@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T15:07:36.292877+00:00",
+  "generated_at": "2026-06-30T17:15:16.733848+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1400,10 +1400,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Dallas (Arlington)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-06-30|Mexico|Ecuador": {
       "num": 79,
