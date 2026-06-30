@@ -96,6 +96,7 @@ def normalize_openfootball(data):
             continue
         score = m.get("score") or {}
         ft = score.get("ft")
+        pen = score.get("p")  # penalty shootout result, when a KO match is decided on pens
         key = f"{date}|{home}|{away}"
         out[key] = {
             "num": m.get("num"),  # FIFA match number (drives the knockout bracket tree)
@@ -108,6 +109,7 @@ def normalize_openfootball(data):
             "round": m.get("round"),
             "ground": m.get("ground"),
             "score": [ft[0], ft[1]] if ft and len(ft) == 2 else None,
+            "pens": [pen[0], pen[1]] if pen and len(pen) == 2 else None,
             "status": "finished" if ft and len(ft) == 2 else "scheduled",
             "source": "openfootball",
         }
