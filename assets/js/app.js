@@ -653,7 +653,21 @@
         else rem.push([m.home, m.away]);
       } else if (m.round === "Round of 32") KO32.push([m.home, m.away]);
     }
-    const sig = `${finishedG}|${KO32.length}|${state.bets.players.length}`;
+    // Index KO matches by number so the sim can HONOR already-played results
+    // (eliminated teams stay eliminated → 0% champion).
+    const byNum = {};
+    let finishedKO = 0;
+    for (const m of ms) {
+      if (m.num != null) byNum[m.num] = m;
+      if (m.num != null && m.num >= 73 && m.status === "finished" && m.score) finishedKO++;
+    }
+    const koWinnerActual = (m) => {
+      if (!(m && m.status === "finished" && m.score)) return null;
+      if (m.score[0] !== m.score[1]) return m.score[0] > m.score[1] ? m.home : m.away;
+      if (m.pens) return m.pens[0] > m.pens[1] ? m.home : m.away;
+      return null;
+    };
+    const sig = `${finishedG}|${KO32.length}|${finishedKO}|${state.bets.players.length}`;
     if (_titleCache.sig === sig) return _titleCache.probs;
     if (!KO32.length) { _titleCache = { sig, probs: {} }; return {}; }
 
@@ -684,12 +698,19 @@
       thirds.sort(cmp);
       const tbg = {}; thirds.slice(0, 8).forEach((x) => (tbg[x.g] = x.t));
       const used = new Set();
-      let pairs = KO32.map(([h, a]) => [resolve(h, W, Ru, tbg, used), resolve(a, W, Ru, tbg, used)]);
-      while (true) {
-        const wn = pairs.map(([a, b]) => koWinner(a, b));
-        if (wn.length === 1) { champ[wn[0]] = (champ[wn[0]] || 0) + 1; break; }
-        pairs = []; for (let i = 0; i < wn.length; i += 2) pairs.push([wn[i], wn[i + 1]]);
-      }
+      // Walk the real bracket tree: a finished match returns its actual winner
+      // (so losers can never advance); undecided matches are simulated.
+      const advance = (num) => {
+        const actual = koWinnerActual(byNum[num]);
+        if (actual) return actual;
+        const kids = KO_TREE[num];
+        let a, b;
+        if (kids) { a = advance(kids[0]); b = advance(kids[1]); }
+        else { const m = byNum[num]; a = resolve(m.home, W, Ru, tbg, used); b = resolve(m.away, W, Ru, tbg, used); }
+        return koWinner(a, b);
+      };
+      const c = advance(104);
+      if (c) champ[c] = (champ[c] || 0) + 1;
     }
     const probs = {}; for (const t in champ) probs[t] = champ[t] / N;
     _titleCache = { sig, probs };
