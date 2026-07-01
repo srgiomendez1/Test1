@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T16:03:03.321771+00:00",
+  "generated_at": "2026-07-01T18:08:56.431227+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1439,10 +1439,13 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Atlanta",
-      "score": null,
+      "score": [
+        2,
+        1
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-01|USA|Bosnia & Herzegovina": {
       "num": 81,
