@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T10:35:04.267459+00:00",
+  "generated_at": "2026-07-01T13:21:42.846749+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1609,12 +1609,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-05|W79|W80": {
+    "2026-07-05|Mexico|W80": {
       "num": 92,
       "date": "2026-07-05",
       "time": "18:00 UTC-6",
       "kickoff_utc": "2026-07-06T00:00:00+00:00",
-      "home": "W79",
+      "home": "Mexico",
       "away": "W80",
       "group": null,
       "round": "Round of 16",
