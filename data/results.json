@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T21:53:06.873595+00:00",
+  "generated_at": "2026-07-01T23:12:12.421492+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1473,13 +1473,12 @@
       "round": "Round of 32",
       "ground": "Seattle",
       "score": [
-        2,
+        3,
         2
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-02|Portugal|Croatia": {
       "num": 83,
