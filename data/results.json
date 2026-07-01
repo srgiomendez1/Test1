@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T18:08:56.431227+00:00",
+  "generated_at": "2026-07-01T20:15:10.391455+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1472,10 +1472,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Seattle",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-02|Portugal|Croatia": {
       "num": 83,
