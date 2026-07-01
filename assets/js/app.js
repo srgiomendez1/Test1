@@ -5,6 +5,7 @@
   const REFRESH_MS = 30 * 1000;
   const DAYS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   // Prize pot (MXN). Common practice: ties split, in equal parts, the COMBINED
   // prize of the places they occupy (places beyond 3rd pay 0). E.g. 3 tied for
@@ -163,19 +164,29 @@
     return new Date(ko).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
   }
 
-  // Ultra-compact "2806" / "1700" (DDMM + 24h, Eastern time) for bracket nodes.
+  // Compact "Jul01" / "8PM" (MonthDay + 12h, Eastern time) for bracket nodes.
+  const ET = "America/New_York";
+  function etDateLabel(d) {
+    const mon = d.toLocaleDateString("en-US", { timeZone: ET, month: "short" }); // "Jul"
+    const day = d.toLocaleDateString("en-US", { timeZone: ET, day: "2-digit" });  // "01"
+    return mon + day;
+  }
+  function etTimeLabel(d) {
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: ET, hour: "numeric", minute: "2-digit", hour12: true }).formatToParts(d);
+    let hour = "", minute = "", ap = "";
+    parts.forEach((p) => { if (p.type === "hour") hour = p.value; else if (p.type === "minute") minute = p.value; else if (p.type === "dayPeriod") ap = p.value; });
+    ap = ap.replace(/[.\s]/g, "").toUpperCase(); // "PM"
+    return minute === "00" ? `${hour}${ap}` : `${hour}:${minute}${ap}`;
+  }
   function bracketWhen(m) {
     const ko = m.kickoff_utc ? (typeof m.kickoff_utc === "number" ? m.kickoff_utc : Date.parse(m.kickoff_utc)) : 0;
     if (ko) {
       const d = new Date(ko);
-      const ddmm = d.toLocaleDateString("en-GB", { timeZone: "America/New_York", day: "2-digit", month: "2-digit" }).replace("/", "");
-      const hhmm = d.toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hour12: false }).replace(":", "");
-      return `<span class="bd-d">${ddmm}</span><span class="bd-t">${hhmm}</span>`;
+      return `<span class="bd-d">${etDateLabel(d)}</span><span class="bd-t">${etTimeLabel(d)}</span>`;
     }
     if (m.date) {
       const d = new Date(m.date + "T12:00:00");
-      const ddmm = String(d.getDate()).padStart(2, "0") + String(d.getMonth() + 1).padStart(2, "0");
-      return `<span class="bd-d">${ddmm}</span>`;
+      return `<span class="bd-d">${MONTHS_EN[d.getMonth()]}${String(d.getDate()).padStart(2, "0")}</span>`;
     }
     return "";
   }
@@ -467,9 +478,43 @@
       wrap.appendChild(el("h2", "sechdr", "Eliminatorias"));
     }
 
+    // Index every knockout match by its FIFA number (needed to advance winners).
+    const byNum = {};
+    Object.values(state.results.matches).forEach((m) => { if (m.num != null) byNum[m.num] = m; });
+
+    // Winner side of a finished match (0=home, 1=away) via score then penalties.
+    const decideWinner = (m) => {
+      if (!(m && m.status === "finished" && m.score)) return null;
+      if (m.score[0] !== m.score[1]) return m.score[0] > m.score[1] ? 0 : 1;
+      if (m.pens) return m.pens[0] > m.pens[1] ? 0 : 1;
+      return null;
+    };
+
     const gt = tables; // group tables (Group X -> sorted rows)
+    // Resolve a slot code to a real team, AUTO-ADVANCING winners: "W74" -> winner
+    // of match 74, "L101" -> loser of match 101 (recursively), so a team appears
+    // in the next round the moment its match is decided (no wait on the feed).
+    const teamOfSlot = (code, seen) => {
+      if (!code) return null;
+      if (state.teams[code]) return code;              // already a real team
+      const wl = /^([WL])(\d+)$/.exec(code);
+      if (wl) {
+        const num = +wl[2];
+        if (seen && seen.has(num)) return null;         // guard against cycles
+        const m = byNum[num];
+        const w = decideWinner(m);
+        if (w == null) return null;                     // not decided yet
+        const s = new Set(seen); s.add(num);
+        const winnerCode = w === 0 ? m.home : m.away;
+        const loserCode = w === 0 ? m.away : m.home;
+        return teamOfSlot(wl[1] === "W" ? winnerCode : loserCode, s);
+      }
+      return null;
+    };
     const resolveSlot = (code) => {
       if (state.teams[code]) return { name: code, proj: false };
+      const advanced = teamOfSlot(code, new Set());     // W/L codes -> advanced team
+      if (advanced) return { name: advanced, proj: false };
       const m = /^([12])([A-L])$/.exec(code || "");
       if (m) {
         const arr = gt["Group " + m[2]];
@@ -499,12 +544,8 @@
       return `<div class="bteam ${win ? "bw" : ""}">${inner}<span class="bsc">${score != null ? score : ""}${penHTML}</span></div>`;
     };
     const bnode = (m) => {
-      const fin = m.status === "finished" && m.score;
-      let w0 = false, w1 = false;
-      if (fin) {
-        if (m.score[0] !== m.score[1]) { w0 = m.score[0] > m.score[1]; w1 = !w0; }
-        else if (m.pens) { w0 = m.pens[0] > m.pens[1]; w1 = m.pens[1] > m.pens[0]; }
-      }
+      const w = decideWinner(m);
+      const w0 = w === 0, w1 = w === 1;
       const p0 = m.pens ? m.pens[0] : null, p1 = m.pens ? m.pens[1] : null;
       const n = el("div", "bmatch" + (m.status === "live" ? " blive" : ""));
       const ds = bracketWhen(m);
@@ -512,10 +553,6 @@
         brTeam(m.home, m.score ? m.score[0] : null, p0, w0) + brTeam(m.away, m.score ? m.score[1] : null, p1, w1);
       return n;
     };
-
-    // Index every knockout match by its FIFA number.
-    const byNum = {};
-    Object.values(state.results.matches).forEach((m) => { if (m.num != null) byNum[m.num] = m; });
 
     // One half of the draw, as columns [R32, R16, QF, SF] in vertical (DFS) order.
     const sideColumns = (rootNum) => {
@@ -547,10 +584,8 @@
     // Center: 🏆 + Final + Campeón + 3er lugar
     const final = byNum[104];
     let champ = null;
-    if (final && final.status === "finished" && final.score) {
-      if (final.score[0] !== final.score[1]) champ = final.score[0] > final.score[1] ? final.home : final.away;
-      else if (final.pens) champ = final.pens[0] > final.pens[1] ? final.home : final.away;
-    }
+    const fw = decideWinner(final);
+    if (fw != null) champ = teamOfSlot(fw === 0 ? final.home : final.away, new Set());
     const center = el("div", "bround center-col");
     center.innerHTML = `<div class="btrophy">🏆</div><div class="brh">F</div>`;
     if (final) center.appendChild(bnode(final));
