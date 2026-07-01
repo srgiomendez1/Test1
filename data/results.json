@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T06:46:31.643400+00:00",
+  "generated_at": "2026-07-01T10:35:04.267459+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1564,13 +1564,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-04|W74|W77": {
+    "2026-07-04|Paraguay|France": {
       "num": 89,
       "date": "2026-07-04",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-04T21:00:00+00:00",
-      "home": "W74",
-      "away": "W77",
+      "home": "Paraguay",
+      "away": "France",
       "group": null,
       "round": "Round of 16",
       "ground": "Philadelphia",
@@ -1579,13 +1579,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-04|Canada|W75": {
+    "2026-07-04|Canada|Morocco": {
       "num": 90,
       "date": "2026-07-04",
       "time": "12:00 UTC-5",
       "kickoff_utc": "2026-07-04T17:00:00+00:00",
       "home": "Canada",
-      "away": "W75",
+      "away": "Morocco",
       "group": null,
       "round": "Round of 16",
       "ground": "Houston",
@@ -1594,13 +1594,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-05|W76|W78": {
+    "2026-07-05|Brazil|Norway": {
       "num": 91,
       "date": "2026-07-05",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-07-05T20:00:00+00:00",
-      "home": "W76",
-      "away": "W78",
+      "home": "Brazil",
+      "away": "Norway",
       "group": null,
       "round": "Round of 16",
       "ground": "New York/New Jersey (East Rutherford)",
