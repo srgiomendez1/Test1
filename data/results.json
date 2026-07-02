@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01T23:12:12.421492+00:00",
+  "generated_at": "2026-07-02T01:26:16.482950+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1457,10 +1457,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "San Francisco Bay Area (Santa Clara)",
-      "score": null,
+      "score": [
+        1,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-01|Belgium|Senegal": {
       "num": 82,
