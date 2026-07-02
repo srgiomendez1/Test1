@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T05:34:50.695925+00:00",
+  "generated_at": "2026-07-02T08:32:11.595907+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1618,13 +1618,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-05|Mexico|W80": {
+    "2026-07-05|Mexico|England": {
       "num": 92,
       "date": "2026-07-05",
       "time": "18:00 UTC-6",
       "kickoff_utc": "2026-07-06T00:00:00+00:00",
       "home": "Mexico",
-      "away": "W80",
+      "away": "England",
       "group": null,
       "round": "Round of 16",
       "ground": "Mexico City",
@@ -1648,13 +1648,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-06|W81|W82": {
+    "2026-07-06|USA|Belgium": {
       "num": 94,
       "date": "2026-07-06",
       "time": "17:00 UTC-7",
       "kickoff_utc": "2026-07-07T00:00:00+00:00",
-      "home": "W81",
-      "away": "W82",
+      "home": "USA",
+      "away": "Belgium",
       "group": null,
       "round": "Round of 16",
       "ground": "Seattle",
