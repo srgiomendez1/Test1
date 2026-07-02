@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T18:51:20.891517+00:00",
+  "generated_at": "2026-07-02T20:14:43.017018+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1508,10 +1508,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Los Angeles (Inglewood)",
-      "score": null,
+      "score": [
+        1,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-02|Switzerland|Algeria": {
       "num": 85,
