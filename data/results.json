@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T22:45:03.357038+00:00",
+  "generated_at": "2026-07-02T23:48:42.434382+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1493,10 +1493,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Toronto",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-02|Spain|Austria": {
       "num": 84,
