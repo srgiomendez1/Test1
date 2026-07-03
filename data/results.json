@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T16:58:25.838412+00:00",
+  "generated_at": "2026-07-03T18:19:54.339929+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1577,10 +1577,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Dallas (Arlington)",
-      "score": null,
+      "score": [
+        0,
+        1
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-04|Paraguay|France": {
       "num": 89,
