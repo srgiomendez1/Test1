@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T22:17:09.875640+00:00",
+  "generated_at": "2026-07-03T23:31:42.252814+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1548,8 +1548,8 @@
       "round": "Round of 32",
       "ground": "Miami (Miami Gardens)",
       "score": [
-        0,
-        0
+        1,
+        1
       ],
       "pens": null,
       "status": "live",
