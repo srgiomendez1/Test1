@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T21:11:49.798940+00:00",
+  "generated_at": "2026-07-03T22:17:09.875640+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1547,10 +1547,14 @@
       "group": null,
       "round": "Round of 32",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-03|Colombia|Ghana": {
       "num": 87,
