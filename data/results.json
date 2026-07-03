@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T13:14:27.832304+00:00",
+  "generated_at": "2026-07-03T15:29:01.702593+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1642,13 +1642,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-06|W83|W84": {
+    "2026-07-06|Portugal|Spain": {
       "num": 93,
       "date": "2026-07-06",
       "time": "14:00 UTC-5",
       "kickoff_utc": "2026-07-06T19:00:00+00:00",
-      "home": "W83",
-      "away": "W84",
+      "home": "Portugal",
+      "away": "Spain",
       "group": null,
       "round": "Round of 16",
       "ground": "Dallas (Arlington)",
@@ -1687,12 +1687,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-07|W85|W87": {
+    "2026-07-07|Switzerland|W87": {
       "num": 96,
       "date": "2026-07-07",
       "time": "13:00 UTC-7",
       "kickoff_utc": "2026-07-07T20:00:00+00:00",
-      "home": "W85",
+      "home": "Switzerland",
       "away": "W87",
       "group": null,
       "round": "Round of 16",
