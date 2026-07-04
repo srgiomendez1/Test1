@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T17:46:27.494556+00:00",
+  "generated_at": "2026-07-04T18:45:07.577599+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1621,7 +1621,7 @@
       "ground": "Houston",
       "score": [
         0,
-        0
+        1
       ],
       "pens": null,
       "status": "live",
