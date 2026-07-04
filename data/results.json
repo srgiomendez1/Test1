@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T22:12:18.824331+00:00",
+  "generated_at": "2026-07-04T23:15:08.713416+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1606,12 +1606,11 @@
       "ground": "Philadelphia",
       "score": [
         0,
-        0
+        1
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-04|Canada|Morocco": {
       "num": 90,
