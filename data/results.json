@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T16:41:18.163020+00:00",
+  "generated_at": "2026-07-04T17:46:27.494556+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1619,10 +1619,14 @@
       "group": null,
       "round": "Round of 16",
       "ground": "Houston",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-05|Brazil|Norway": {
       "num": 91,
