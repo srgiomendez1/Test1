@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T11:29:03.041647+00:00",
+  "generated_at": "2026-07-04T12:46:42.715542+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1684,13 +1684,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-07|W86|W88": {
+    "2026-07-07|Argentina|Egypt": {
       "num": 95,
       "date": "2026-07-07",
       "time": "12:00 UTC-4",
       "kickoff_utc": "2026-07-07T16:00:00+00:00",
-      "home": "W86",
-      "away": "W88",
+      "home": "Argentina",
+      "away": "Egypt",
       "group": null,
       "round": "Round of 16",
       "ground": "Atlanta",
@@ -1699,13 +1699,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-07|Switzerland|W87": {
+    "2026-07-07|Switzerland|Colombia": {
       "num": 96,
       "date": "2026-07-07",
       "time": "13:00 UTC-7",
       "kickoff_utc": "2026-07-07T20:00:00+00:00",
       "home": "Switzerland",
-      "away": "W87",
+      "away": "Colombia",
       "group": null,
       "round": "Round of 16",
       "ground": "Vancouver",
