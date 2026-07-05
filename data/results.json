@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T21:03:42.719463+00:00",
+  "generated_at": "2026-07-05T22:11:04.317885+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1641,13 +1641,12 @@
       "round": "Round of 16",
       "ground": "New York/New Jersey (East Rutherford)",
       "score": [
-        0,
-        0
+        1,
+        2
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-05|Mexico|England": {
       "num": 92,
