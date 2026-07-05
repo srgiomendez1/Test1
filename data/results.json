@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T18:34:22.545613+00:00",
+  "generated_at": "2026-07-05T19:54:59.084456+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1720,13 +1720,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-09|W89|W90": {
+    "2026-07-09|France|Morocco": {
       "num": 97,
       "date": "2026-07-09",
       "time": "16:00 UTC-4",
       "kickoff_utc": "2026-07-09T20:00:00+00:00",
-      "home": "W89",
-      "away": "W90",
+      "home": "France",
+      "away": "Morocco",
       "group": null,
       "round": "Quarter-final",
       "ground": "Boston (Foxborough)",
