@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T20:32:08.498710+00:00",
+  "generated_at": "2026-07-06T22:01:08.024689+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1678,12 +1678,11 @@
       "ground": "Dallas (Arlington)",
       "score": [
         0,
-        0
+        1
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-06|USA|Belgium": {
       "num": 94,
