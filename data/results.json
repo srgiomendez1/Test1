@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T09:43:36.157072+00:00",
+  "generated_at": "2026-07-06T13:34:08.161796+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1756,13 +1756,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-11|W91|W92": {
+    "2026-07-11|Norway|England": {
       "num": 99,
       "date": "2026-07-11",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-11T21:00:00+00:00",
-      "home": "W91",
-      "away": "W92",
+      "home": "Norway",
+      "away": "England",
       "group": null,
       "round": "Quarter-final",
       "ground": "Miami (Miami Gardens)",
