@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T01:12:51.838585+00:00",
+  "generated_at": "2026-07-06T05:38:21.968040+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1659,13 +1659,12 @@
       "round": "Round of 16",
       "ground": "Mexico City",
       "score": [
-        0,
-        0
+        2,
+        3
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-06|Portugal|Spain": {
       "num": 93,
