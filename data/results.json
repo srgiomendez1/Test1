@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T18:33:34.683019+00:00",
+  "generated_at": "2026-07-06T20:32:08.498710+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1676,10 +1676,14 @@
       "group": null,
       "round": "Round of 16",
       "ground": "Dallas (Arlington)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-06|USA|Belgium": {
       "num": 94,
