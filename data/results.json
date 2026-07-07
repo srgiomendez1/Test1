@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T21:54:14.418170+00:00",
+  "generated_at": "2026-07-07T23:01:21.873600+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1735,9 +1735,8 @@
         0
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-09|France|Morocco": {
       "num": 97,
