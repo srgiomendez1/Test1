@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T23:19:28.593684+00:00",
+  "generated_at": "2026-07-07T01:12:39.500220+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1694,10 +1694,14 @@
       "group": null,
       "round": "Round of 16",
       "ground": "Seattle",
-      "score": null,
+      "score": [
+        1,
+        2
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-07|Argentina|Egypt": {
       "num": 95,
