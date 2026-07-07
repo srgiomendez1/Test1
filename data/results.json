@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T08:43:52.274445+00:00",
+  "generated_at": "2026-07-07T11:32:44.452898+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1747,13 +1747,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-10|W93|W94": {
+    "2026-07-10|Spain|Belgium": {
       "num": 98,
       "date": "2026-07-10",
       "time": "12:00 UTC-7",
       "kickoff_utc": "2026-07-10T19:00:00+00:00",
-      "home": "W93",
-      "away": "W94",
+      "home": "Spain",
+      "away": "Belgium",
       "group": null,
       "round": "Quarter-final",
       "ground": "Los Angeles (Inglewood)",
