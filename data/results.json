@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T01:12:39.500220+00:00",
+  "generated_at": "2026-07-07T05:09:45.204647+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1696,12 +1696,11 @@
       "ground": "Seattle",
       "score": [
         1,
-        2
+        4
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-07|Argentina|Egypt": {
       "num": 95,
