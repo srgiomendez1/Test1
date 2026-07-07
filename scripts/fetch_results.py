@@ -95,8 +95,10 @@ def normalize_openfootball(data):
         if not (home and away and date):
             continue
         score = m.get("score") or {}
-        ft = score.get("ft")
-        pen = score.get("p")  # penalty shootout result, when a KO match is decided on pens
+        et = score.get("et")           # extra-time final (when a KO match goes to ET)
+        ft = score.get("ft")           # score at 90'
+        final = et if et and len(et) == 2 else ft  # decisive score to display
+        pen = score.get("p")           # penalty shootout result, if it went to pens
         key = f"{date}|{home}|{away}"
         out[key] = {
             "num": m.get("num"),  # FIFA match number (drives the knockout bracket tree)
@@ -108,9 +110,9 @@ def normalize_openfootball(data):
             "group": m.get("group"),
             "round": m.get("round"),
             "ground": m.get("ground"),
-            "score": [ft[0], ft[1]] if ft and len(ft) == 2 else None,
+            "score": [final[0], final[1]] if final and len(final) == 2 else None,
             "pens": [pen[0], pen[1]] if pen and len(pen) == 2 else None,
-            "status": "finished" if ft and len(ft) == 2 else "scheduled",
+            "status": "finished" if final and len(final) == 2 else "scheduled",
             "source": "openfootball",
         }
     return out
