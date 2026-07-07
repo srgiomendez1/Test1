@@ -80,15 +80,16 @@
     for (const m of feed.matches || []) {
       const home = m.team1, away = m.team2, date = m.date;
       if (!home || !away || !date) continue;
-      const ft = m.score && m.score.ft;
-      const pen = m.score && m.score.p; // penalty shootout result
+      const sc = m.score || {};
+      const final = sc.et && sc.et.length === 2 ? sc.et : sc.ft; // ET result if it went to extra time
+      const pen = sc.p; // penalty shootout result
       matches[`${date}|${home}|${away}`] = {
         num: m.num, // FIFA match number (knockout bracket tree)
         date, time: m.time, kickoff_utc: kickoffUtc(date, m.time),
         home, away, group: m.group, round: m.round, ground: m.ground,
-        score: ft && ft.length === 2 ? [ft[0], ft[1]] : null,
+        score: final && final.length === 2 ? [final[0], final[1]] : null,
         pens: pen && pen.length === 2 ? [pen[0], pen[1]] : null,
-        status: ft && ft.length === 2 ? "finished" : "scheduled",
+        status: final && final.length === 2 ? "finished" : "scheduled",
         source: "openfootball",
       };
     }
@@ -198,6 +199,39 @@
     return n;
   }
 
+  // Overlay the openfootball feed (CORS-enabled, authoritative for FINISHED
+  // matches incl. penalties, and it resolves knockout slots to real teams) onto
+  // whatever we loaded, joining by FIFA match number so it works even when a
+  // committed KO match still shows a "W83" code. This keeps the site current even
+  // if the scheduled Action that commits results.json is late. Best-effort.
+  async function overlayOpenfootball(results) {
+    const feed = await fetchJSONTimed(OPENFOOTBALL_URL, 8000);
+    if (!feed || !feed.matches) return false;
+    const byNum = {};
+    for (const m of Object.values(results.matches)) if (m.num != null) byNum[m.num] = m;
+    let changed = 0;
+    for (const fm of feed.matches) {
+      const t = fm.num != null ? byNum[fm.num] : null;
+      if (!t) continue;
+      // Fill in knockout teams once openfootball has resolved the slot codes.
+      if (fm.team1 && fm.team2) {
+        if (t.home !== fm.team1) { t.home = fm.team1; changed++; }
+        if (t.away !== fm.team2) { t.away = fm.team2; changed++; }
+      }
+      const sc = fm.score || {};
+      const ft = sc.et && sc.et.length === 2 ? sc.et : sc.ft; // ET result if it went to extra time
+      const pen = sc.p;
+      if (ft && ft.length === 2) {
+        if (!t.score || t.score[0] !== ft[0] || t.score[1] !== ft[1]) { t.score = [ft[0], ft[1]]; changed++; }
+        if (pen && pen.length === 2 && (!t.pens || t.pens[0] !== pen[0] || t.pens[1] !== pen[1])) { t.pens = [pen[0], pen[1]]; changed++; }
+        if (t.status !== "finished") { t.status = "finished"; changed++; }
+        t.source = t.source === "live" ? t.source : "openfootball";
+      }
+    }
+    if (changed) results.generated_at = new Date().toISOString();
+    return changed > 0;
+  }
+
   // Best-effort live overlay. Tries ESPN first (reliable), then worldcup26 via the
   // configured Worker / public proxies. Never throws; on failure keeps committed data.
   async function overlayLiveClient(results) {
@@ -256,9 +290,12 @@
   // Overlay live scores onto already-loaded results, then re-apply the clock.
   // Returns true if anything changed (so the caller can re-render). Best-effort.
   async function applyLive(results) {
-    const changed = await overlayLiveClient(results);
+    // openfootball first (finished results + resolved KO teams), then the live
+    // in-play sources (ESPN / worldcup26) on top for minute-by-minute scores.
+    const off = await overlayOpenfootball(results);
+    const live = await overlayLiveClient(results);
     applyClock(results);
-    return changed;
+    return off || live;
   }
 
   global.DataLayer = { load, applyLive };
