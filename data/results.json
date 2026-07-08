@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08T09:02:49.936144+00:00",
+  "generated_at": "2026-07-08T11:12:32.195767+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1786,13 +1786,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-11|W95|W96": {
+    "2026-07-11|Argentina|Switzerland": {
       "num": 100,
       "date": "2026-07-11",
       "time": "20:00 UTC-5",
       "kickoff_utc": "2026-07-12T01:00:00+00:00",
-      "home": "W95",
-      "away": "W96",
+      "home": "Argentina",
+      "away": "Switzerland",
       "group": null,
       "round": "Quarter-final",
       "ground": "Kansas City",
