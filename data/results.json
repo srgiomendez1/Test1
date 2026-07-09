@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T20:27:11.612884+00:00",
+  "generated_at": "2026-07-09T22:04:43.879281+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1752,13 +1752,12 @@
       "round": "Quarter-final",
       "ground": "Boston (Foxborough)",
       "score": [
-        0,
+        2,
         0
       ],
       "pens": null,
-      "status": "live",
-      "source": "live",
-      "minute": "live"
+      "status": "finished",
+      "source": "live"
     },
     "2026-07-10|Spain|Belgium": {
       "num": 98,
