@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T18:32:06.003365+00:00",
+  "generated_at": "2026-07-09T20:27:11.612884+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1751,10 +1751,14 @@
       "group": null,
       "round": "Quarter-final",
       "ground": "Boston (Foxborough)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-10|Spain|Belgium": {
       "num": 98,
