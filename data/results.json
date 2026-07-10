@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T17:57:02.070022+00:00",
+  "generated_at": "2026-07-10T19:45:03.972971+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1769,10 +1769,14 @@
       "group": null,
       "round": "Quarter-final",
       "ground": "Los Angeles (Inglewood)",
-      "score": null,
+      "score": [
+        1,
+        1
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-11|Norway|England": {
       "num": 99,
