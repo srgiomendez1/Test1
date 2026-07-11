@@ -91,13 +91,20 @@ main section.tab.active{display:block}
 .tile .val .unit{font-size:13px;font-weight:500;color:var(--muted)}
 .tile .deltas{font-size:11.5px;color:var(--ink2);margin:2px 0 6px;font-variant-numeric:tabular-nums}
 .up{color:var(--crit);font-weight:600}.dn{color:var(--goodtxt);font-weight:600}.flat{color:var(--muted);font-weight:600}
-/* ---------- steps ---------- */
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.step{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column}
-.step .num{width:26px;height:26px;border-radius:50%;background:var(--s1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;margin-bottom:10px}
-.step h3{text-wrap:balance}
-.step .viz{margin:10px 0 8px}
-.step p{font-size:13.5px;color:var(--ink2);margin:0}
+/* ---------- workflow steps ---------- */
+.flow{display:flex;flex-direction:column}
+.fstep{display:grid;grid-template-columns:46px minmax(260px,1fr) 330px;gap:0 22px;align-items:start}
+.fstep .railwrap{display:flex;flex-direction:column;align-items:center;align-self:stretch}
+.fstep .num{width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:650;flex:none}
+.fstep .rail{flex:1;width:2px;background:var(--axis);margin-top:6px;position:relative;min-height:26px}
+.fstep .rail::after{content:"";position:absolute;bottom:0;left:-4px;border:5px solid transparent;border-top:7px solid var(--axis)}
+.fstep:last-child .rail{display:none}
+.fstep .body{padding:2px 0 30px}
+.fstep:last-child .body{padding-bottom:4px}
+.fstep h3{text-wrap:balance;font-size:15.5px}
+.fstep .viz{margin:0 0 18px}
+.fstep p{font-size:13.5px;color:var(--ink2);margin:4px 0 0}
+@media(max-width:940px){.fstep{grid-template-columns:46px 1fr}.fstep .viz{grid-column:2;max-width:360px}}
 .formula{font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--band);border-radius:8px;padding:10px 14px;margin:14px 0;overflow-x:auto}
 /* ---------- chart cards ---------- */
 .chartCard{margin-top:14px}
@@ -246,8 +253,8 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
     <p class="small" style="max-width:92ch">All levels are market data obtained via the <b>Liquidity team's distribution</b>. <b>Brokered CD quotes arrive every Monday</b> and are held good for the rest of the week. <b>FSB issuances can print mid-week</b>, so there may be a slight drift between the start-of-week panel and the date our issuance actually clears — e.g., a panel averaged on Monday 07/06 floored against an FSB print from Thursday 07/02: SOFR moved between those dates, so the floor effectively compares two observation dates. This is a known, accepted limitation of the approach — mid-week brokered CD data is not available to re-strike the panel. The date chips on the This Week tab show the exact observation date of every dataset so the drift is always visible.</p>
   </div>
 
-  <div class="steps" id="steps"></div>
-  <div class="formula">market_TP(t) = max( mean<sub>panel</sub>[ CD_offer(t) ], FSB_issuance(t) ) − SOFR(t)<br>decision: |market_TP(t) − approved_TP(t)| &gt; 20bp → committee discussion; 13-week trend distinguishes persistent repricing from noise</div>
+  <div class="card"><div class="flow" id="steps"></div></div>
+  <div class="formula">market_TP(t) = max( mean<sub>panel</sub>[ CD_offer(t) ], FSB_issuance(t) ) − SOFR(t)<br>decision: |market_TP(t) − approved_TP(t)| &gt; 20bp zone of indifference → committee discussion; rolling 3-month trend distinguishes persistent repricing from noise</div>
 </div></section>
 
 <!-- ============ TAB 3 · CURVE CONSTRUCTION ============ -->
@@ -255,7 +262,7 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
   <p class="eyebrow">Curve construction · inputs &amp; data</p>
   <h2>Weekly data intake</h2>
   <p class="sub">Four datasets build the curve, each imported from an Excel table with a <b>Date</b> column — upload a workbook (.xlsx), a .csv, or copy the range in Excel and paste it here. All rates in percent. Leave a cell blank when an issuer doesn't post that term. Manual edits in the tables below are always available; everything recomputes and saves to this browser automatically.</p>
-  <div class="notice" id="sampleNotice"><b>Illustrative data loaded.</b> SOFR nodes and the approved TP schedule are the real 2026-07-02 values from the FTP engine; issuer CD offers (and the issuer names shown), FSB prints, FHLB levels and the 26-week history are fabricated samples for demonstration. Replace them with this week's distribution before using any number in committee.</div>
+  <div class="notice" id="sampleNotice"><b>Week of 2026-07-06 loaded from the Weekly Workbook.</b> SOFR, the 7-issuer brokered CD panel, FHLBNY advance rates, the advised TP schedule (Rate Summary, FCS column) and the weekly market-TP history are the actual 07/06 observations. No FSB issuances this week, so the floor is not in play. Verify against the distributed workbook before using any number in committee.</div>
 
   <div class="impgrid">
     <div class="imp" data-imp="cd">
@@ -272,7 +279,7 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
       <div class="impstatus" id="status-cd"></div>
     </div>
     <div class="imp" data-imp="fsb">
-      <h3><span class="dot" style="background:var(--s8)"></span>FSB issuances — our prints</h3>
+      <h3><span class="dot" style="background:var(--s5)"></span>FSB issuances — our prints</h3>
       <div class="fmt">Long format: <code>Date</code> · <code>Term</code> · <code>Rate</code> (one row per print), or wide with term columns. The latest print per term is kept; the file replaces the whole FSB row. Blank = no issuance.</div>
       <div class="loaded" id="loaded-fsb"></div>
       <div class="btnrow" style="margin:0">
@@ -321,7 +328,7 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
   </div>
 
   <h3 style="margin-top:18px">Brokered CD issuer panel (<span id="issuerCount"></span>)</h3>
-  <p class="small" style="max-width:92ch"><b>G-SIB</b> = Global Systemically Important Bank — the ~30 institutions on the FSB/Basel list carrying capital surcharges; their CD levels anchor the tight end of the panel. The panel deliberately mixes G-SIB, super-regional, regional and consumer/card issuers so the average resembles a bank of our profile rather than the cheapest name on the screen. Names in parentheses are the actual issuing banks.</p>
+  <p class="small" style="max-width:92ch">The panel comprises the seven institutional issuers whose primary-market brokered CD ladders we observe weekly: five U.S. G-SIBs (Wells Fargo, BNY, Morgan Stanley, Bank of America, Citi — <b>G-SIB</b> = Global Systemically Important Bank, the ~30 institutions on the Basel/FSB list carrying capital surcharges), one Canadian G-SIB (RBC), and one large broker-dealer distributor (Raymond James). Panel membership is a governance choice — changes should be documented in the decision log, since swapping issuers moves the average without any market move.</p>
   <div class="tblwrap"><table class="itable" id="issuerTable"></table></div>
   <div class="btnrow"><button class="btn" id="addIssuer">+ Add issuer</button></div>
 
@@ -392,7 +399,7 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
     <dt>G-SIB</dt><dd>Global Systemically Important Bank — the ~30 institutions designated by the Financial Stability Board / Basel Committee, carrying capital surcharges. Their CD levels typically mark the tight (cheap) end of the issuer panel.</dd>
     <dt>SOFR / SOFR OIS</dt><dd>Secured Overnight Financing Rate; the OIS swap of a given term is the market's average expected SOFR over that term — our proxy for the risk-free base at each tenor (Term SOFR 1–6M, OIS swaps 1Y+).</dd>
     <dt>FHLB advance</dt><dd>Collateralized borrowing from the Federal Home Loan Bank. Secured, so it prices near the risk-free curve — the reference for what our funding costs <em>with</em> collateral pledged.</dd>
-    <dt>Indifference range</dt><dd>The ±bp corridor around the approved schedule within which observed market premiums trigger no action. Materiality threshold for repricing the FTP curve.</dd>
+    <dt>Zone of indifference</dt><dd>The ±bp corridor around the approved schedule within which observed market premiums trigger no action — ALMC exercises judgment rather than mechanically applying short-term market movements. Materiality threshold for repricing the FTP curve.</dd>
     <dt>Floored average</dt><dd>max(panel average, FSB executed issuance) at each term — the conservative estimate of our marginal unsecured cost.</dd>
     <dt>Monthly grid</dt><dd>The 1–480 month tenor grid the FTP engine publishes. Node observations are interpolated piecewise-linearly onto it, flat outside the node range — this dashboard reproduces months 1–60.</dd>
   </dl>
@@ -409,8 +416,8 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
 </main>
 
 <footer><div class="wrap">
-  Flagstar Treasury / ALM · weekly brokered-CD term premium process · companion to the FTP Interpolation Methodology &amp; MDD.<br>
-  Issuer quotes (and panel names), FSB prints, FHLB levels and history shown on first load are <b>illustrative samples</b>; SOFR nodes and the approved TP schedule reflect 2026-07-02 engine inputs. Nothing here is investment advice or an offering of deposits.
+  Flagstar Treasury / ALM · weekly brokered-CD term premium process · companion to the COF Curve Construction memo, FTP Interpolation Methodology &amp; MDD.<br>
+  First-load data is the actual week of 2026-07-06 from the Weekly Workbook (SOFR, 7-issuer CD panel, FHLBNY, advised TP schedule, weekly market-TP history); no FSB issuances that week. Nothing here is investment advice or an offering of deposits.
 </div></footer>
 
 <div class="tt" id="tt"></div>
@@ -429,48 +436,62 @@ break;case"<bookViews":;case"<bookViews>":;case"</bookViews>":break;case"<workbo
 "use strict";
 /* ================= data ================= */
 const TERMS = [
-  {m:3,label:"3M"},{m:6,label:"6M"},{m:9,label:"9M"},{m:12,label:"1Y"},{m:18,label:"18M"},
+  {m:1,label:"1M"},{m:3,label:"3M"},{m:6,label:"6M"},{m:12,label:"1Y"},
   {m:24,label:"2Y"},{m:36,label:"3Y"},{m:48,label:"4Y"},{m:60,label:"5Y"}
 ];
 const NT = TERMS.length, MMAX = 60;
-const LS_KEY = "ftp-term-premium-v2";
+const LS_KEY = "ftp-term-premium-v3";
 
 function defaultState(){
-  // SOFR: real 2026-07-02 engine nodes (9M/18M interpolated per methodology doc)
-  const sofr =     [3.752,3.872,3.926,3.980,3.979,3.979,3.937,3.918,3.921];
-  // ALMC-approved TP schedule (bp), interpolated to grid terms per methodology doc
-  const approved = [15,20,25,30,40,50,55,60,60];
+  // All levels below are the actual 2026-07-06 Weekly Workbook observations.
+  const sofr =     [3.66688,3.72994,3.83803,3.974,3.9667,3.92555,3.90588,3.908];
+  // Committee-advised TP schedule (bp) per the 7/6 Rate Summary (FCS column)
+  const approved = [15,20,25,30,50,55,60,60];
   const issuers = [
-    {name:"Issuer 1 — G-SIB (JPMorgan Chase)",           offers:[3.90,4.08,4.19,4.28,4.40,4.48,4.49,4.70,4.55]},
-    {name:"Issuer 2 — G-SIB (Goldman Sachs Bank USA)",   offers:[3.91,4.09,4.20,4.29,4.41,4.50,4.51,null,4.58]},
-    {name:"Issuer 3 — Super-regional (PNC Bank)",        offers:[3.92,4.10,4.21,4.30,null,4.51,4.52,4.73,4.60]},
-    {name:"Issuer 4 — Regional (Huntington National)",   offers:[3.94,4.12,4.23,4.32,4.44,4.53,4.55,4.78,null]},
-    {name:"Issuer 5 — Consumer/card (Synchrony Bank)",   offers:[3.95,4.13,null,4.33,4.45,4.55,4.56,4.79,4.66]},
-    {name:"Issuer 6 — Consumer/card (Discover Bank)",    offers:[3.93,4.11,4.22,4.31,4.43,4.52,4.53,null,4.62]},
-    {name:"Issuer 7 — Regional (Regions Bank)",          offers:[3.90,4.09,4.20,4.28,4.42,4.50,null,4.75,4.59]}
+    {name:"Wells Fargo",     offers:[null,4.05,4.10,4.20,4.40,4.45,4.50,4.55]},
+    {name:"BNY",             offers:[4.05,4.05,4.05,4.20,4.35,4.40,4.45,4.45]},
+    {name:"Morgan Stanley",  offers:[4.10,4.10,4.10,4.20,4.40,4.45,4.50,4.50]},
+    {name:"Bank of America", offers:[4.10,4.05,4.05,4.20,4.40,4.50,4.55,4.60]},
+    {name:"Raymond James",   offers:[4.15,4.10,4.10,4.20,4.40,4.50,4.50,4.55]},
+    {name:"RBC",             offers:[4.10,4.10,4.10,4.25,4.40,4.45,4.55,4.55]},
+    {name:"Citi",            offers:[4.00,4.05,4.15,4.15,4.40,4.40,4.40,4.45]}
   ];
-  const flagstar = [null,4.09,null,4.34,null,4.55,null,null,null];   // FSB executed prints
-  const fhlb =     [3.85,3.99,4.07,4.10,4.13,4.14,4.12,4.12,4.14];   // secured reference
-  // 26 weeks of history (market TP bp). 4Y widens persistently over the last ~8 weeks.
-  const start=[16,21,26,31,42,50,56,56,62], end=[17,22,28,34,43,52,57,78,67];
-  const history=[]; const d0=new Date("2026-07-10T12:00:00Z");
-  for(let w=25;w>=1;w--){
-    const dt=new Date(d0); dt.setUTCDate(dt.getUTCDate()-7*w);
-    const f=(25-w)/24;
-    const tp=TERMS.map((_,i)=>{
-      let v=start[i]+(end[i]-start[i])*(i===7? Math.max(0,(f-0.55)/0.45) : f);   // 4Y: late ramp
-      v+=2*Math.sin((25-w)*1.7+i*2.1)+1.2*Math.sin((25-w)*0.7+i);               // deterministic noise
-      return Math.round(v*10)/10;
-    });
-    history.push({date:dt.toISOString().slice(0,10),tp});
-  }
+  const flagstar = TERMS.map(()=>null);  // no FSB issuances this week
+  const fhlb =     [3.84,3.94,4.07,4.22,4.24,4.27,4.31,4.34];   // FHLBNY, same-day
+  // Actual weekly market TP history (bp) from the Weekly Workbook, Term Premium-SOFR sheet
+  const history=[
+    {date:"2026-01-12",tp:[12.2,6.2,9.2,17.2,42.3,43.1,46.8,43.2]},
+    {date:"2026-01-20",tp:[14.5,10.2,12.3,23.1,43.4,44.5,47.1,43.1]},
+    {date:"2026-02-02",tp:[18.7,18.9,22.3,36.6,53.4,54.2,55.4,53.5]},
+    {date:"2026-02-09",tp:[19.0,20.7,24.8,42.6,61.3,61.2,62.9,60.3]},
+    {date:"2026-02-17",tp:[19.0,20.7,24.8,42.6,61.3,61.2,62.9,60.3]},
+    {date:"2026-02-23",tp:[21.0,20.2,25.3,37.5,66.6,70.9,76.0,74.2]},
+    {date:"2026-03-02",tp:[20.3,20.0,26.4,38.4,66.5,73.0,77.9,76.1]},
+    {date:"2026-03-09",tp:[21.3,23.1,28.3,32.7,56.1,60.7,65.0,62.9]},
+    {date:"2026-03-16",tp:[22.0,20.7,23.2,25.5,49.2,55.2,61.6,59.6]},
+    {date:"2026-03-23",tp:[24.6,21.3,17.0,12.9,36.2,45.5,52.0,51.2]},
+    {date:"2026-03-30",tp:[24.6,21.3,17.0,12.9,36.2,45.5,52.0,51.2]},
+    {date:"2026-04-06",tp:[27.3,25.8,25.2,25.0,46.4,53.4,60.4,60.3]},
+    {date:"2026-04-13",tp:[27.3,25.8,25.2,25.0,46.4,53.4,60.4,60.3]},
+    {date:"2026-04-20",tp:[28.1,30.1,32.5,36.7,54.9,61.7,66.9,64.0]},
+    {date:"2026-04-27",tp:[25.8,28.8,32.7,37.1,45.9,51.2,58.7,56.8]},
+    {date:"2026-05-04",tp:[28.0,29.7,31.1,24.6,38.2,43.4,46.6,49.1]},
+    {date:"2026-05-11",tp:[31.0,32.0,32.5,29.5,41.5,45.1,52.1,51.1]},
+    {date:"2026-05-18",tp:[36.4,35.1,32.0,26.8,31.9,37.1,42.2,40.9]},
+    {date:"2026-05-26",tp:[38.6,35.2,28.9,24.3,34.0,40.9,48.2,48.2]},
+    {date:"2026-06-01",tp:[37.9,35.9,30.6,26.8,37.6,45.3,52.7,52.0]},
+    {date:"2026-06-08",tp:[38.7,36.7,31.0,22.3,31.3,38.0,46.9,46.3]},
+    {date:"2026-06-15",tp:[36.4,35.4,30.9,29.8,43.3,48.9,56.5,56.1]},
+    {date:"2026-06-22",tp:[38.2,31.5,20.9,10.9,29.7,37.7,47.3,49.0]},
+    {date:"2026-06-29",tp:[46.2,34.6,23.4,23.4,42.6,53.8,64.5,66.1]}
+  ];
   return {
-    asOf:"2026-07-10", bandBp:20, lookback:13,
-    dates:{cd:"2026-07-06", fsb:"2026-07-02", sofr:"2026-07-06", fhlb:"2026-07-06"},
+    asOf:"2026-07-06", bandBp:20, lookback:13,
+    dates:{cd:"2026-07-06", fsb:null, sofr:"2026-07-06", fhlb:"2026-07-06"},
     issuers, flagstar, sofr, fhlb, approved, history,
     decisions:[
-      {date:"2026-05-28", entry:"ALMC: 2Y node raised 45→50bp — market premium persistently above band for 6 weeks."},
-      {date:"2026-06-25", entry:"ALMC: schedule reaffirmed; all monitored tenors inside ±20bp. Panel membership reviewed, no changes."}
+      {date:"2026-06-29", entry:"Weekly review: 1M market premium 46bp vs 15bp advised — persistent short-end widening flagged for ALMC."},
+      {date:"2026-07-06", entry:"Weekly review: 1M remains outside the zone of indifference (+27bp); 3M at +14bp approaching the band. All 1Y+ tenors inside."}
     ],
     sample:true
   };
@@ -479,13 +500,10 @@ function defaultState(){
 let S; // state
 function load(){
   try{
-    let raw=localStorage.getItem(LS_KEY);
-    if(!raw){ // migrate v1 if present and user-edited
-      const v1=localStorage.getItem("ftp-term-premium-v1");
-      if(v1){const o=JSON.parse(v1); if(!o.sample){S={...defaultState(),...o,dates:o.dates||defaultState().dates};save();return;}}
-    }
+    const raw=localStorage.getItem(LS_KEY);
     if(raw){S=JSON.parse(raw); const d=defaultState();
       for(const k of Object.keys(d)) if(S[k]===undefined)S[k]=d[k];
+      if(!Array.isArray(S.sofr)||S.sofr.length!==NT)S=d;   // schema guard (term grid changed)
       return;}
   }catch(e){}
   S=defaultState();
@@ -533,6 +551,7 @@ function compute(){
             avg:interpCurve(avg), floored:interpCurve(floored),
             approved:interpCurve(S.approved) };
   M.mtp=M.floored.map((v,k)=>v==null||M.sofr[k]==null?null:Math.round((v-M.sofr[k])*1000)/10);
+  M.prod=M.sofr.map((v,k)=>v==null||M.approved[k]==null?null:Math.round((v+M.approved[k]/100)*100000)/100000);
   return {avg,nQuotes,floored,floorBinds,mtp,trail,dApp,dTrail,status,M};
 }
 
@@ -578,7 +597,7 @@ function hideTT(){tt.style.display="none";}
 function fullCurveChart(C){
   const W=960,Hpx=420,ml=46,mr=118,mt=14,mb=30,iw=W-ml-mr,ih=Hpx-mt-mb;
   const X=m=>ml+iw*((m-1)/(MMAX-1));
-  const series=[...C.M.sofr,...C.M.fhlb,...C.M.floored,...C.M.avg].filter(v=>v!=null);
+  const series=[...C.M.sofr,...C.M.fhlb,...C.M.floored,...C.M.avg,...C.M.prod].filter(v=>v!=null);
   S.issuers.forEach(iss=>iss.offers.forEach(v=>{if(v!=null)series.push(v);}));
   S.flagstar.forEach(v=>{if(v!=null)series.push(v);});
   let lo=Math.min(...series),hi=Math.max(...series);
@@ -602,17 +621,19 @@ function fullCurveChart(C){
     svg.append(sv("circle",{cx:X(TERMS[i].m),cy:Y(v),r:3.5,fill:"var(--muted)",opacity:.55}));}));
   svg.append(sv("path",{d:mpath(C.M.sofr),fill:"none",stroke:"var(--muted)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
   svg.append(sv("path",{d:mpath(C.M.fhlb),fill:"none",stroke:"var(--s2)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  svg.append(sv("path",{d:mpath(C.M.prod),fill:"none",stroke:"var(--s8)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
   svg.append(sv("path",{d:mpath(C.M.avg),fill:"none",stroke:"var(--s1-lt)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
   svg.append(sv("path",{d:mpath(C.M.floored),fill:"none",stroke:"var(--s1)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
   C.floored.forEach((v,i)=>{ if(v==null)return;
     svg.append(sv("circle",{cx:X(TERMS[i].m),cy:Y(v),r:4.5,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2}));});
   S.flagstar.forEach((v,i)=>{ if(v==null)return;
     const s=5.5,cx=X(TERMS[i].m),cy=Y(v);
-    svg.append(sv("path",{d:`M${cx} ${cy-s}L${cx+s} ${cy}L${cx} ${cy+s}L${cx-s} ${cy}Z`,fill:"var(--s8)",stroke:"var(--surface)","stroke-width":2}));});
+    svg.append(sv("path",{d:`M${cx} ${cy-s}L${cx+s} ${cy}L${cx} ${cy+s}L${cx-s} ${cy}Z`,fill:"var(--s5)",stroke:"var(--surface)","stroke-width":2}));});
   // direct end labels
   const ends=[
     {y:Y(C.M.floored[MMAX-1]??lo),t:"Floored CD avg"},
     {y:Y(C.M.avg[MMAX-1]??lo),t:"Panel average"},
+    {y:Y(C.M.prod[MMAX-1]??lo),t:"Production FTP"},
     {y:Y(C.M.fhlb[MMAX-1]??lo),t:"FHLB (secured)"},
     {y:Y(C.M.sofr[MMAX-1]??lo),t:"SOFR OIS"}].sort((a,b)=>a.y-b.y);
   for(let k=1;k<ends.length;k++) if(ends[k].y-ends[k-1].y<14) ends[k].y=ends[k-1].y+14;
@@ -631,8 +652,9 @@ function fullCurveChart(C){
     const rows=[
       {color:css("--s1"),label:"Floored CD avg",value:fmt2(C.M.floored[k])+"%"},
       {color:css("--s1-lt"),label:"Panel average",value:fmt2(C.M.avg[k])+"%"}];
-    if(ni>=0&&S.flagstar[ni]!=null)rows.push({color:css("--s8"),label:"FSB print ("+(S.dates.fsb||"n/a")+")",value:fmt2(S.flagstar[ni])+"%"});
+    if(ni>=0&&S.flagstar[ni]!=null)rows.push({color:css("--s5"),label:"FSB issuance ("+(S.dates.fsb||"n/a")+")",value:fmt2(S.flagstar[ni])+"%"});
     rows.push(
+      {color:css("--s8"),label:"Production FTP",value:fmt2(C.M.prod[k])+"%"},
       {color:css("--s2"),label:"FHLB advance",value:fmt2(C.M.fhlb[k])+"%"},
       {color:css("--muted"),label:"SOFR OIS",value:fmt2(C.M.sofr[k])+"%"},
       {label:"Market term premium",value:fmtBp(C.M.mtp[k])+"bp"},
@@ -684,7 +706,7 @@ function curveChart(C,opt){
   }
   if(opt.flagstar)S.flagstar.forEach((v,i)=>{ if(v==null)return;
     const s=4,cx=X(i),cy=Y(v);
-    svg.append(sv("path",{d:`M${cx} ${cy-s}L${cx+s} ${cy}L${cx} ${cy+s}L${cx-s} ${cy}Z`,fill:"var(--s8)",stroke:"var(--surface)","stroke-width":2}));});
+    svg.append(sv("path",{d:`M${cx} ${cy-s}L${cx+s} ${cy}L${cx} ${cy+s}L${cx-s} ${cy}Z`,fill:"var(--s5)",stroke:"var(--surface)","stroke-width":2}));});
   return svg;
 }
 
@@ -781,6 +803,7 @@ function sparkline(i,C){return trendChart(i,C,{w:170,h:42});}
 
 /* ================= renderers ================= */
 function statusChip(st,extra){
+  if(st==="na"){const c=h("span",{class:"chip info"});c.append(document.createTextNode("n/a"));return c;}
   const cls=st==="act"?"act":st==="watch"?"watch":"hold";
   const txt=st==="act"?"Discuss":st==="watch"?"Watch":"Hold";
   const c=h("span",{class:"chip "+cls});
@@ -841,35 +864,37 @@ function renderDateChips(){
 
 function renderSteps(C){
   const cont=$("#steps");cont.textContent="";
-  const flooredTerms=TERMS.filter((_,i)=>C.floorBinds[i]).map(t=>t.label);
   const drift=S.dates.fsb&&S.dates.cd&&S.dates.fsb!==S.dates.cd;
   const defs=[
-    {t:"Collect the market: "+S.issuers.length+" issuers, every posted term",
-     p:"Each Monday the Liquidity team's distribution delivers primary-market brokered CD offering levels from a fixed panel of "+S.issuers.length+" issuers of comparable standing; the panel is held good for the week. Not every issuer posts every term — the grid keeps the gaps ("+C.nQuotes.join(", ")+" quotes per term this week).",
+    {t:"Collect the market — "+S.issuers.length+"-issuer brokered CD panel",
+     p:"Each Monday the Liquidity team's distribution delivers primary-market brokered CD offering levels from the fixed "+S.issuers.length+"-issuer panel; the levels are held good for the week. Issuers post the terms they are active in that week.",
      viz:{issuers:true,aria:"Issuer CD offers scattered by term"}},
     {t:"Average the panel into one unsecured curve",
      p:"The simple average of available quotes at each term smooths single-name idiosyncrasy into a market read of where a bank like us buys term money unsecured.",
      viz:{issuers:true,avg:true,aria:"Panel average line through issuer offers"}},
-    {t:flooredTerms.length?("Floor at FSB's own prints — binding at "+flooredTerms.join(", ")):"Floor at FSB's own prints when we issued",
-     p:"Where FSB actually issued (orange diamonds — realized costs, not quotes), the executed level replaces a lower panel average: max(average, own print). Our realized cost is evidence; the panel is an estimate. The floor lifts, never lowers — deliberate conservatism."+
-       (drift?" Note: this week's print is dated "+S.dates.fsb+" vs the "+S.dates.cd+" panel — mid-week issuance drift; SOFR moved between the two dates (see Data provenance & timing above).":""),
-     viz:{avg:true,flagstar:true,floored:true,aria:"Floored curve versus average and own prints"}},
-    {t:"Subtract same-term SOFR — the residual is the premium",
+    {t:"Floor at FSB issuances (when available)",
+     p:"Where FSB actually issued (violet diamonds — realized costs, not quotes), the executed level replaces a lower panel average: max(average, FSB issuance). Which terms this touches depends entirely on that week's issuance activity — many weeks have none. Our realized cost is evidence; the panel is an estimate. The floor lifts, never lowers — deliberate conservatism."+
+       (drift?" Note: this week's issuance is dated "+S.dates.fsb+" vs the "+S.dates.cd+" panel — mid-week issuance drift; SOFR moved between the two dates (see Data provenance & timing above).":""),
+     viz:{avg:true,flagstar:true,floored:true,aria:"Floored curve versus average and FSB issuances"}},
+    {t:"Subtract same-term SOFR — the residual is the market term premium",
      p:"SOFR OIS is the near-risk-free expectation of policy over the term. What remains after subtracting it is the piece ALCO governs: term liquidity plus our unsecured credit spread, in bp.",
      viz:{floored:true,sofr:true,wash:true,aria:"Shaded premium between floored CD curve and SOFR"}},
-    {t:"Test against the band and the trend, then decide",
-     p:"Compare to the approved schedule (±"+S.bandBp+"bp indifference) and the "+S.lookback+"-week trend. Material and persistent → committee discussion and a schedule update at ALMC; otherwise hold. Decisions land in the log on the Why & Pressure-Test tab.",
+    {t:"Test against the zone of indifference and the trend, then decide",
+     p:"Compare to the approved schedule (±"+S.bandBp+"bp zone of indifference) and the rolling "+S.lookback+"-week trend. Material and persistent → committee discussion and a schedule update at ALMC; otherwise hold. Decisions land in the log on the Why & Pressure-Test tab.",
      viz:"trend"}
   ];
   defs.forEach((d,k)=>{
-    const st=h("div",{class:"step"});
-    st.append(h("div",{class:"num",text:String(k+1)}),h("h3",{text:d.t}));
+    const st=h("div",{class:"fstep"});
+    const rail=h("div",{class:"railwrap"});
+    rail.append(h("div",{class:"num",text:String(k+1)}),h("div",{class:"rail"}));
+    const body=h("div",{class:"body"});
+    body.append(h("h3",{text:d.t}),h("p",{text:d.p}));
     const viz=h("div",{class:"viz"});
     if(d.viz==="trend"){let wi=TERMS.findIndex((_,i)=>C.status[i]==="act");if(wi<0)wi=NT-2;
       viz.append(trendChart(wi,C,{w:300,h:120}));
       viz.append(h("div",{class:"small mut",text:TERMS[wi].label+" premium, 26 weeks, vs "+S.lookback+"-wk avg ±"+S.bandBp+"bp"}));}
     else viz.append(curveChart(C,d.viz));
-    st.append(viz,h("p",{text:d.p}));
+    st.append(rail,body,viz);
     cont.append(st);
   });
 }
@@ -886,9 +911,10 @@ function renderCurves(C){
   const minP=Math.min(...C.mtp.filter(v=>v!=null)),maxP=Math.max(...C.mtp.filter(v=>v!=null));
   $("#curvesTitle").textContent=`Unsecured term funding prices ${fmtBp(minP)}–${fmtBp(maxP)}bp over SOFR this week`;
   legendRow($("#curvesLegend"),[
-    {color:"var(--s1)",label:"Floored CD average (applied)"},
+    {color:"var(--s1)",label:"Floored CD average (market)"},
     {color:"var(--s1-lt)",label:"Panel average (pre-floor)"},
-    {color:"var(--s8)",label:"FSB issuance print (realized)",shape:"swdia"},
+    {color:"var(--s8)",label:"Production FTP (SOFR + approved TP)"},
+    {color:"var(--s5)",label:"FSB issuance (realized)",shape:"swdia"},
     {color:"var(--muted)",label:"Issuer offer",shape:"swdot"},
     {color:"var(--s2)",label:"FHLB advance (secured)"},
     {color:"var(--muted)",label:"SOFR OIS"}]);
@@ -898,11 +924,11 @@ function renderCurves(C){
   // monthly table view
   const tw=$("#curvesTable");tw.textContent="";
   const tb=h("table",{class:"dtable"});
-  const hr=h("tr");["Tenor","SOFR %","FHLB %","Panel avg %","FSB %","Floored %","Market TP bp","Approved TP bp","Δ bp"].forEach(x=>hr.append(h("th",{text:x})));tb.append(hr);
+  const hr=h("tr");["Tenor","SOFR %","FHLB %","Panel avg %","FSB %","Floored %","Production FTP %","Market TP bp","Approved TP bp","Δ bp"].forEach(x=>hr.append(h("th",{text:x})));tb.append(hr);
   for(let m=1;m<=MMAX;m++){const k=m-1,ni=TERMS.findIndex(t=>t.m===m);
     const r=h("tr");
     [mLabel(m)+(ni>=0?" •":""),fmt3(C.M.sofr[k]),fmt3(C.M.fhlb[k]),fmt3(C.M.avg[k]),
-     ni>=0?fmt3(S.flagstar[ni]):"",fmt3(C.M.floored[k]),fmtBp(C.M.mtp[k]),fmtBp(C.M.approved[k]),
+     ni>=0?fmt3(S.flagstar[ni]):"",fmt3(C.M.floored[k]),fmt3(C.M.prod[k]),fmtBp(C.M.mtp[k]),fmtBp(C.M.approved[k]),
      C.M.mtp[k]==null?"—":sgn(C.M.mtp[k]-C.M.approved[k])].forEach(v=>r.append(h("td",{text:v})));
     tb.append(r);}
   tw.append(tb);
