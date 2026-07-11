@@ -79,9 +79,11 @@ main section.tab.active{display:block}
 #answerCard{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;padding:24px 26px}
 #answerCard .headline{font-size:20px;font-weight:650;letter-spacing:-.01em;line-height:1.35;margin:8px 0 10px;text-wrap:balance;max-width:34ch}
 #answerCard .why{font-size:14px;color:var(--ink2);max-width:66ch}
-.hero{text-align:right;min-width:200px}
-.hero .n{font-size:52px;font-weight:650;letter-spacing:-.02em;line-height:1}
-.hero .l{font-size:12.5px;color:var(--muted);margin-top:6px}
+.hero{text-align:right;min-width:240px;display:flex;flex-direction:column;gap:16px}
+.hero .n{font-size:42px;font-weight:650;letter-spacing:-.02em;line-height:1}
+.hero .n2{font-size:26px;font-weight:650;letter-spacing:-.01em;line-height:1}
+.hero .l{font-size:12px;color:var(--muted);margin-top:5px;max-width:30ch;margin-left:auto}
+@media(max-width:760px){.hero .l{margin-left:0}}
 @media(max-width:760px){#answerCard{grid-template-columns:1fr}.hero{text-align:left}}
 /* ---------- tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:14px}
@@ -212,12 +214,12 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
       <div class="why" id="answerWhy"></div>
     </div>
     <div class="hero">
-      <div class="n" id="heroN"></div>
-      <div class="l" id="heroL"></div>
+      <div><div class="n" id="heroN"></div><div class="l" id="heroL"></div></div>
+      <div><div class="n2" id="heroN2"></div><div class="l" id="heroL2"></div></div>
     </div>
   </div>
   <div class="tiles" id="tiles"></div>
-  <p class="small" style="margin-top:10px">Each tile: market term premium (floored brokered-CD average − same-term SOFR), Δ vs the ALMC-approved schedule, Δ vs the trailing 13-week average, and 26-week history. Status turns red when |Δ vs approved| exceeds the indifference range.</p>
+  <p class="small" style="margin-top:10px">Each tile: this week's market term premium (floored brokered-CD average − same-term SOFR). First delta: the <b>13-week trend (including this week) vs production</b> — the approved, smoothed comparison that drives status. Second delta: this week's single observation vs production, shown for context. Status turns red only when the <em>trend</em> leaves the ±<span class="bandLbl"></span>bp zone of indifference; a single-week breach alone is a Watch, not an alarm.</p>
 
   <div class="card chartCard">
     <div class="chartHead"><h3 id="curvesTitle"></h3>
@@ -233,13 +235,18 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
       <div class="tools"><button class="tbtn" data-toggle="prem">Table view</button></div></div>
     <div class="legend" id="premLegend"></div>
     <div id="premChart"></div><div id="premTable" hidden class="tblwrap"></div>
-    <p class="small" style="margin-top:6px">Bars are this week's market term premium at the observed nodes. The gray band is the ALMC-approved schedule ±<span class="bandLbl"></span>bp indifference range; the tick is the approved level. A bar escaping its band is a committee agenda item — inside the band, we deliberately do not react (repricing FTP for noise whipsaws product pricing).</p>
+    <p class="small" style="margin-top:6px">Bars are this week's market term premium at the observed nodes. The gray band is the production schedule ±<span class="bandLbl"></span>bp zone of indifference; the tick is the approved level. A red marker means the <b>rolling <span class="lookbackLbl"></span>-week trend</b> (our approved smoothing) has left the zone — a committee item; an amber marker means only this single week escapes, which we watch but deliberately do not chase.</p>
   </div>
 
-  <p class="eyebrow" style="margin-top:30px">Is the move real? · 26-week history, common scale</p>
+  <p class="eyebrow" style="margin-top:30px">Is the move real? · term-premium term structure</p>
   <h2 id="trendTitle"></h2>
-  <p class="sub">Blue: weekly market term premium. Gray: trailing 13-week average with ±<span class="bandLbl"></span>bp range. All panels share one scale so a 10bp move looks identical at every tenor. A breach that persists for several weeks is repricing; a one-week spike is noise.</p>
-  <div class="smgrid" id="smGrid"></div>
+  <div class="card chartCard">
+    <div class="chartHead"><h3 id="tsTitle"></h3>
+      <div class="tools"><button class="tbtn" data-toggle="ts">Table view</button></div></div>
+    <div class="legend" id="tsLegend"></div>
+    <div id="tsChart"></div><div id="tsTable" hidden class="tblwrap"></div>
+    <p class="small" style="margin-top:6px">Every comparison on one pair of axes: the thin gray curves are each of the prior <span id="tsWeeksN"></span> weekly observations (the raw variability we deliberately smooth); the solid gray curve is their <span class="lookbackLbl"></span>-week average including this week; blue is this week alone; orange is the production schedule with its ±<span class="bandLbl"></span>bp zone of indifference. Where the <b>gray trend</b> leaves the orange zone, repricing is persistent and goes to committee — blue escaping alone is watched, not chased.</p>
+  </div>
 </div></section>
 
 <!-- ============ TAB 2 · HOW IT WORKS ============ -->
@@ -538,12 +545,18 @@ function compute(){
   const lb=Math.max(2,S.lookback|0);
   const hist=S.history.slice(-lb);
   const trail=TERMS.map((_,i)=>{const v=hist.map(h=>h.tp[i]);return v.length?Math.round(mean(v)*10)/10:null;});
+  // approved comparison basis: trailing lb-week trend INCLUDING this week's observation
+  const histInc=S.history.slice(-(lb-1));
+  const trailInc=TERMS.map((_,i)=>{
+    const v=histInc.map(h=>h.tp[i]); if(mtp[i]!=null)v.push(mtp[i]);
+    return v.filter(x=>x!=null).length?Math.round(mean(v)*10)/10:null;});
   const dApp=mtp.map((v,i)=>v==null?null:Math.round((v-S.approved[i])*10)/10);
   const dTrail=mtp.map((v,i)=>v==null||trail[i]==null?null:Math.round((v-trail[i])*10)/10);
+  const dTrendApp=trailInc.map((v,i)=>v==null?null:Math.round((v-S.approved[i])*10)/10);
   const status=mtp.map((v,i)=>{
     if(v==null)return "na";
-    if(Math.abs(dApp[i])>S.bandBp)return "act";
-    if(dTrail[i]!=null&&Math.abs(dTrail[i])>S.bandBp)return "watch";
+    if(dTrendApp[i]!=null&&Math.abs(dTrendApp[i])>S.bandBp)return "act";   // smoothed trend breaches → committee
+    if(Math.abs(dApp[i])>S.bandBp)return "watch";                          // single week breaches → monitor only
     return "hold";
   });
   // monthly full curves
@@ -552,7 +565,7 @@ function compute(){
             approved:interpCurve(S.approved) };
   M.mtp=M.floored.map((v,k)=>v==null||M.sofr[k]==null?null:Math.round((v-M.sofr[k])*1000)/10);
   M.prod=M.sofr.map((v,k)=>v==null||M.approved[k]==null?null:Math.round((v+M.approved[k]/100)*100000)/100000);
-  return {avg,nQuotes,floored,floorBinds,mtp,trail,dApp,dTrail,status,M};
+  return {avg,nQuotes,floored,floorBinds,mtp,trail,trailInc,dApp,dTrail,dTrendApp,status,M};
 }
 
 /* ================= helpers ================= */
@@ -732,20 +745,22 @@ function premiumChart(C){
       const y=Y(Math.max(v,0)),hgt=Math.abs(Y(0)-Y(v));
       const bar=sv("path",{d:roundedTopBar(Xc(i)-bw/2,y,bw,hgt,4),fill:"var(--s1)"});
       svg.append(bar);
-      const breach=Math.abs(C.dApp[i])>S.bandBp;
-      if(breach){
-        svg.append(sv("circle",{cx:Xc(i),cy:y-16,r:4,fill:"var(--crit)"}));
-        svg.append(sv("text",{x:Xc(i),y:y-24,"text-anchor":"middle",class:"dlabel",fill:"var(--crit)",
-          "font-weight":"700",text:fmtBp(v)+"bp ("+sgn(C.dApp[i])+")"}));
+      if(C.status[i]==="act"||C.status[i]==="watch"){
+        const col=C.status[i]==="act"?"var(--crit)":"var(--warn)";
+        svg.append(sv("circle",{cx:Xc(i),cy:y-16,r:4,fill:col}));
+        svg.append(sv("text",{x:Xc(i),y:y-24,"text-anchor":"middle",class:"dlabel",
+          fill:C.status[i]==="act"?"var(--crit)":"var(--ink2)","font-weight":"700",
+          text:(C.status[i]==="act"?"trend ":"wk ")+sgn(C.status[i]==="act"?C.dTrendApp[i]:C.dApp[i])}));
       }
       const hitr=sv("rect",{x:Xc(i)-slot/2,y:mt,width:slot,height:ih,fill:"transparent"});
       hitr.addEventListener("pointermove",ev=>{
         bar.setAttribute("opacity",.8);
         showTT(ev.clientX,ev.clientY,TERMS[i].label+" term",[
-          {color:css("--s1"),label:"Market premium",value:fmtBp(v)+"bp"},
+          {color:css("--s1"),label:"This week's premium",value:fmtBp(v)+"bp"},
+          {color:css("--muted"),label:S.lookback+"-wk trend (incl. wk)",value:fmtBp(C.trailInc[i])+"bp"},
           {color:css("--ink2"),label:"Approved schedule",value:fmtBp(S.approved[i])+"bp"},
-          {label:"Δ vs approved",value:sgn(C.dApp[i])+"bp"},
-          {label:"Δ vs "+S.lookback+"-wk avg",value:sgn(C.dTrail[i])+"bp"},
+          {label:"Trend vs production",value:sgn(C.dTrendApp[i])+"bp"},
+          {label:"Latest vs production",value:sgn(C.dApp[i])+"bp"},
           {label:"Quotes / floor",value:C.nQuotes[i]+(C.floorBinds[i]?" · floor binds":"")}]);
       });
       hitr.addEventListener("pointerleave",()=>{bar.setAttribute("opacity",1);hideTT();});
@@ -818,35 +833,42 @@ function renderAnswer(C){
   const breaches=TERMS.map((t,i)=>({t,i})).filter(x=>C.status[x.i]==="act");
   const watches=TERMS.map((t,i)=>({t,i})).filter(x=>C.status[x.i]==="watch");
   const chips=$("#answerChips");chips.textContent="";
-  chips.append(statusChip(breaches.length?"act":"hold",null));
-  if(watches.length&&!breaches.length)chips.append(" ",statusChip("watch"));
+  chips.append(statusChip(breaches.length?"act":watches.length?"watch":"hold",null));
   const head=$("#answerHead"),why=$("#answerWhy");
-  let worstI=0;TERMS.forEach((_,i)=>{if(C.dApp[i]!=null&&Math.abs(C.dApp[i])>Math.abs(C.dApp[worstI]??0))worstI=i;});
+  // worst tenor by the governing metric: lookback-week trend (incl. this week) vs production
+  let worstI=0;TERMS.forEach((_,i)=>{if(C.dTrendApp[i]!=null&&Math.abs(C.dTrendApp[i])>Math.abs(C.dTrendApp[worstI]??0))worstI=i;});
+  const W=worstI, lb=S.lookback;
   if(breaches.length){
     const names=breaches.map(b=>b.t.label).join(", ");
-    head.textContent=`Recommend committee review of the ${names} term premium — market is outside the ±${S.bandBp}bp indifference range.`;
-    const b0=breaches[0].i;
-    const persist=C.dTrail[b0]!=null&&Math.abs(C.dTrail[b0])>S.bandBp*0.5;
-    why.textContent=`At ${TERMS[b0].label}, the floored panel average prices ${fmtBp(C.mtp[b0])}bp over SOFR vs ${fmtBp(S.approved[b0])}bp approved (${sgn(C.dApp[b0])}bp). `+
-      (persist?`The move is ${sgn(C.dTrail[b0])}bp above the ${S.lookback}-week average — persistent widening, not a one-week print. `:`The ${S.lookback}-week trend does not yet confirm persistence — one more week of data may be warranted. `)+
-      `All other tenors are inside the range; no change recommended elsewhere.`;
+    head.textContent=`Recommend committee review of the ${names} term premium — the ${lb}-week trend is outside the ±${S.bandBp}bp zone of indifference.`;
+    why.textContent=`At ${TERMS[W].label}, production carries ${fmtBp(S.approved[W])}bp vs a ${lb}-week market trend of ${fmtBp(C.trailInc[W])}bp (${sgn(C.dTrendApp[W])}bp) — the smoothed measure itself has left the zone, so this is repricing, not noise. This week's single observation prints ${fmtBp(C.mtp[W])}bp (${sgn(C.dApp[W])}bp vs production).`;
+  }else if(watches.length){
+    const names=watches.map(w=>w.t.label).join(", ");
+    head.textContent=`Hold the approved schedule — every ${lb}-week trend is inside the ±${S.bandBp}bp zone of indifference; ${names} stays on watch.`;
+    why.textContent=`The governing comparison is production vs the rolling ${lb}-week market trend (including this week) — our approved approach to minimize volatility and reactivity. At ${TERMS[W].label} that reads ${fmtBp(S.approved[W])}bp vs ${fmtBp(C.trailInc[W])}bp (${sgn(C.dTrendApp[W])}bp): inside the zone. This week's single print of ${fmtBp(C.mtp[W])}bp (${sgn(C.dApp[W])}bp) does exceed it — if that level persists, the trend will breach and trigger committee review.`;
   }else{
-    head.textContent=`Hold the approved term premium schedule — every tenor is inside the ±${S.bandBp}bp indifference range this week.`;
-    why.textContent=`Across ${TERMS.length} monitored terms the floored brokered-CD average prices ${fmtBp(Math.min(...C.mtp.filter(v=>v!=null)))}–${fmtBp(Math.max(...C.mtp.filter(v=>v!=null)))}bp over SOFR, vs an approved schedule of ${fmtBp(Math.min(...S.approved))}–${fmtBp(Math.max(...S.approved))}bp. Largest gap: ${sgn(C.dApp[worstI])}bp at ${TERMS[worstI].label}. Production FTP remains on-market.`;
+    head.textContent=`Hold the approved term premium schedule — every ${lb}-week trend and every weekly print is inside the ±${S.bandBp}bp zone of indifference.`;
+    why.textContent=`Production vs the rolling ${lb}-week market trend (including this week) is the governing comparison — the approved approach to minimize volatility and reactivity. Largest trend gap: ${sgn(C.dTrendApp[W])}bp at ${TERMS[W].label}. Production FTP remains on-market.`;
   }
-  $("#heroN").textContent=sgn(C.dApp[worstI])+"bp";
-  $("#heroN").style.color=Math.abs(C.dApp[worstI]??0)>S.bandBp?"var(--crit)":"var(--goodtxt)";
-  $("#heroL").textContent="largest gap to approved schedule ("+TERMS[worstI].label+") · range ±"+S.bandBp+"bp";
+  const inZone=Math.abs(C.dTrendApp[W]??0)<=S.bandBp;
+  $("#heroN").textContent=sgn(C.dTrendApp[W])+"bp";
+  $("#heroN").style.color=inZone?"var(--goodtxt)":"var(--crit)";
+  $("#heroL").textContent=`production ${fmtBp(S.approved[W])}bp vs ${lb}-wk trend ${fmtBp(C.trailInc[W])}bp (${TERMS[W].label}, incl. this week) · zone ±${S.bandBp}bp`;
+  $("#heroN2").textContent=sgn(C.dApp[W])+"bp";
+  $("#heroN2").style.color=Math.abs(C.dApp[W]??0)>S.bandBp?"var(--crit)":"var(--goodtxt)";
+  $("#heroL2").textContent=`production ${fmtBp(S.approved[W])}bp vs latest observation ${fmtBp(C.mtp[W])}bp`;
   const tiles=$("#tiles");tiles.textContent="";
   TERMS.forEach((t,i)=>{
     const tile=h("div",{class:"tile"});
     const lab=h("div",{class:"lab"});lab.append(h("span",{text:t.label+" premium"}),statusChip(C.status[i]));
     const val=h("div",{class:"val"});val.append(document.createTextNode(fmtBp(C.mtp[i])),h("span",{class:"unit",text:" bp"}));
-    const d=h("div",{class:"deltas"});
-    const s1=h("span",{class:C.dApp[i]>0?"up":C.dApp[i]<0?"dn":"flat",text:sgn(C.dApp[i])});
-    const s2=h("span",{class:C.dTrail[i]>0?"up":C.dTrail[i]<0?"dn":"flat",text:sgn(C.dTrail[i])});
-    d.append("vs approved ",s1," · vs ",String(S.lookback),"w ",s2);
-    tile.append(lab,val,d,sparkline(i,C));
+    const d1=h("div",{class:"deltas"});
+    d1.append(String(S.lookback)+"w trend vs prod ",
+      h("span",{class:C.dTrendApp[i]>0?"up":C.dTrendApp[i]<0?"dn":"flat",text:sgn(C.dTrendApp[i])}));
+    const d2=h("div",{class:"deltas",style:"margin-top:0"});
+    d2.append("latest vs prod ",
+      h("span",{class:C.dApp[i]>0?"up":C.dApp[i]<0?"dn":"flat",text:sgn(C.dApp[i])}));
+    tile.append(lab,val,d1,d2,sparkline(i,C));
     tiles.append(tile);
   });
 }
@@ -890,7 +912,9 @@ function renderSteps(C){
     const body=h("div",{class:"body"});
     body.append(h("h3",{text:d.t}),h("p",{text:d.p}));
     const viz=h("div",{class:"viz"});
-    if(d.viz==="trend"){let wi=TERMS.findIndex((_,i)=>C.status[i]==="act");if(wi<0)wi=NT-2;
+    if(d.viz==="trend"){let wi=TERMS.findIndex((_,i)=>C.status[i]==="act");
+      if(wi<0)wi=TERMS.findIndex((_,i)=>C.status[i]==="watch");
+      if(wi<0)wi=NT-2;
       viz.append(trendChart(wi,C,{w:300,h:120}));
       viz.append(h("div",{class:"small mut",text:TERMS[wi].label+" premium, 26 weeks, vs "+S.lookback+"-wk avg ±"+S.bandBp+"bp"}));}
     else viz.append(curveChart(C,d.viz));
@@ -954,27 +978,93 @@ function renderPremium(C){
   tw.append(tb);
 }
 
+function tsChart(C){
+  const W=960,Hpx=400,ml=46,mr=118,mt=14,mb=30,iw=W-ml-mr,ih=Hpx-mt-mb;
+  const X=i=>ml+iw*(i/(NT-1));
+  const lb=Math.max(2,S.lookback|0);
+  const weeks=S.history.slice(-(lb-1));
+  let lo=Infinity,hi=-Infinity;
+  const grow=v=>{if(v==null)return;lo=Math.min(lo,v);hi=Math.max(hi,v);};
+  TERMS.forEach((_,i)=>{weeks.forEach(w=>grow(w.tp[i]));grow(C.mtp[i]);grow(C.trailInc[i]);
+    grow(S.approved[i]-S.bandBp);grow(S.approved[i]+S.bandBp);});
+  lo=Math.floor((lo-6)/10)*10;hi=Math.ceil((hi+6)/10)*10;
+  const Y=v=>mt+ih*(1-(v-lo)/(hi-lo));
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${Hpx}`,role:"img","aria-label":"Term premium term structure: this week, trend, prior weeks, production schedule"});
+  niceTicks(lo,hi,6).forEach(t=>{
+    svg.append(sv("line",{x1:ml,x2:W-mr,y1:Y(t),y2:Y(t),stroke:"var(--grid)","stroke-width":1}));
+    svg.append(sv("text",{x:ml-6,y:Y(t)+3.5,"text-anchor":"end",class:"tick",text:t}));});
+  svg.append(sv("text",{x:ml-6,y:mt-2,"text-anchor":"end",class:"tick",text:"bp"}));
+  TERMS.forEach((t,i)=>svg.append(sv("text",{x:X(i),y:Hpx-8,"text-anchor":"middle",class:"tick",text:t.label})));
+  svg.append(sv("line",{x1:ml,x2:W-mr,y1:mt+ih,y2:mt+ih,stroke:"var(--axis)","stroke-width":1}));
+  const path=vals=>{let d="",pen=false;
+    vals.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);pen=true;});
+    return d;};
+  // zone of indifference around production
+  {let dU="",dL="";
+   S.approved.forEach((v,i)=>{dU+=(dU?"L":"M")+X(i).toFixed(1)+" "+Y(v+S.bandBp).toFixed(1);});
+   for(let i=NT-1;i>=0;i--)dL+="L"+X(i).toFixed(1)+" "+Y(S.approved[i]-S.bandBp).toFixed(1);
+   svg.append(sv("path",{d:dU+dL+"Z",fill:"var(--band)"}));}
+  // prior weekly observations — context spaghetti
+  weeks.forEach(w=>svg.append(sv("path",{d:path(w.tp),fill:"none",stroke:"var(--muted)","stroke-width":1,opacity:.28})));
+  svg.append(sv("path",{d:path(S.approved),fill:"none",stroke:"var(--s8)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  svg.append(sv("path",{d:path(C.trailInc),fill:"none",stroke:"var(--muted)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  svg.append(sv("path",{d:path(C.mtp),fill:"none",stroke:"var(--s1)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  C.mtp.forEach((v,i)=>{ if(v==null)return;
+    svg.append(sv("circle",{cx:X(i),cy:Y(v),r:4.5,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2}));});
+  // right-edge direct labels
+  const lastOf=arr=>{for(let i=NT-1;i>=0;i--)if(arr[i]!=null)return arr[i];return null;};
+  const ends=[
+    {y:Y(lastOf(C.mtp)??lo),t:"This week"},
+    {y:Y(lastOf(C.trailInc)??lo),t:S.lookback+"-wk trend"},
+    {y:Y(S.approved[NT-1]),t:"Production"}].sort((a,b)=>a.y-b.y);
+  for(let k=1;k<ends.length;k++) if(ends[k].y-ends[k-1].y<14) ends[k].y=ends[k-1].y+14;
+  ends.forEach(e=>svg.append(sv("text",{x:W-mr+8,y:e.y+4,class:"dlabel",text:e.t})));
+  // crosshair
+  const cross=sv("line",{y1:mt,y2:mt+ih,stroke:"var(--axis)","stroke-width":1,opacity:0});
+  svg.append(cross);
+  const hit=sv("rect",{x:ml,y:mt,width:iw,height:ih,fill:"transparent"});
+  hit.addEventListener("pointermove",ev=>{
+    const r=svg.getBoundingClientRect(),sx=W/r.width;
+    let i=Math.round(((ev.clientX-r.left)*sx-ml)/(iw/(NT-1)));i=Math.max(0,Math.min(NT-1,i));
+    cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("opacity",1);
+    showTT(ev.clientX,ev.clientY,TERMS[i].label+" term",[
+      {color:css("--s1"),label:"This week",value:fmtBp(C.mtp[i])+"bp"},
+      {color:css("--muted"),label:S.lookback+"-wk trend (incl. wk)",value:fmtBp(C.trailInc[i])+"bp"},
+      {color:css("--s8"),label:"Production schedule",value:fmtBp(S.approved[i])+"bp"},
+      {label:"Trend vs production",value:sgn(C.dTrendApp[i])+"bp"},
+      {label:"Latest vs production",value:sgn(C.dApp[i])+"bp"},
+      {label:"Status",value:C.status[i]==="act"?"Discuss":C.status[i]==="watch"?"Watch":C.status[i]==="na"?"n/a":"Hold"}]);
+  });
+  hit.addEventListener("pointerleave",()=>{cross.setAttribute("opacity",0);hideTT();});
+  svg.append(hit);
+  return svg;
+}
 function renderTrend(C){
   const acts=TERMS.filter((_,i)=>C.status[i]==="act").map(t=>t.label);
+  const watches=TERMS.filter((_,i)=>C.status[i]==="watch").map(t=>t.label);
   $("#trendTitle").textContent=acts.length?
-    `${acts.join(", ")} shows persistent widening; other tenors track their ${S.lookback}-week averages`:
-    `Premiums are tracking their ${S.lookback}-week averages at every tenor`;
-  const grid=$("#smGrid");grid.textContent="";
-  let lo=Infinity,hi=-Infinity;
-  TERMS.forEach((_,i)=>{S.history.forEach(hh=>{if(hh.tp[i]!=null){lo=Math.min(lo,hh.tp[i]);hi=Math.max(hi,hh.tp[i]);}});
-    if(C.mtp[i]!=null){lo=Math.min(lo,C.mtp[i]);hi=Math.max(hi,C.mtp[i]);}
-    lo=Math.min(lo,S.approved[i]-S.bandBp);hi=Math.max(hi,S.approved[i]+S.bandBp);});
-  lo=Math.floor((lo-5)/10)*10;hi=Math.ceil((hi+5)/10)*10;
-  TERMS.forEach((t,i)=>{
-    const box=h("div",{class:"sm"});
-    const head=h("div",{class:"h"});
-    head.append(h("b",{text:t.label}));
-    const cur=h("span",{class:"cur",text:fmtBp(C.mtp[i])+"bp "});
-    const dspan=h("span",{class:C.dTrail[i]>0?"up":C.dTrail[i]<0?"dn":"flat",text:sgn(C.dTrail[i])});
-    cur.append(dspan);head.append(cur);
-    box.append(head,trendChart(i,C,{w:300,h:110,lo,hi}));
-    grid.append(box);
-  });
+    `${acts.join(", ")}: the ${S.lookback}-week trend itself has left the zone of indifference`:
+    watches.length?
+    `All ${S.lookback}-week trends are inside the zone; ${watches.join(", ")} prints above it this week`:
+    `Market trends sit inside the zone of indifference at every tenor`;
+  $("#tsTitle").textContent=`Term structure — this week vs ${S.lookback}-week trend vs production`;
+  $("#tsWeeksN").textContent=String(Math.max(2,S.lookback|0)-1);
+  document.querySelectorAll(".lookbackLbl").forEach(e=>e.textContent=S.lookback);
+  legendRow($("#tsLegend"),[
+    {color:"var(--s1)",label:"This week"},
+    {color:"var(--muted)",label:S.lookback+"-week trend (incl. this week)"},
+    {color:"var(--s8)",label:"Production schedule"},
+    {color:"var(--band)",label:"±"+S.bandBp+"bp zone of indifference",shape:"swrect"},
+    {color:"color-mix(in srgb, var(--muted) 35%, transparent)",label:"Prior weekly observations"}]);
+  const c=$("#tsChart");c.textContent="";c.append(tsChart(C));
+  const tw=$("#tsTable");tw.textContent="";
+  const tb=h("table",{class:"dtable"});
+  const hr=h("tr");["Term","This week (bp)",S.lookback+"-wk trend (bp)","Production (bp)","Trend vs prod","Latest vs prod","Status"].forEach(x=>hr.append(h("th",{text:x})));tb.append(hr);
+  TERMS.forEach((t,i)=>{const r=h("tr");
+    [t.label,fmtBp(C.mtp[i]),fmtBp(C.trailInc[i]),fmtBp(S.approved[i]),sgn(C.dTrendApp[i]),sgn(C.dApp[i]),
+     C.status[i]==="act"?"Discuss":C.status[i]==="watch"?"Watch":C.status[i]==="na"?"n/a":"Hold"].forEach(v=>r.append(h("td",{text:v})));
+    tb.append(r);});
+  tw.append(tb);
 }
 
 /* ================= excel import / export ================= */
@@ -999,7 +1089,11 @@ function normDateVal(v){
 }
 function normRate(v){
   if(v==null||v==="")return null;
-  if(typeof v==="string")v=parseFloat(v.replace("%","").trim());
+  if(typeof v==="string"){
+    let s=v.replace("%","").trim();
+    if(/^-?\d+,\d+$/.test(s))s=s.replace(",",".");       // decimal-comma locales
+    v=parseFloat(s);
+  }
   if(!isFinite(v))return null;
   if(v>0&&v<1)v*=100;                    // percent-formatted excel cell (0.0428)
   return Math.round(v*1000)/1000;
@@ -1014,8 +1108,9 @@ function splitDelim(line,d){
   out.push(cur);return out;
 }
 function rowsFromText(text){
-  const lines=text.replace(/\r/g,"").split("\n").filter(l=>l.trim()!=="");
-  const delim=text.includes("\t")?"\t":",";
+  text=text.replace(/^﻿/,"");                  // Excel-on-Windows UTF-8 BOM
+  const lines=text.replace(/\r\n?/g,"\n").split("\n").filter(l=>l.trim()!=="");  // CRLF / CR / LF
+  const delim=text.includes("\t")?"\t":(text.includes(";")&&!text.includes(",")?";":","); // EU locale CSVs use ;
   return lines.map(l=>splitDelim(l,delim));
 }
 function findHeader(rows){
@@ -1246,7 +1341,7 @@ window.addEventListener("hashchange",()=>{
 /* chart/table toggles */
 document.addEventListener("click",ev=>{
   const b=ev.target.closest("[data-toggle]");if(!b)return;
-  const map={curves:["#curvesChart","#curvesTable"],prem:["#premChart","#premTable"]};
+  const map={curves:["#curvesChart","#curvesTable"],prem:["#premChart","#premTable"],ts:["#tsChart","#tsTable"]};
   const [cSel,tSel]=map[b.dataset.toggle];
   const cEl=$(cSel),tEl=$(tSel);
   const showTable=tEl.hidden;
