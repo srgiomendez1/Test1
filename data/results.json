@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11T08:10:05.672077+00:00",
+  "generated_at": "2026-07-11T09:49:04.925935+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1787,10 +1787,14 @@
       "group": null,
       "round": "Quarter-final",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-11|Argentina|Switzerland": {
       "num": 100,
