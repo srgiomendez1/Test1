@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11T12:40:25.388426+00:00",
+  "generated_at": "2026-07-11T14:11:34.035840+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1811,13 +1811,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-14|W97|W98": {
+    "2026-07-14|France|Spain": {
       "num": 101,
       "date": "2026-07-14",
       "time": "14:00 UTC-5",
       "kickoff_utc": "2026-07-14T19:00:00+00:00",
-      "home": "W97",
-      "away": "W98",
+      "home": "France",
+      "away": "Spain",
       "group": null,
       "round": "Semi-final",
       "ground": "Dallas (Arlington)",
