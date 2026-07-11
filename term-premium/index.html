@@ -1,0 +1,922 @@
+<title>Term Premium Monitor — Brokered CD Methodology</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --hairline:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s1-lt:#86b6ef; --s2:#1baf7a; --s5:#4a3aa7;
+  --good:#0ca30c; --goodtxt:#006300; --warn:#fab219; --crit:#d03b3b;
+  --band:rgba(137,135,129,.14); --wash:rgba(42,120,214,.10);
+  --chip-good-bg:rgba(12,163,12,.10); --chip-crit-bg:rgba(208,59,59,.10); --chip-warn-bg:rgba(250,178,25,.14);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --hairline:rgba(255,255,255,.10);
+    --s1:#3987e5; --s1-lt:#5598e7; --s2:#199e70; --s5:#9085e9;
+    --good:#0ca30c; --goodtxt:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+    --band:rgba(137,135,129,.18); --wash:rgba(57,135,229,.14);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --hairline:rgba(255,255,255,.10);
+  --s1:#3987e5; --s1-lt:#5598e7; --s2:#199e70; --s5:#9085e9;
+  --good:#0ca30c; --goodtxt:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --band:rgba(137,135,129,.18); --wash:rgba(57,135,229,.14);
+}
+:root[data-theme="light"]{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --hairline:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s1-lt:#86b6ef; --s2:#1baf7a; --s5:#4a3aa7;
+  --good:#0ca30c; --goodtxt:#006300; --warn:#fab219; --crit:#d03b3b;
+  --band:rgba(137,135,129,.14); --wash:rgba(42,120,214,.10);
+}
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+body{margin:0;background:var(--page);color:var(--ink);
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;}
+a{color:var(--s1)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+section{scroll-margin-top:64px;padding:34px 0 6px}
+h1{font-size:19px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:650;margin:0 0 4px;letter-spacing:-.015em;text-wrap:balance}
+h3{font-size:15px;font-weight:650;margin:0 0 6px}
+p{max-width:72ch}
+.eyebrow{font-size:11px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.sub{color:var(--ink2);font-size:14px;margin:2px 0 18px;max-width:80ch}
+.small{font-size:12.5px;color:var(--ink2)}
+.mut{color:var(--muted)}
+code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--band);padding:1px 5px;border-radius:4px}
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--page) 88%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline)}
+nav .wrap{display:flex;align-items:center;gap:18px;height:52px}
+nav .brand{font-weight:650;font-size:13.5px;white-space:nowrap}
+nav .brand .mut{font-weight:500}
+nav .links{display:flex;gap:2px;overflow-x:auto}
+nav .links a{color:var(--ink2);text-decoration:none;font-size:13px;padding:5px 10px;border-radius:6px;white-space:nowrap}
+nav .links a:hover{background:var(--band);color:var(--ink)}
+nav .asof{margin-left:auto;font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+#themeBtn{border:1px solid var(--hairline);background:none;color:var(--ink2);border-radius:6px;
+  padding:4px 9px;cursor:pointer;font-size:12px}
+/* ---------- cards & chips ---------- */
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:18px 20px;position:relative}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;border-radius:999px;padding:3px 10px}
+.chip.hold{background:var(--chip-good-bg);color:var(--goodtxt)}
+.chip.watch{background:var(--chip-warn-bg);color:#8a5b00}
+:root[data-theme="dark"] .chip.watch{color:var(--warn)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .chip.watch{color:var(--warn)} }
+.chip.act{background:var(--chip-crit-bg);color:var(--crit)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+/* ---------- answer banner ---------- */
+#answerCard{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;padding:24px 26px}
+#answerCard .headline{font-size:20px;font-weight:650;letter-spacing:-.01em;line-height:1.35;margin:8px 0 10px;text-wrap:balance;max-width:34ch}
+#answerCard .why{font-size:14px;color:var(--ink2);max-width:66ch}
+.hero{ text-align:right;min-width:200px}
+.hero .n{font-size:52px;font-weight:650;letter-spacing:-.02em;line-height:1}
+.hero .l{font-size:12.5px;color:var(--muted);margin-top:6px}
+@media(max-width:760px){#answerCard{grid-template-columns:1fr}.hero{text-align:left}}
+/* ---------- tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:14px}
+.tile{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:12px 14px}
+.tile .lab{font-size:12px;color:var(--ink2);display:flex;justify-content:space-between;align-items:center}
+.tile .val{font-size:26px;font-weight:650;letter-spacing:-.01em;margin:2px 0 0}
+.tile .val .unit{font-size:13px;font-weight:500;color:var(--muted)}
+.tile .deltas{font-size:11.5px;color:var(--ink2);margin:2px 0 6px;font-variant-numeric:tabular-nums}
+.up{color:var(--crit);font-weight:600}.dn{color:var(--goodtxt);font-weight:600}.flat{color:var(--muted);font-weight:600}
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.step{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column}
+.step .num{width:26px;height:26px;border-radius:50%;background:var(--s1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;margin-bottom:10px}
+.step h3{text-wrap:balance}
+.step .viz{margin:10px 0 8px}
+.step p{font-size:13.5px;color:var(--ink2);margin:0}
+.formula{font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--band);border-radius:8px;padding:10px 14px;margin:10px 0;overflow-x:auto}
+/* ---------- chart cards ---------- */
+.chartCard{margin-top:14px}
+.chartHead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+.chartHead h3{font-size:16px}
+.chartHead .tools{margin-left:auto}
+.tbtn{border:1px solid var(--hairline);background:none;color:var(--ink2);font-size:12px;border-radius:6px;padding:3px 10px;cursor:pointer}
+.tbtn:hover{background:var(--band)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin:6px 0 2px}
+.legend .k{display:inline-flex;align-items:center;gap:7px}
+.k .sw{width:16px;height:3px;border-radius:2px}
+.k .swdot{width:9px;height:9px;border-radius:50%}
+.k .swdia{width:9px;height:9px;transform:rotate(45deg)}
+.k .swrect{width:12px;height:12px;border-radius:3px}
+svg{display:block;width:100%;height:auto}
+svg text{font:11.5px system-ui,-apple-system,"Segoe UI",sans-serif;fill:var(--muted)}
+svg .tick{font-variant-numeric:tabular-nums}
+svg .dlabel{font-size:11.5px;font-weight:600;fill:var(--ink2)}
+.tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--hairline);
+  box-shadow:0 4px 14px rgba(0,0,0,.12);border-radius:8px;padding:8px 11px;font-size:12px;z-index:30;display:none;min-width:150px}
+.tt .h{font-weight:650;color:var(--ink);margin-bottom:4px}
+.tt .r{display:flex;align-items:center;gap:7px;justify-content:space-between;color:var(--ink2);line-height:1.7}
+.tt .r .v{font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.tt .key{width:12px;height:3px;border-radius:2px;display:inline-block}
+/* table views */
+.dtable{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+.dtable th{font-weight:600;color:var(--ink2);text-align:right;padding:6px 8px;border-bottom:1px solid var(--axis)}
+.dtable th:first-child,.dtable td:first-child{text-align:left}
+.dtable td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+.tblwrap{overflow-x:auto}
+/* ---------- small multiples ---------- */
+.smgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:14px}
+.sm{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:10px 12px}
+.sm .h{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px}
+.sm .h b{font-size:13.5px}
+.sm .cur{font-weight:650;font-variant-numeric:tabular-nums}
+/* ---------- inputs ---------- */
+.ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:12px 0}
+.ctl label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink2);font-weight:600}
+.ctl input{width:130px}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--axis);border-radius:6px;padding:5px 8px;font:inherit;font-size:13px}
+input:focus{outline:2px solid var(--s1);outline-offset:0}
+.itable{width:100%;border-collapse:collapse;font-size:12.5px}
+.itable th{font-weight:600;color:var(--ink2);padding:6px 6px;text-align:right;border-bottom:1px solid var(--axis);white-space:nowrap}
+.itable th:first-child{text-align:left}
+.itable td{padding:3px 4px;border-bottom:1px solid var(--grid);text-align:right}
+.itable td:first-child{text-align:left}
+.itable input[type=number]{width:74px;text-align:right;font-variant-numeric:tabular-nums;padding:4px 6px}
+.itable input[type=text]{width:180px}
+.itable .rm{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px}
+.itable .rm:hover{color:var(--crit)}
+.btn{border:1px solid var(--hairline);background:var(--surface);color:var(--ink);border-radius:7px;padding:7px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--band)}
+.btn.primary{background:var(--s1);border-color:var(--s1);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.notice{border-left:3px solid var(--warn);background:var(--chip-warn-bg);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0;max-width:86ch}
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-top:14px}
+.refgrid .card p{font-size:13.5px;color:var(--ink2);margin:6px 0}
+.refgrid .card p b{color:var(--ink)}
+ul.tight{margin:6px 0;padding-left:18px}
+ul.tight li{font-size:13.5px;color:var(--ink2);margin:5px 0;max-width:80ch}
+ul.tight li b{color:var(--ink)}
+dl.gloss dt{font-weight:650;font-size:13.5px;margin-top:10px}
+dl.gloss dd{margin:2px 0 0;font-size:13.5px;color:var(--ink2);max-width:80ch}
+footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;font-size:12.5px;color:var(--muted)}
+.srconly{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<nav><div class="wrap">
+  <div class="brand">Term Premium Monitor <span class="mut">· Brokered CD (unsecured) → cost of funds</span></div>
+  <div class="links">
+    <a href="#answer">This week</a><a href="#method">How it works</a><a href="#curves">Curves</a>
+    <a href="#premium">Premium</a><a href="#trend">Trend</a><a href="#inputs">Inputs</a><a href="#reference">Reference</a>
+  </div>
+  <div class="asof" id="asofLbl"></div>
+  <button id="themeBtn" title="Toggle theme">◐</button>
+</div></nav>
+
+<!-- ============ ANSWER ============ -->
+<section id="answer"><div class="wrap">
+  <p class="eyebrow">This week's answer · weekly ALCO monitoring</p>
+  <div class="card" id="answerCard">
+    <div>
+      <div id="answerChips"></div>
+      <div class="headline" id="answerHead"></div>
+      <div class="why" id="answerWhy"></div>
+    </div>
+    <div class="hero">
+      <div class="n" id="heroN"></div>
+      <div class="l" id="heroL"></div>
+    </div>
+  </div>
+  <div class="tiles" id="tiles"></div>
+  <p class="small" style="margin-top:10px">Each tile: market term premium (floored brokered-CD average − same-term SOFR), Δ vs the ALMC-approved schedule, Δ vs the trailing 13-week average, and 26-week history. Status turns red when |Δ vs approved| exceeds the indifference range.</p>
+</div></section>
+
+<!-- ============ METHOD ============ -->
+<section id="method"><div class="wrap">
+  <p class="eyebrow">How it works · performed weekly</p>
+  <h2>Five steps from dealer screens to an approved term premium</h2>
+  <p class="sub">Situation: our FTP curve prices every product off <code>FTP(t) = SOFR(t) + TP(t)</code>, so the term premium schedule <em>is</em> our marginal cost of unsecured term funding. Complication: that premium isn't directly observable — it must be extracted weekly from where banks like us actually buy money. Question: does this week's market read justify changing the approved schedule? The five steps below produce the answer.</p>
+  <div class="steps" id="steps"></div>
+  <div class="formula">market_TP(t) = max( mean<sub>7 issuers</sub>[ CD_offer(t) ], own_issuance(t) ) − SOFR(t)<br>decision: |market_TP(t) − approved_TP(t)| &gt; 20bp → committee discussion; 13-week trend distinguishes persistent repricing from noise</div>
+</div></section>
+
+<!-- ============ CURVES ============ -->
+<section id="curves"><div class="wrap">
+  <p class="eyebrow">The market this week</p>
+  <div class="card chartCard">
+    <div class="chartHead"><h3 id="curvesTitle"></h3>
+      <div class="tools"><button class="tbtn" data-toggle="curves">Table view</button></div></div>
+    <div class="legend" id="curvesLegend"></div>
+    <div id="curvesChart"></div><div id="curvesTable" hidden class="tblwrap"></div>
+    <p class="small" style="margin-top:6px">The shaded gap between the floored CD curve and SOFR <b>is</b> the market term premium. FHLB advances (secured) sit between the two — the distance from FHLB to the CD curve is what the market charges for lending to us <em>unsecured</em>.</p>
+  </div>
+</div></section>
+
+<!-- ============ PREMIUM ============ -->
+<section id="premium"><div class="wrap">
+  <p class="eyebrow">Premium vs approved schedule</p>
+  <div class="card chartCard">
+    <div class="chartHead"><h3 id="premTitle"></h3>
+      <div class="tools"><button class="tbtn" data-toggle="prem">Table view</button></div></div>
+    <div class="legend" id="premLegend"></div>
+    <div id="premChart"></div><div id="premTable" hidden class="tblwrap"></div>
+    <p class="small" style="margin-top:6px">Bars are this week's market term premium. The gray band is the ALMC-approved schedule ±<span class="bandLbl"></span>bp indifference range; the tick is the approved level. A bar escaping its band is a committee agenda item — inside the band, we deliberately do not react (repricing FTP for noise whipsaws product pricing).</p>
+  </div>
+</div></section>
+
+<!-- ============ TREND ============ -->
+<section id="trend"><div class="wrap">
+  <p class="eyebrow">Is the move real? · 26-week history, common scale</p>
+  <h2 id="trendTitle"></h2>
+  <p class="sub">Blue: weekly market term premium. Gray: trailing 13-week average with ±<span class="bandLbl"></span>bp range. All panels share one scale so a 10bp move looks identical at every tenor. A breach that persists for several weeks is repricing; a one-week spike is noise.</p>
+  <div class="smgrid" id="smGrid"></div>
+</div></section>
+
+<!-- ============ INPUTS ============ -->
+<section id="inputs"><div class="wrap">
+  <p class="eyebrow">Inputs &amp; data · edit and everything recomputes</p>
+  <h2>Weekly data intake</h2>
+  <p class="sub">All rates in percent. Leave a cell blank when an issuer doesn't post that term — the average uses available quotes only. Changes save to this browser automatically; use Export/Import to move a dataset between machines or to archive the week.</p>
+  <div class="notice" id="sampleNotice"><b>Illustrative data loaded.</b> SOFR nodes and the approved TP schedule are the real 2026-07-02 values from the FTP engine; issuer CD offers, own-issuance prints, FHLB levels and the 26-week history are fabricated samples for demonstration. Replace them with this week's screens before using any number in committee.</div>
+
+  <div class="ctl">
+    <label>Week ending <input type="date" id="inAsof"></label>
+    <label>Indifference range (bp) <input type="number" id="inBand" min="1" step="1"></label>
+    <label>Trend lookback (weeks) <input type="number" id="inLookback" min="2" step="1"></label>
+  </div>
+
+  <h3 style="margin-top:18px">Brokered CD issuers (<span id="issuerCount"></span>)</h3>
+  <div class="tblwrap"><table class="itable" id="issuerTable"></table></div>
+  <div class="btnrow"><button class="btn" id="addIssuer">+ Add issuer</button></div>
+
+  <h3 style="margin-top:18px">Reference curves</h3>
+  <div class="tblwrap"><table class="itable" id="refTable"></table></div>
+
+  <h3 style="margin-top:18px">Weekly history — market term premium (bp)</h3>
+  <p class="small">One row per week (oldest first). “Commit current week” appends the premiums computed from the tables above using the week-ending date.</p>
+  <div class="tblwrap" style="max-height:320px;overflow-y:auto"><table class="itable" id="histTable"></table></div>
+  <div class="btnrow">
+    <button class="btn primary" id="commitWeek">Commit current week to history</button>
+    <button class="btn" id="exportJson">Export JSON</button>
+    <button class="btn" id="importJson">Import JSON</button>
+    <input type="file" id="importFile" accept=".json" hidden>
+    <button class="btn" id="resetSample">Reset to sample data</button>
+  </div>
+</div></section>
+
+<!-- ============ REFERENCE ============ -->
+<section id="reference"><div class="wrap">
+  <p class="eyebrow">Standing reference · methodology &amp; governance</p>
+  <h2>Why the curve is built this way</h2>
+  <p class="sub">This section is the durable record: the rationale for each design choice, the questions worth pressure-testing in committee, and the decision log. It complements the Interpolation Methodology document (FTP curve construction) and the MDD.</p>
+
+  <div class="refgrid">
+    <div class="card"><h3>Why brokered CDs?</h3>
+      <p><b>They are our observable marginal unsecured price.</b> FTP best practice prices funds at today's marginal cost of raising them from non-customer sources — the "buy" side of buy-vs-make. Brokered CDs are the deepest such market a regional bank taps weekly, with posted, executable levels across a full term ladder. Post-2008 consensus (BIS liquidity transfer pricing guidance) is a direct pass-through of the market cost of liquidity — not an internally modeled one.</p></div>
+    <div class="card"><h3>Why average 7 issuers?</h3>
+      <p><b>One name is an anecdote; a panel is a market.</b> Averaging across issuers of comparable standing removes single-issuer credit idiosyncrasy and week-to-week posting gaps. The panel's composition is itself a governance choice: it should look like <em>us</em> (size, rating, business mix), and membership changes should be documented — swapping a tight G-SIB for a wide consumer lender moves the curve without any market move.</p></div>
+    <div class="card"><h3>Why floor at our own prints?</h3>
+      <p><b>Our executed cost is the truth; the panel is the estimate.</b> When we actually issued at a term, that level is realized marginal cost — if it exceeds the panel average, using the average would understate the cost we demonstrably pay (adverse selection: we get done where <em>our</em> name clears). The floor only lifts, never lowers: deliberate conservatism that keeps FTP from subsidizing lending off a curve we cannot fund at.</p></div>
+    <div class="card"><h3>Why subtract SOFR?</h3>
+      <p><b>To isolate what is ours from what is the Fed's.</b> The same-term SOFR OIS rate is the market's near-risk-free expectation of policy over the term. Subtracting it strips rate expectations out of the CD level; the residual — term liquidity + unsecured credit premium — is the piece ALCO actually governs, and the piece that plugs into <code>FTP(t) = SOFR(t) + TP(t)</code>.</p></div>
+    <div class="card"><h3>Why show FHLB?</h3>
+      <p><b>It prices the collateral, and disciplines the level.</b> FHLB advances are our secured alternative; the CD−FHLB gap is the market price of borrowing unsecured (our name risk), while FHLB−SOFR is mostly the term/structure premium of secured wholesale. If the unsecured premium collapses toward FHLB, the market is giving liquidity away; if it gaps wide, our name is repricing — different conversations, same chart.</p></div>
+    <div class="card"><h3>Why a ±20bp indifference range?</h3>
+      <p><b>Stability is a feature of a cost-of-funds curve.</b> Product pricing, profitability reporting and incentive comp all key off FTP; chasing every 5bp wiggle churns all three. 20bp is the materiality threshold at which repricing risk outweighs stability — combined with the 13-week trend test, we only move for changes that are both <em>material</em> and <em>persistent</em>. The band itself should be re-validated periodically against realized premium volatility.</p></div>
+  </div>
+
+  <h3 style="margin-top:26px">Pressure-test questions before committee (known gaps)</h3>
+  <ul class="tight">
+    <li><b>Quote convention.</b> Are all issuer levels the same convention (APY vs bond-equivalent, monthly vs semiannual pay, actual/365 vs 30/360)? A convention mismatch of 3–6bp can eat a third of the indifference band silently.</li>
+    <li><b>Callable structures.</b> Brokered ladders mix bullet and callable paper at 2Y+; a callable level is not comparable to a bullet. Confirm the panel is bullet-only or document the adjustment.</li>
+    <li><b>Executable vs posted.</b> Top-of-screen posts are advertisements; fills happen deeper. Where possible anchor to executed levels (our own prints do this at floored terms — elsewhere it's an acknowledged approximation).</li>
+    <li><b>Thin long end.</b> At 4Y–5Y few issuers post (this week's sample: 3–5 quotes). The average is noisier exactly where the premium is largest — consider requiring a minimum quote count or carrying a wider band at those terms.</li>
+    <li><b>Panel survivorship.</b> An issuer that pulls back from a term when funding gets expensive removes the <em>widest</em> quote — the average falls for the wrong reason. Track posting gaps, not just levels.</li>
+    <li><b>Floor asymmetry.</b> The floor lifts but never lowers — over time this embeds a conservative bias. That's intended; quantify it annually (average floor lift, bp) so the bias is chosen, not accidental.</li>
+    <li><b>Cadence mismatch.</b> Observation is weekly, the approved schedule updates monthly (ALMC). Document how mid-cycle breaches are handled: escalate immediately, or hold to cycle unless the breach exceeds a hard limit.</li>
+    <li><b>Contingent-liquidity credit.</b> The retail CD product earns FTP − 10bp for its liquidity value; that credit is separate from this market premium and shouldn't be conflated when explaining CD pricing.</li>
+  </ul>
+
+  <h3 style="margin-top:26px">Decision log</h3>
+  <div class="tblwrap"><table class="itable" id="decTable"></table></div>
+  <div class="btnrow"><button class="btn" id="addDec">+ Add entry</button></div>
+
+  <h3 style="margin-top:26px">Glossary</h3>
+  <dl class="gloss">
+    <dt>Term premium — TP(t)</dt><dd>The spread over same-term SOFR that the unsecured wholesale market charges us for term money: term liquidity premium + our unsecured credit spread. The ALMC-approved TP schedule is added to SOFR to form the FTP curve.</dd>
+    <dt>Brokered CD</dt><dd>A certificate of deposit distributed through broker-dealers to retail investors; for the issuing bank it behaves like unsecured wholesale term funding with a posted primary-market rate ladder.</dd>
+    <dt>SOFR / SOFR OIS</dt><dd>Secured Overnight Financing Rate; the OIS swap of a given term is the market's average expected SOFR over that term — our proxy for the risk-free base at each tenor (Term SOFR 1–6M, OIS swaps 1Y+).</dd>
+    <dt>FHLB advance</dt><dd>Collateralized borrowing from the Federal Home Loan Bank. Secured, so it prices near the risk-free curve — the reference for what our funding costs <em>with</em> collateral pledged.</dd>
+    <dt>Indifference range</dt><dd>The ±bp corridor around the approved schedule within which observed market premiums trigger no action. Materiality threshold for repricing the FTP curve.</dd>
+    <dt>Floored average</dt><dd>max(panel average, own executed issuance) at each term — the conservative estimate of our marginal unsecured cost.</dd>
+  </dl>
+
+  <h3 style="margin-top:26px">Sources &amp; further reading</h3>
+  <ul class="tight">
+    <li>BIS Financial Stability Institute — <a href="https://www.bis.org/fsi/fsipapers10.pdf">Liquidity transfer pricing: a guide to better practice</a> (the post-crisis case for passing through the market cost of liquidity).</li>
+    <li>Forvis Mazars — <a href="https://www.forvismazars.us/forsights/2024/05/funds-transfer-pricing">Funds Transfer Pricing: essential concepts</a> (liquidity costs from term debt, brokered CDs, FHLB funding and market benchmarks).</li>
+    <li>Empyrean Solutions — <a href="https://empyreansolutions.com/blog/liquidity-premiums-revisited/">Liquidity premiums in ALM, revisited</a> (curve choice advantages lending vs deposit businesses; why unsecured &gt; FHLB/brokered benchmarks matters).</li>
+    <li>Kohl Advisory Group — <a href="https://www.kohlag.com/funds-transfer-pricing-making-vs.-buying-funds">FTP: making vs buying funds</a> (brokered CDs / FHLB as the "buy" alternative that values branch-gathered funds).</li>
+    <li>Internal: <em>Interpolation Methodology — FTP Curve Construction</em> (node schedules, monthly-grid interpolation, worked examples) and the FTP MDD (product add-ons, CD contingent-liquidity credit).</li>
+  </ul>
+</div></section>
+
+<footer><div class="wrap">
+  Flagstar Treasury / ALM · weekly brokered-CD term premium process · companion to the FTP Interpolation Methodology &amp; MDD.<br>
+  Issuer quotes, own-issuance prints, FHLB levels and history shown on first load are <b>illustrative samples</b>; SOFR nodes and the approved TP schedule reflect 2026-07-02 engine inputs. Nothing here is investment advice or an offering of deposits.
+</div></footer>
+
+<div class="tt" id="tt"></div>
+
+<script>
+"use strict";
+/* ================= data ================= */
+const TERMS = [
+  {m:3,label:"3M"},{m:6,label:"6M"},{m:9,label:"9M"},{m:12,label:"1Y"},{m:18,label:"18M"},
+  {m:24,label:"2Y"},{m:36,label:"3Y"},{m:48,label:"4Y"},{m:60,label:"5Y"}
+];
+const NT = TERMS.length;
+const LS_KEY = "ftp-term-premium-v1";
+
+function defaultState(){
+  // SOFR: real 2026-07-02 engine nodes (9M/18M interpolated per methodology doc)
+  const sofr =     [3.752,3.872,3.926,3.980,3.979,3.979,3.937,3.918,3.921];
+  // ALMC-approved TP schedule (bp), interpolated to grid terms per methodology doc
+  const approved = [15,20,25,30,40,50,55,60,60];
+  const issuers = [
+    {name:"Issuer 1 — G-SIB",          offers:[3.90,4.08,4.19,4.28,4.40,4.48,4.49,4.70,4.55]},
+    {name:"Issuer 2 — G-SIB",          offers:[3.91,4.09,4.20,4.29,4.41,4.50,4.51,null,4.58]},
+    {name:"Issuer 3 — Super-regional", offers:[3.92,4.10,4.21,4.30,null,4.51,4.52,4.73,4.60]},
+    {name:"Issuer 4 — Regional",       offers:[3.94,4.12,4.23,4.32,4.44,4.53,4.55,4.78,null]},
+    {name:"Issuer 5 — Consumer/card",  offers:[3.95,4.13,null,4.33,4.45,4.55,4.56,4.79,4.66]},
+    {name:"Issuer 6 — Consumer/card",  offers:[3.93,4.11,4.22,4.31,4.43,4.52,4.53,null,4.62]},
+    {name:"Issuer 7 — Regional",       offers:[3.90,4.09,4.20,4.28,4.42,4.50,null,4.75,4.59]}
+  ];
+  const flagstar = [null,4.09,null,4.34,null,4.55,null,null,null];   // own executed prints
+  const fhlb =     [3.85,3.99,4.07,4.10,4.13,4.14,4.12,4.12,4.14];   // secured reference
+  // 26 weeks of history (market TP bp). 4Y widens persistently over the last ~8 weeks.
+  const start=[16,21,26,31,42,50,56,56,62], end=[17,22,28,34,43,52,57,78,67];
+  const history=[]; const d0=new Date("2026-07-10T12:00:00Z");
+  for(let w=25;w>=1;w--){
+    const dt=new Date(d0); dt.setUTCDate(dt.getUTCDate()-7*w);
+    const f=(25-w)/24;
+    const tp=TERMS.map((_,i)=>{
+      let v=start[i]+(end[i]-start[i])*(i===7? Math.max(0,(f-0.55)/0.45) : f);   // 4Y: late ramp
+      v+=2*Math.sin((25-w)*1.7+i*2.1)+1.2*Math.sin((25-w)*0.7+i);               // deterministic noise
+      return Math.round(v*10)/10;
+    });
+    history.push({date:dt.toISOString().slice(0,10),tp});
+  }
+  return {
+    asOf:"2026-07-10", bandBp:20, lookback:13,
+    issuers, flagstar, sofr, fhlb, approved, history,
+    decisions:[
+      {date:"2026-05-28", entry:"ALMC: 2Y node raised 45→50bp — market premium persistently above band for 6 weeks."},
+      {date:"2026-06-25", entry:"ALMC: schedule reaffirmed; all monitored tenors inside ±20bp. Panel membership reviewed, no changes."}
+    ],
+    sample:true
+  };
+}
+
+let S; // state
+function load(){ try{ const raw=localStorage.getItem(LS_KEY); if(raw){S=JSON.parse(raw);return;} }catch(e){} S=defaultState(); }
+function save(){ try{ localStorage.setItem(LS_KEY,JSON.stringify(S)); }catch(e){} }
+
+/* ================= compute ================= */
+const mean=a=>{const v=a.filter(x=>x!=null&&isFinite(x));return v.length? v.reduce((s,x)=>s+x,0)/v.length : null;};
+function compute(){
+  const avg=TERMS.map((_,i)=>mean(S.issuers.map(iss=>iss.offers[i])));
+  const nQuotes=TERMS.map((_,i)=>S.issuers.filter(iss=>iss.offers[i]!=null).length);
+  const floored=avg.map((a,i)=>{
+    if(a==null) return S.flagstar[i];
+    return S.flagstar[i]!=null? Math.max(a,S.flagstar[i]) : a;
+  });
+  const floorBinds=avg.map((a,i)=>a!=null&&S.flagstar[i]!=null&&S.flagstar[i]>a);
+  const mtp=floored.map((f,i)=>f==null?null:Math.round((f-S.sofr[i])*1000)/10);
+  const lb=Math.max(2,S.lookback|0);
+  const hist=S.history.slice(-lb);
+  const trail=TERMS.map((_,i)=>{const v=hist.map(h=>h.tp[i]);return v.length?Math.round(mean(v)*10)/10:null;});
+  const dApp=mtp.map((v,i)=>v==null?null:Math.round((v-S.approved[i])*10)/10);
+  const dTrail=mtp.map((v,i)=>v==null||trail[i]==null?null:Math.round((v-trail[i])*10)/10);
+  const status=mtp.map((v,i)=>{
+    if(v==null)return "na";
+    if(Math.abs(dApp[i])>S.bandBp)return "act";
+    if(dTrail[i]!=null&&Math.abs(dTrail[i])>S.bandBp)return "watch";
+    return "hold";
+  });
+  return {avg,nQuotes,floored,floorBinds,mtp,trail,dApp,dTrail,status};
+}
+
+/* ================= helpers ================= */
+const $=s=>document.querySelector(s);
+function h(tag,attrs={},...kids){const e=document.createElement(tag);
+  for(const[k,v]of Object.entries(attrs)){ if(k==="text")e.textContent=v; else if(k.startsWith("on"))e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);}
+  for(const k of kids){ if(k==null)continue; e.append(k);} return e;}
+const SVGNS="http://www.w3.org/2000/svg";
+function sv(tag,attrs={},...kids){const e=document.createElementNS(SVGNS,tag);
+  for(const[k,v]of Object.entries(attrs)){ if(k==="text")e.textContent=v; else e.setAttribute(k,v);}
+  for(const k of kids){ if(k==null)continue; e.append(k);} return e;}
+const fmt2=v=>v==null?"—":v.toFixed(2);
+const fmtBp=v=>v==null?"—":(Math.round(v*10)/10).toString();
+const sgn=v=>v==null?"—":(v>0?"+":"")+(Math.round(v*10)/10);
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function niceTicks(lo,hi,n=5){const span=hi-lo,step0=span/n,mag=Math.pow(10,Math.floor(Math.log10(step0)));
+  let step=mag;for(const m of[1,2,2.5,5,10]){if(step0<=m*mag){step=m*mag;break;}}
+  const t=[];for(let v=Math.ceil(lo/step)*step;v<=hi+1e-9;v+=step)t.push(Math.round(v*100)/100);return t;}
+
+/* tooltip */
+const tt=$("#tt");
+function showTT(x,y,head,rows){
+  tt.textContent=""; tt.append(h("div",{class:"h",text:head}));
+  rows.forEach(r=>{ if(!r)return;
+    const row=h("div",{class:"r"});
+    const l=h("span",{});
+    if(r.color)l.append(h("span",{class:"key",style:"background:"+r.color+";margin-right:6px"}));
+    l.append(document.createTextNode(r.label));
+    row.append(l,h("span",{class:"v",text:r.value})); tt.append(row);});
+  tt.style.display="block";
+  const pad=14,W=tt.offsetWidth,H=tt.offsetHeight;
+  let px=x+pad,py=y+pad;
+  if(px+W>window.innerWidth-8)px=x-W-pad;
+  if(py+H>window.innerHeight-8)py=y-H-pad;
+  tt.style.left=(px+window.scrollX)+"px"; tt.style.top=(py+window.scrollY)+"px";
+}
+function hideTT(){tt.style.display="none";}
+
+/* ================= curve chart (main + minis) ================= */
+function curveChart(C,opt){
+  const mini=!!opt.mini;
+  const W=mini?300:960, Hpx=mini?150:400;
+  const ml=mini?34:46, mr=mini?10:110, mt=mini?10:14, mb=mini?22:30;
+  const iw=W-ml-mr, ih=Hpx-mt-mb;
+  const X=i=>ml+iw*(i/(NT-1));
+  const series=[];
+  if(opt.sofr)series.push(...S.sofr);
+  if(opt.fhlb)series.push(...S.fhlb);
+  if(opt.avg)series.push(...C.avg.filter(v=>v!=null));
+  if(opt.floored)series.push(...C.floored.filter(v=>v!=null));
+  if(opt.issuers)S.issuers.forEach(iss=>series.push(...iss.offers.filter(v=>v!=null)));
+  if(opt.flagstar)series.push(...S.flagstar.filter(v=>v!=null));
+  let lo=Math.min(...series),hi=Math.max(...series);
+  const padY=(hi-lo)*0.12||0.1; lo-=padY; hi+=padY;
+  const Y=v=>mt+ih*(1-(v-lo)/(hi-lo));
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${Hpx}`,role:"img","aria-label":opt.aria||"Rate curves by term"});
+  // grid + y ticks
+  niceTicks(lo,hi,mini?3:6).forEach(t=>{
+    svg.append(sv("line",{x1:ml,x2:W-mr,y1:Y(t),y2:Y(t),stroke:"var(--grid)","stroke-width":1}));
+    svg.append(sv("text",{x:ml-6,y:Y(t)+3.5,"text-anchor":"end",class:"tick",text:t.toFixed(2)}));
+  });
+  // x labels
+  TERMS.forEach((t,i)=>{ if(mini&&i%2)return;
+    svg.append(sv("text",{x:X(i),y:Hpx-8,"text-anchor":"middle",class:"tick",text:t.label}));});
+  svg.append(sv("line",{x1:ml,x2:W-mr,y1:mt+ih,y2:mt+ih,stroke:"var(--axis)","stroke-width":1}));
+  const path=(vals)=>{let d="",pen=false;
+    vals.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);pen=true;});
+    return d;};
+  // premium wash between floored and SOFR
+  if(opt.wash){
+    let d="";
+    C.floored.forEach((v,i)=>{if(v!=null)d+=(d?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);});
+    for(let i=NT-1;i>=0;i--){d+="L"+X(i).toFixed(1)+" "+Y(S.sofr[i]).toFixed(1);}
+    svg.append(sv("path",{d:d+"Z",fill:"var(--wash)",stroke:"none"}));
+  }
+  // issuer dots
+  if(opt.issuers)S.issuers.forEach(iss=>iss.offers.forEach((v,i)=>{ if(v==null)return;
+    svg.append(sv("circle",{cx:X(i),cy:Y(v),r:mini?2.5:3.5,fill:"var(--muted)",opacity:.55}));}));
+  if(opt.sofr) svg.append(sv("path",{d:path(S.sofr),fill:"none",stroke:"var(--muted)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  if(opt.fhlb) svg.append(sv("path",{d:path(S.fhlb),fill:"none",stroke:"var(--s2)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  if(opt.avg)  svg.append(sv("path",{d:path(C.avg),fill:"none",stroke:"var(--s1-lt)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  if(opt.floored){
+    svg.append(sv("path",{d:path(C.floored),fill:"none",stroke:"var(--s1)","stroke-width":mini?2:2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+    C.floored.forEach((v,i)=>{ if(v==null)return;
+      svg.append(sv("circle",{cx:X(i),cy:Y(v),r:mini?3:4.5,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2}));});
+  }
+  if(opt.flagstar)S.flagstar.forEach((v,i)=>{ if(v==null)return;
+    const s=mini?4:5.5,cx=X(i),cy=Y(v);
+    svg.append(sv("path",{d:`M${cx} ${cy-s}L${cx+s} ${cy}L${cx} ${cy+s}L${cx-s} ${cy}Z`,fill:"var(--s5)",stroke:"var(--surface)","stroke-width":2}));});
+  // direct end labels (main only)
+  if(!mini){
+    const ends=[];
+    if(opt.floored){const i=C.floored.map((v,j)=>v!=null?j:-1).reduce((a,b)=>Math.max(a,b));ends.push({y:Y(C.floored[i]),t:"Floored CD avg"});}
+    if(opt.avg){const i=C.avg.map((v,j)=>v!=null?j:-1).reduce((a,b)=>Math.max(a,b));ends.push({y:Y(C.avg[i]),t:"Panel average"});}
+    if(opt.fhlb)ends.push({y:Y(S.fhlb[NT-1]),t:"FHLB (secured)"});
+    if(opt.sofr)ends.push({y:Y(S.sofr[NT-1]),t:"SOFR OIS"});
+    ends.sort((a,b)=>a.y-b.y);
+    for(let k=1;k<ends.length;k++) if(ends[k].y-ends[k-1].y<14) ends[k].y=ends[k-1].y+14;
+    ends.forEach(e=>svg.append(sv("text",{x:W-mr+8,y:e.y+4,class:"dlabel",text:e.t})));
+    if(opt.wash){
+      const midI=Math.floor(NT*0.62);
+      const my=(Y(C.floored[midI]??S.sofr[midI])+Y(S.sofr[midI]))/2;
+      svg.append(sv("text",{x:X(midI),y:my+4,"text-anchor":"middle",class:"dlabel",fill:"var(--s1)",text:"← term premium →"}));
+    }
+  }
+  // crosshair + tooltip
+  const cross=sv("line",{y1:mt,y2:mt+ih,stroke:"var(--axis)","stroke-width":1,opacity:0});
+  svg.append(cross);
+  const hit=sv("rect",{x:ml,y:mt,width:iw,height:ih,fill:"transparent"});
+  hit.addEventListener("pointermove",ev=>{
+    const r=svg.getBoundingClientRect(),sx=W/r.width;
+    const px=(ev.clientX-r.left)*sx;
+    let i=Math.round((px-ml)/(iw/(NT-1))); i=Math.max(0,Math.min(NT-1,i));
+    cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("opacity",1);
+    const rows=[];
+    if(opt.floored&&C.floored[i]!=null)rows.push({color:css("--s1"),label:"Floored CD avg",value:fmt2(C.floored[i])+"%"});
+    if(opt.avg&&C.avg[i]!=null)rows.push({color:css("--s1-lt"),label:"Panel avg ("+C.nQuotes[i]+" quotes)",value:fmt2(C.avg[i])+"%"});
+    if(opt.flagstar&&S.flagstar[i]!=null)rows.push({color:css("--s5"),label:"Own issuance",value:fmt2(S.flagstar[i])+"%"});
+    if(opt.fhlb)rows.push({color:css("--s2"),label:"FHLB advance",value:fmt2(S.fhlb[i])+"%"});
+    if(opt.sofr)rows.push({color:css("--muted"),label:"SOFR OIS",value:fmt2(S.sofr[i])+"%"});
+    if(opt.floored&&C.mtp[i]!=null)rows.push({label:"Market term premium",value:fmtBp(C.mtp[i])+"bp"});
+    showTT(ev.clientX,ev.clientY,TERMS[i].label+" term",rows);
+  });
+  hit.addEventListener("pointerleave",()=>{cross.setAttribute("opacity",0);hideTT();});
+  svg.append(hit);
+  return svg;
+}
+
+/* ================= premium column chart ================= */
+function premiumChart(C){
+  const W=960,Hpx=380,ml=46,mr=20,mt=26,mb=30,iw=W-ml-mr,ih=Hpx-mt-mb;
+  const vals=[...C.mtp.filter(v=>v!=null),...S.approved.map(a=>a+S.bandBp)];
+  const hi=Math.ceil((Math.max(...vals)+8)/10)*10, lo=0;
+  const Y=v=>mt+ih*(1-(v-lo)/(hi-lo));
+  const slot=iw/NT, bw=24, bandW=Math.min(52,slot*0.7);
+  const Xc=i=>ml+slot*(i+0.5);
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${Hpx}`,role:"img","aria-label":"Market term premium vs approved schedule by term"});
+  niceTicks(lo,hi,6).forEach(t=>{
+    svg.append(sv("line",{x1:ml,x2:W-mr,y1:Y(t),y2:Y(t),stroke:"var(--grid)","stroke-width":1}));
+    svg.append(sv("text",{x:ml-6,y:Y(t)+3.5,"text-anchor":"end",class:"tick",text:t}));});
+  svg.append(sv("text",{x:ml-6,y:mt-10,"text-anchor":"end",class:"tick",text:"bp"}));
+  TERMS.forEach((t,i)=>{
+    // band around approved
+    svg.append(sv("rect",{x:Xc(i)-bandW/2,y:Y(S.approved[i]+S.bandBp),width:bandW,
+      height:Y(S.approved[i]-S.bandBp)-Y(S.approved[i]+S.bandBp),fill:"var(--band)",rx:3}));
+    // approved tick
+    svg.append(sv("line",{x1:Xc(i)-bandW/2,x2:Xc(i)+bandW/2,y1:Y(S.approved[i]),y2:Y(S.approved[i]),
+      stroke:"var(--ink2)","stroke-width":2}));
+    // bar
+    const v=C.mtp[i]; if(v!=null){
+      const y=Y(Math.max(v,0)),hgt=Math.abs(Y(0)-Y(v));
+      const bar=sv("path",{d:roundedTopBar(Xc(i)-bw/2,y,bw,hgt,4),fill:"var(--s1)"});
+      svg.append(bar);
+      const breach=Math.abs(C.dApp[i])>S.bandBp;
+      if(breach){
+        svg.append(sv("circle",{cx:Xc(i),cy:y-16,r:4,fill:"var(--crit)"}));
+        svg.append(sv("text",{x:Xc(i),y:y-24,"text-anchor":"middle",class:"dlabel",fill:"var(--crit)",
+          "font-weight":"700",text:fmtBp(v)+"bp ("+sgn(C.dApp[i])+")"}));
+      }
+      const hitr=sv("rect",{x:Xc(i)-slot/2,y:mt,width:slot,height:ih,fill:"transparent"});
+      hitr.addEventListener("pointermove",ev=>{
+        bar.setAttribute("opacity",.8);
+        showTT(ev.clientX,ev.clientY,TERMS[i].label+" term",[
+          {color:css("--s1"),label:"Market premium",value:fmtBp(v)+"bp"},
+          {color:css("--ink2"),label:"Approved schedule",value:fmtBp(S.approved[i])+"bp"},
+          {label:"Δ vs approved",value:sgn(C.dApp[i])+"bp"},
+          {label:"Δ vs "+S.lookback+"-wk avg",value:sgn(C.dTrail[i])+"bp"},
+          {label:"Quotes / floor",value:C.nQuotes[i]+(C.floorBinds[i]?" · floor binds":"")}]);
+      });
+      hitr.addEventListener("pointerleave",()=>{bar.setAttribute("opacity",1);hideTT();});
+      svg.append(hitr);
+    }
+    svg.append(sv("text",{x:Xc(i),y:Hpx-8,"text-anchor":"middle",class:"tick",text:t.label}));
+  });
+  svg.append(sv("line",{x1:ml,x2:W-mr,y1:Y(0),y2:Y(0),stroke:"var(--axis)","stroke-width":1}));
+  return svg;
+}
+function roundedTopBar(x,y,w,hgt,r){
+  r=Math.min(r,hgt,w/2);
+  return `M${x} ${y+hgt}L${x} ${y+r}Q${x} ${y} ${x+r} ${y}L${x+w-r} ${y}Q${x+w} ${y} ${x+w} ${y+r}L${x+w} ${y+hgt}Z`;
+}
+
+/* ================= trend small multiple ================= */
+function trendChart(i,C,opt={}){
+  const W=opt.w||300,Hpx=opt.h||120,ml=30,mr=8,mt=8,mb=6,iw=W-ml-mr,ih=Hpx-mt-mb;
+  const hist=[...S.history.map(h=>h.tp[i]),C.mtp[i]].filter(v=>v!=null);
+  const n=S.history.length+1;
+  const lo=opt.lo??Math.min(...hist)-5, hi=opt.hi??Math.max(...hist)+5;
+  const X=k=>ml+iw*(k/(n-1)), Y=v=>mt+ih*(1-(v-lo)/(hi-lo));
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${Hpx}`,role:"img","aria-label":TERMS[i].label+" premium trend"});
+  niceTicks(lo,hi,2).forEach(t=>{
+    svg.append(sv("line",{x1:ml,x2:W-mr,y1:Y(t),y2:Y(t),stroke:"var(--grid)","stroke-width":1}));
+    svg.append(sv("text",{x:ml-4,y:Y(t)+3,"text-anchor":"end",class:"tick",style:"font-size:10px",text:t}));});
+  const lb=Math.max(2,S.lookback|0);
+  const full=[...S.history.map(hh=>hh.tp[i]),C.mtp[i]];
+  const roll=full.map((_,k)=>{const w0=Math.max(0,k-lb+1);const seg=full.slice(w0,k+1).filter(v=>v!=null);
+    return seg.length?seg.reduce((a,b)=>a+b,0)/seg.length:null;});
+  // band around rolling mean
+  let dU="",dL="";
+  roll.forEach((v,k)=>{ if(v==null)return; dU+=(dU?"L":"M")+X(k).toFixed(1)+" "+Y(v+S.bandBp).toFixed(1);});
+  for(let k=n-1;k>=0;k--){ if(roll[k]==null)continue; dL+="L"+X(k).toFixed(1)+" "+Y(roll[k]-S.bandBp).toFixed(1);}
+  if(dU)svg.append(sv("path",{d:dU+dL+"Z",fill:"var(--band)"}));
+  const lineOf=arr=>{let d="",pen=false;arr.forEach((v,k)=>{if(v==null){pen=false;return;}d+=(pen?"L":"M")+X(k).toFixed(1)+" "+Y(v).toFixed(1);pen=true;});return d;};
+  svg.append(sv("path",{d:lineOf(roll),fill:"none",stroke:"var(--muted)","stroke-width":1.5}));
+  svg.append(sv("path",{d:lineOf(full),fill:"none",stroke:"var(--s1)","stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  const last=full[n-1];
+  if(last!=null)svg.append(sv("circle",{cx:X(n-1),cy:Y(last),r:3.5,fill:"var(--s1)",stroke:"var(--surface)","stroke-width":2}));
+  const hit=sv("rect",{x:ml,y:0,width:iw,height:Hpx,fill:"transparent"});
+  hit.addEventListener("pointermove",ev=>{
+    const r=svg.getBoundingClientRect(),sx=W/r.width;
+    let k=Math.round(((ev.clientX-r.left)*sx-ml)/(iw/(n-1)));k=Math.max(0,Math.min(n-1,k));
+    const date=k<S.history.length?S.history[k].date:S.asOf+" (current)";
+    showTT(ev.clientX,ev.clientY,TERMS[i].label+" · "+date,[
+      {color:css("--s1"),label:"Market premium",value:fmtBp(full[k])+"bp"},
+      {color:css("--muted"),label:lb+"-wk avg",value:fmtBp(roll[k]!=null?Math.round(roll[k]*10)/10:null)+"bp"},
+      {label:"Approved",value:fmtBp(S.approved[i])+"bp"}]);
+  });
+  hit.addEventListener("pointerleave",hideTT);
+  svg.append(hit);
+  return svg;
+}
+function sparkline(i,C){return trendChart(i,C,{w:170,h:42});}
+
+/* ================= renderers ================= */
+function statusChip(st,extra){
+  const cls=st==="act"?"act":st==="watch"?"watch":"hold";
+  const txt=st==="act"?"Discuss":st==="watch"?"Watch":"Hold";
+  const c=h("span",{class:"chip "+cls});
+  c.append(h("span",{class:"dot",style:"background:"+(st==="act"?"var(--crit)":st==="watch"?"var(--warn)":"var(--good)")}));
+  c.append(document.createTextNode(txt+(extra?" "+extra:"")));
+  return c;
+}
+
+function renderAnswer(C){
+  $("#asofLbl").textContent="Week ending "+S.asOf;
+  document.querySelectorAll(".bandLbl").forEach(e=>e.textContent=S.bandBp);
+  const breaches=TERMS.map((t,i)=>({t,i})).filter(x=>C.status[x.i]==="act");
+  const watches=TERMS.map((t,i)=>({t,i})).filter(x=>C.status[x.i]==="watch");
+  const chips=$("#answerChips");chips.textContent="";
+  chips.append(statusChip(breaches.length?"act":"hold",null));
+  if(watches.length&&!breaches.length)chips.append(" ",statusChip("watch"));
+  const head=$("#answerHead"),why=$("#answerWhy");
+  let worstI=0;TERMS.forEach((_,i)=>{if(C.dApp[i]!=null&&Math.abs(C.dApp[i])>Math.abs(C.dApp[worstI]??0))worstI=i;});
+  if(breaches.length){
+    const names=breaches.map(b=>b.t.label).join(", ");
+    head.textContent=`Recommend committee review of the ${names} term premium — market is outside the ±${S.bandBp}bp indifference range.`;
+    const b0=breaches[0].i;
+    const persist=C.dTrail[b0]!=null&&Math.abs(C.dTrail[b0])>S.bandBp*0.5;
+    why.textContent=`At ${TERMS[b0].label}, the floored panel average prices ${fmtBp(C.mtp[b0])}bp over SOFR vs ${fmtBp(S.approved[b0])}bp approved (${sgn(C.dApp[b0])}bp). `+
+      (persist?`The move is ${sgn(C.dTrail[b0])}bp above the ${S.lookback}-week average — persistent widening, not a one-week print. `:`The ${S.lookback}-week trend does not yet confirm persistence — one more week of data may be warranted. `)+
+      `All other tenors are inside the range; no change recommended elsewhere.`;
+  }else{
+    head.textContent=`Hold the approved term premium schedule — every tenor is inside the ±${S.bandBp}bp indifference range this week.`;
+    why.textContent=`Across ${TERMS.length} monitored terms the floored brokered-CD average prices ${fmtBp(Math.min(...C.mtp.filter(v=>v!=null)))}–${fmtBp(Math.max(...C.mtp.filter(v=>v!=null)))}bp over SOFR, vs an approved schedule of ${fmtBp(Math.min(...S.approved))}–${fmtBp(Math.max(...S.approved))}bp. Largest gap: ${sgn(C.dApp[worstI])}bp at ${TERMS[worstI].label}. Production FTP remains on-market.`;
+  }
+  $("#heroN").textContent=sgn(C.dApp[worstI])+"bp";
+  $("#heroN").style.color=Math.abs(C.dApp[worstI]??0)>S.bandBp?"var(--crit)":"var(--goodtxt)";
+  $("#heroL").textContent="largest gap to approved schedule ("+TERMS[worstI].label+") · range ±"+S.bandBp+"bp";
+  // tiles
+  const tiles=$("#tiles");tiles.textContent="";
+  TERMS.forEach((t,i)=>{
+    const tile=h("div",{class:"tile"});
+    const lab=h("div",{class:"lab"});lab.append(h("span",{text:t.label+" premium"}),statusChip(C.status[i]));
+    const val=h("div",{class:"val"});val.append(document.createTextNode(fmtBp(C.mtp[i])),h("span",{class:"unit",text:" bp"}));
+    const d=h("div",{class:"deltas"});
+    const s1=h("span",{class:C.dApp[i]>0?"up":C.dApp[i]<0?"dn":"flat",text:sgn(C.dApp[i])});
+    const s2=h("span",{class:C.dTrail[i]>0?"up":C.dTrail[i]<0?"dn":"flat",text:sgn(C.dTrail[i])});
+    d.append("vs approved ",s1," · vs ",String(S.lookback),"w ",s2);
+    tile.append(lab,val,d,sparkline(i,C));
+    tiles.append(tile);
+  });
+}
+
+function renderSteps(C){
+  const cont=$("#steps");cont.textContent="";
+  const flooredTerms=TERMS.filter((_,i)=>C.floorBinds[i]).map(t=>t.label);
+  const defs=[
+    {t:"Collect the market: "+S.issuers.length+" issuers, every posted term",
+     p:"Each week we pull primary-market brokered CD offering levels from a fixed panel of "+S.issuers.length+" issuers of comparable standing. Not every issuer posts every term — the grid keeps the gaps ("+C.nQuotes.join(", ")+" quotes per term this week).",
+     viz:{issuers:true,aria:"Issuer CD offers scattered by term"}},
+    {t:"Average the panel into one unsecured curve",
+     p:"The simple average of available quotes at each term smooths single-name idiosyncrasy into a market read of where a bank like us buys term money unsecured.",
+     viz:{issuers:true,avg:true,aria:"Panel average line through issuer offers"}},
+    {t:flooredTerms.length?("Floor at our own prints — binding at "+flooredTerms.join(", ")):"Floor at our own prints when we issued",
+     p:"Where we actually issued, the executed level replaces a lower panel average: max(average, own print). Our realized cost is evidence; the panel is an estimate. The floor lifts, never lowers — deliberate conservatism.",
+     viz:{avg:true,flagstar:true,floored:true,aria:"Floored curve versus average and own prints"}},
+    {t:"Subtract same-term SOFR — the residual is the premium",
+     p:"SOFR OIS is the near-risk-free expectation of policy over the term. What remains after subtracting it is the piece ALCO governs: term liquidity plus our unsecured credit spread, in bp.",
+     viz:{floored:true,sofr:true,wash:true,aria:"Shaded premium between floored CD curve and SOFR"}},
+    {t:"Test against the band and the trend, then decide",
+     p:"Compare to the approved schedule (±"+S.bandBp+"bp indifference) and the "+S.lookback+"-week trend. Material and persistent → committee discussion and a schedule update at ALMC; otherwise hold. Decisions land in the log below.",
+     viz:"trend"}
+  ];
+  defs.forEach((d,k)=>{
+    const st=h("div",{class:"step"});
+    st.append(h("div",{class:"num",text:String(k+1)}),h("h3",{text:d.t}));
+    const viz=h("div",{class:"viz"});
+    if(d.viz==="trend"){let wi=TERMS.findIndex((_,i)=>C.status[i]==="act");if(wi<0)wi=NT-2;
+      viz.append(trendChart(wi,C,{w:300,h:120}));
+      viz.append(h("div",{class:"small mut",text:TERMS[wi].label+" premium, 26 weeks, vs "+S.lookback+"-wk avg ±"+S.bandBp+"bp"}));}
+    else viz.append(curveChart(C,{...d.viz,mini:true}));
+    st.append(viz,h("p",{text:d.p}));
+    cont.append(st);
+  });
+}
+
+function legendRow(el,items){
+  el.textContent="";
+  items.forEach(it=>{
+    const k=h("span",{class:"k"});
+    k.append(h("span",{class:it.shape||"sw",style:"background:"+it.color}));
+    k.append(document.createTextNode(it.label));el.append(k);});
+}
+
+function renderCurves(C){
+  const minP=Math.min(...C.mtp.filter(v=>v!=null)),maxP=Math.max(...C.mtp.filter(v=>v!=null));
+  $("#curvesTitle").textContent=`Unsecured term funding prices ${fmtBp(minP)}–${fmtBp(maxP)}bp over SOFR this week`;
+  legendRow($("#curvesLegend"),[
+    {color:"var(--s1)",label:"Floored CD average (applied)"},
+    {color:"var(--s1-lt)",label:"Panel average (pre-floor)"},
+    {color:"var(--s5)",label:"Own issuance print",shape:"swdia"},
+    {color:"var(--muted)",label:"Issuer offer",shape:"swdot"},
+    {color:"var(--s2)",label:"FHLB advance (secured)"},
+    {color:"var(--muted)",label:"SOFR OIS"}]);
+  const c=$("#curvesChart");c.textContent="";
+  c.append(curveChart(C,{issuers:true,avg:true,floored:true,flagstar:true,sofr:true,fhlb:true,wash:true,aria:"All curves by term"}));
+  // table view
+  const tw=$("#curvesTable");tw.textContent="";
+  const tb=h("table",{class:"dtable"});
+  const hr=h("tr");hr.append(h("th",{text:"Series (%)"}));TERMS.forEach(t=>hr.append(h("th",{text:t.label})));tb.append(hr);
+  const row=(name,vals,f)=>{const r=h("tr");r.append(h("td",{text:name}));vals.forEach(v=>r.append(h("td",{text:f?f(v):fmt2(v)})));return r;};
+  S.issuers.forEach(iss=>tb.append(row(iss.name,iss.offers)));
+  tb.append(row("Panel average",C.avg));
+  tb.append(row("Own issuance",S.flagstar));
+  tb.append(row("Floored average",C.floored));
+  tb.append(row("SOFR OIS",S.sofr));
+  tb.append(row("FHLB advance",S.fhlb));
+  tb.append(row("Market term premium (bp)",C.mtp,fmtBp));
+  tw.append(tb);
+}
+
+function renderPremium(C){
+  const breaches=TERMS.filter((_,i)=>C.status[i]==="act");
+  $("#premTitle").textContent=breaches.length?
+    breaches.map(b=>b.label).join(", ")+` premium outside the approved ±${S.bandBp}bp range — committee item`:
+    `All ${TERMS.length} tenors within ±${S.bandBp}bp of the approved schedule — hold`;
+  legendRow($("#premLegend"),[
+    {color:"var(--s1)",label:"Market term premium (this week)",shape:"swrect"},
+    {color:"var(--ink2)",label:"Approved schedule"},
+    {color:"var(--band)",label:"±"+S.bandBp+"bp indifference range",shape:"swrect"}]);
+  const c=$("#premChart");c.textContent="";c.append(premiumChart(C));
+  const tw=$("#premTable");tw.textContent="";
+  const tb=h("table",{class:"dtable"});
+  const hr=h("tr");["Term","Market TP (bp)","Approved (bp)","Δ vs approved","Δ vs "+S.lookback+"w avg","Quotes","Floor binds","Status"].forEach(x=>hr.append(h("th",{text:x})));tb.append(hr);
+  TERMS.forEach((t,i)=>{const r=h("tr");
+    [t.label,fmtBp(C.mtp[i]),fmtBp(S.approved[i]),sgn(C.dApp[i]),sgn(C.dTrail[i]),String(C.nQuotes[i]),C.floorBinds[i]?"yes":"—",
+     C.status[i]==="act"?"Discuss":C.status[i]==="watch"?"Watch":"Hold"].forEach(v=>r.append(h("td",{text:v})));
+    tb.append(r);});
+  tw.append(tb);
+}
+
+function renderTrend(C){
+  const acts=TERMS.filter((_,i)=>C.status[i]==="act").map(t=>t.label);
+  $("#trendTitle").textContent=acts.length?
+    `${acts.join(", ")} shows persistent widening; other tenors track their ${S.lookback}-week averages`:
+    `Premiums are tracking their ${S.lookback}-week averages at every tenor`;
+  const grid=$("#smGrid");grid.textContent="";
+  let lo=Infinity,hi=-Infinity;
+  TERMS.forEach((_,i)=>{S.history.forEach(hh=>{if(hh.tp[i]!=null){lo=Math.min(lo,hh.tp[i]);hi=Math.max(hi,hh.tp[i]);}});
+    if(C.mtp[i]!=null){lo=Math.min(lo,C.mtp[i]);hi=Math.max(hi,C.mtp[i]);}
+    lo=Math.min(lo,S.approved[i]-S.bandBp);hi=Math.max(hi,S.approved[i]+S.bandBp);});
+  lo=Math.floor((lo-5)/10)*10;hi=Math.ceil((hi+5)/10)*10;
+  TERMS.forEach((t,i)=>{
+    const box=h("div",{class:"sm"});
+    const head=h("div",{class:"h"});
+    head.append(h("b",{text:t.label}));
+    const cur=h("span",{class:"cur",text:fmtBp(C.mtp[i])+"bp "});
+    const dspan=h("span",{class:C.dTrail[i]>0?"up":C.dTrail[i]<0?"dn":"flat",text:sgn(C.dTrail[i])});
+    cur.append(dspan);head.append(cur);
+    box.append(head,trendChart(i,C,{w:300,h:110,lo,hi}));
+    grid.append(box);
+  });
+}
+
+/* ================= inputs ================= */
+function numCell(val,onch){
+  const inp=h("input",{type:"number",step:"0.001"});
+  if(val!=null)inp.value=val;
+  inp.addEventListener("change",()=>{const v=inp.value.trim();onch(v===""?null:parseFloat(v));commit();});
+  return h("td",{},inp);
+}
+function renderInputs(){
+  $("#inAsof").value=S.asOf; $("#inBand").value=S.bandBp; $("#inLookback").value=S.lookback;
+  $("#issuerCount").textContent=S.issuers.length+" on panel";
+  $("#sampleNotice").hidden=!S.sample;
+  // issuer table
+  const it=$("#issuerTable");it.textContent="";
+  const hr=h("tr");hr.append(h("th",{text:"Issuer"}));TERMS.forEach(t=>hr.append(h("th",{text:t.label})));hr.append(h("th"));it.append(hr);
+  S.issuers.forEach((iss,k)=>{
+    const r=h("tr");
+    const nm=h("input",{type:"text",value:iss.name});
+    nm.addEventListener("change",()=>{iss.name=nm.value;commit();});
+    r.append(h("td",{},nm));
+    TERMS.forEach((_,i)=>r.append(numCell(iss.offers[i],v=>iss.offers[i]=v)));
+    const rm=h("button",{class:"rm",title:"Remove issuer",text:"✕"});
+    rm.addEventListener("click",()=>{S.issuers.splice(k,1);commit(true);});
+    r.append(h("td",{},rm));
+    it.append(r);
+  });
+  // reference curves table
+  const rt=$("#refTable");rt.textContent="";
+  const hr2=h("tr");hr2.append(h("th",{text:"Curve"}));TERMS.forEach(t=>hr2.append(h("th",{text:t.label})));hr2.append(h("th"));rt.append(hr2);
+  const mkRow=(name,arr,step)=>{const r=h("tr");r.append(h("td",{text:name}));
+    TERMS.forEach((_,i)=>{const inp=h("input",{type:"number",step:step||"0.001"});if(arr[i]!=null)inp.value=arr[i];
+      inp.addEventListener("change",()=>{const v=inp.value.trim();arr[i]=v===""?null:parseFloat(v);commit();});
+      r.append(h("td",{},inp));});
+    r.append(h("td"));rt.append(r);};
+  mkRow("Own issuance (%) — blank if none",S.flagstar);
+  mkRow("SOFR OIS (%)",S.sofr);
+  mkRow("FHLB advance (%)",S.fhlb);
+  mkRow("Approved TP schedule (bp)",S.approved,"0.5");
+  // history table
+  const ht=$("#histTable");ht.textContent="";
+  const hr3=h("tr");hr3.append(h("th",{text:"Week"}));TERMS.forEach(t=>hr3.append(h("th",{text:t.label})));hr3.append(h("th"));ht.append(hr3);
+  S.history.forEach((row,k)=>{
+    const r=h("tr");
+    const dinp=h("input",{type:"date",value:row.date});
+    dinp.addEventListener("change",()=>{row.date=dinp.value;commit();});
+    r.append(h("td",{},dinp));
+    TERMS.forEach((_,i)=>{const inp=h("input",{type:"number",step:"0.1"});if(row.tp[i]!=null)inp.value=row.tp[i];
+      inp.addEventListener("change",()=>{const v=inp.value.trim();row.tp[i]=v===""?null:parseFloat(v);commit();});
+      r.append(h("td",{},inp));});
+    const rm=h("button",{class:"rm",title:"Remove week",text:"✕"});
+    rm.addEventListener("click",()=>{S.history.splice(k,1);commit(true);});
+    r.append(h("td",{},rm));
+    ht.append(r);
+  });
+}
+function renderDecisions(){
+  const dt=$("#decTable");dt.textContent="";
+  const hr=h("tr");["Date","Entry",""].forEach(x=>hr.append(h("th",{text:x})));dt.append(hr);
+  S.decisions.forEach((d,k)=>{
+    const r=h("tr");
+    const di=h("input",{type:"date",value:d.date});di.addEventListener("change",()=>{d.date=di.value;save();});
+    const ei=h("input",{type:"text",value:d.entry,style:"width:100%;min-width:340px;text-align:left"});
+    ei.addEventListener("change",()=>{d.entry=ei.value;save();});
+    const rm=h("button",{class:"rm",text:"✕"});rm.addEventListener("click",()=>{S.decisions.splice(k,1);save();renderDecisions();});
+    r.append(h("td",{},di),h("td",{style:"text-align:left"},ei),h("td",{},rm));
+    dt.append(r);
+  });
+}
+
+/* ================= wiring ================= */
+function commit(structural){
+  S.sample=false; save();
+  renderComputed();
+  if(structural)renderInputs();
+}
+function renderComputed(){
+  const C=compute();
+  renderAnswer(C);renderSteps(C);renderCurves(C);renderPremium(C);renderTrend(C);
+}
+function renderAll(){renderComputed();renderInputs();renderDecisions();}
+
+document.addEventListener("click",ev=>{
+  const b=ev.target.closest("[data-toggle]");if(!b)return;
+  const key=b.dataset.toggle;
+  const chart=$("#"+key+"Chart")||$("#"+key+"Chart");
+  const map={curves:["#curvesChart","#curvesTable"],prem:["#premChart","#premTable"]};
+  const [cSel,tSel]=map[key];
+  const cEl=$(cSel),tEl=$(tSel);
+  const showTable=tEl.hidden;
+  tEl.hidden=!showTable;cEl.style.display=showTable?"none":"";
+  b.textContent=showTable?"Chart view":"Table view";
+});
+$("#inAsof").addEventListener("change",e=>{S.asOf=e.target.value;commit();});
+$("#inBand").addEventListener("change",e=>{S.bandBp=Math.max(1,parseFloat(e.target.value)||20);commit();});
+$("#inLookback").addEventListener("change",e=>{S.lookback=Math.max(2,parseInt(e.target.value)||13);commit();});
+$("#addIssuer").addEventListener("click",()=>{S.issuers.push({name:"New issuer",offers:TERMS.map(()=>null)});commit(true);});
+$("#addDec").addEventListener("click",()=>{S.decisions.push({date:S.asOf,entry:""});save();renderDecisions();});
+$("#commitWeek").addEventListener("click",()=>{
+  const C=compute();
+  const k=S.history.findIndex(hh=>hh.date===S.asOf);
+  const row={date:S.asOf,tp:C.mtp.slice()};
+  if(k>=0)S.history[k]=row; else {S.history.push(row);S.history.sort((a,b)=>a.date<b.date?-1:1);}
+  commit(true);
+});
+$("#exportJson").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=h("a",{href:URL.createObjectURL(blob),download:"term-premium-"+S.asOf+".json"});
+  document.body.append(a);a.click();a.remove();
+});
+$("#importJson").addEventListener("click",()=>$("#importFile").click());
+$("#importFile").addEventListener("change",ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  f.text().then(txt=>{try{const obj=JSON.parse(txt);
+    if(!obj.issuers||!obj.sofr)throw new Error("not a term-premium file");
+    S=obj;save();renderAll();}catch(e){alert("Import failed: "+e.message);}});
+  ev.target.value="";
+});
+$("#resetSample").addEventListener("click",()=>{
+  if(!confirm("Replace all current inputs and history with the illustrative sample dataset?"))return;
+  S=defaultState();save();renderAll();
+});
+$("#themeBtn").addEventListener("click",()=>{
+  const r=document.documentElement;
+  const cur=r.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+  r.dataset.theme=cur==="dark"?"light":"dark";
+  renderComputed(); // re-read CSS vars used inside tooltips
+});
+
+load();renderAll();
+</script>
