@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T04:35:35.318781+00:00",
+  "generated_at": "2026-07-12T07:14:07.312546+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1811,7 +1811,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-14|France|Spain": {
       "num": 101,
