@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T01:04:50.757272+00:00",
+  "generated_at": "2026-07-12T04:35:35.318781+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1805,9 +1805,12 @@
       "group": null,
       "round": "Quarter-final",
       "ground": "Kansas City",
-      "score": null,
+      "score": [
+        3,
+        1
+      ],
       "pens": null,
-      "status": "scheduled",
+      "status": "finished",
       "source": "openfootball"
     },
     "2026-07-14|France|Spain": {
