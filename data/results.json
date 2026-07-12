@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T14:17:55.928218+00:00",
+  "generated_at": "2026-07-12T15:29:46.818755+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1828,13 +1828,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-15|W99|W100": {
+    "2026-07-15|England|Argentina": {
       "num": 102,
       "date": "2026-07-15",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-07-15T19:00:00+00:00",
-      "home": "W99",
-      "away": "W100",
+      "home": "England",
+      "away": "Argentina",
       "group": null,
       "round": "Semi-final",
       "ground": "Atlanta",
