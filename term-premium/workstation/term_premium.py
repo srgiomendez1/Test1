@@ -29,8 +29,8 @@ TERM_LABELS = [l for _, l in TERMS]
 NT = len(TERMS)
 MMAX = 60
 
-# Committee-advised TP schedule (bp) - Rate Summary "FCS" column, week of 2026-07-06.
-DEFAULT_APPROVED = [15, 20, 25, 30, 50, 55, 60, 60]
+# Committee-advised TP schedule (bp); short end reduced 5bp at 1M/3M/6M.
+DEFAULT_APPROVED = [10, 15, 20, 30, 50, 55, 60, 60]
 DEFAULT_BAND_BP = 20
 DEFAULT_LOOKBACK = 13
 

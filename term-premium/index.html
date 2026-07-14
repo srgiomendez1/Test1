@@ -39,12 +39,12 @@
 body{margin:0;background:var(--page);color:var(--ink);
   font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;}
 a{color:var(--s1)}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 28px}
 h2{font-size:22px;font-weight:650;margin:0 0 4px;letter-spacing:-.015em;text-wrap:balance}
 h3{font-size:15px;font-weight:650;margin:0 0 6px}
-p{max-width:76ch}
+p{max-width:100ch}
 .eyebrow{font-size:11px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-.sub{color:var(--ink2);font-size:14px;margin:2px 0 18px;max-width:84ch}
+.sub{color:var(--ink2);font-size:14px;margin:2px 0 18px;max-width:108ch}
 .small{font-size:12.5px;color:var(--ink2)}
 .mut{color:var(--muted)}
 code{font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--band);padding:1px 5px;border-radius:4px}
@@ -78,7 +78,7 @@ main section.tab.active{display:block}
 /* ---------- answer banner ---------- */
 #answerCard{display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;padding:24px 26px}
 #answerCard .headline{font-size:20px;font-weight:650;letter-spacing:-.01em;line-height:1.35;margin:8px 0 10px;text-wrap:balance;max-width:34ch}
-#answerCard .why{font-size:14px;color:var(--ink2);max-width:66ch}
+#answerCard .why{font-size:14px;color:var(--ink2);max-width:82ch}
 .hero{text-align:right;min-width:240px;display:flex;flex-direction:column;gap:16px}
 .hero .n{font-size:42px;font-weight:650;letter-spacing:-.02em;line-height:1}
 .hero .n2{font-size:26px;font-weight:650;letter-spacing:-.01em;line-height:1}
@@ -183,10 +183,10 @@ input:focus{outline:2px solid var(--s1);outline-offset:0}
 .refgrid .card p{font-size:13.5px;color:var(--ink2);margin:6px 0}
 .refgrid .card p b{color:var(--ink)}
 ul.tight{margin:6px 0;padding-left:18px}
-ul.tight li{font-size:13.5px;color:var(--ink2);margin:5px 0;max-width:84ch}
+ul.tight li{font-size:13.5px;color:var(--ink2);margin:5px 0;max-width:104ch}
 ul.tight li b{color:var(--ink)}
 dl.gloss dt{font-weight:650;font-size:13.5px;margin-top:10px}
-dl.gloss dd{margin:2px 0 0;font-size:13.5px;color:var(--ink2);max-width:84ch}
+dl.gloss dd{margin:2px 0 0;font-size:13.5px;color:var(--ink2);max-width:104ch}
 footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;font-size:12.5px;color:var(--muted)}
 </style>
 
@@ -196,7 +196,6 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
     <button role="tab" data-tab="week" aria-selected="true">This Week</button>
     <button role="tab" data-tab="how" aria-selected="false">How It Works</button>
     <button role="tab" data-tab="build" aria-selected="false">Curve Construction</button>
-    <button role="tab" data-tab="why" aria-selected="false">Why &amp; Pressure-Test</button>
     <button role="tab" data-tab="gloss" aria-selected="false">Glossary &amp; Sources</button>
   </div>
   <div class="asof" id="asofLbl"></div>
@@ -250,15 +249,15 @@ footer{border-top:1px solid var(--hairline);margin-top:44px;padding:22px 0 40px;
 <section class="tab" id="tab-how"><div class="wrap">
   <p class="eyebrow">How it works · performed weekly</p>
   <h2>Five steps from dealer screens to an approved term premium</h2>
-  <p class="sub">Situation: our FTP curve prices every product off <code>FTP(t) = SOFR(t) + TP(t)</code>, so the term premium schedule <em>is</em> our marginal cost of unsecured term funding. Complication: that premium isn't directly observable — it must be extracted weekly from where banks like us actually buy money. Question: does this week's market read justify changing the approved schedule? The five steps below produce the answer.</p>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3>Data provenance &amp; timing</h3>
-    <p class="small" style="max-width:92ch">All levels are market data obtained via the <b>Liquidity team's distribution</b>. <b>Brokered CD quotes arrive every Monday</b> and are held good for the rest of the week. <b>FSB issuances can print mid-week</b>, so there may be a slight drift between the start-of-week panel and the date our issuance actually clears — e.g., a panel averaged on Monday 07/06 floored against an FSB print from Thursday 07/02: SOFR moved between those dates, so the floor effectively compares two observation dates. This is a known, accepted limitation of the approach — mid-week brokered CD data is not available to re-strike the panel. The date chips on the This Week tab show the exact observation date of every dataset so the drift is always visible.</p>
-  </div>
+  <p class="sub">The <b>Cost of Funds (COF) curve</b> is the bank's single source of truth for the market's unsecured marginal cost of funds available at a point in time. FTP is built upon it, as governed by the Asset Liability Modeling Committee (ALMC). It can be split into a risk-free (e.g., SOFR) and a term funding premium component: <code>COF(t) = Base(t) + term&nbsp;premium(t)</code>. Given that COF is observable and so is SOFR, the term premium can be directly derived. The five steps below extract it each week and test whether this week's market read justifies changing the approved schedule.</p>
 
   <div class="card"><div class="flow" id="steps"></div></div>
   <div class="formula">market_TP(t) = max( mean<sub>panel</sub>[ CD_offer(t) ], FSB_issuance(t) ) − SOFR(t)<br>decision: |market_TP(t) − approved_TP(t)| &gt; 20bp zone of indifference → committee discussion; rolling 3-month trend distinguishes persistent repricing from noise</div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Data provenance &amp; timing</h3>
+    <p class="small">All levels are market observable and obtained either directly via the issuers or via the <b>Liquidity team's distribution</b>. <b>Brokered CD quotes arrive every Monday</b> and are held good for the rest of the week. <b>FSB issuances can print mid-week</b>, so there may be a slight drift between the start-of-week panel and the date our issuance actually clears — e.g., a panel averaged on Monday 07/06 floored against an FSB print from Thursday 07/02: SOFR moved between those dates, so the floor effectively compares two observation dates. This is a known, accepted limitation of the approach — mid-week brokered CD data is not available to re-strike the panel. The date chips on the This Week tab show the exact observation date of every dataset so the drift is always visible.</p>
+  </div>
 </div></section>
 
 <!-- ============ TAB 3 · CURVE CONSTRUCTION ============ -->
@@ -444,13 +443,13 @@ const TERMS = [
   {m:24,label:"2Y"},{m:36,label:"3Y"},{m:48,label:"4Y"},{m:60,label:"5Y"}
 ];
 const NT = TERMS.length, MMAX = 60;
-const LS_KEY = "ftp-term-premium-v3";
+const LS_KEY = "ftp-term-premium-v4";
 
 function defaultState(){
   // All levels below are the actual 2026-07-06 Weekly Workbook observations.
   const sofr =     [3.66688,3.72994,3.83803,3.974,3.9667,3.92555,3.90588,3.908];
-  // Committee-advised TP schedule (bp) per the 7/6 Rate Summary (FCS column)
-  const approved = [15,20,25,30,50,55,60,60];
+  // Committee-advised TP schedule (bp); short end reduced 5bp at 1M/3M/6M
+  const approved = [10,15,20,30,50,55,60,60];
   const issuers = [
     {name:"Wells Fargo",     offers:[null,4.05,4.10,4.20,4.40,4.45,4.50,4.55]},
     {name:"BNY",             offers:[4.05,4.05,4.05,4.20,4.35,4.40,4.45,4.45]},
@@ -884,7 +883,7 @@ function renderSteps(C){
      p:"SOFR OIS is the near-risk-free expectation of policy over the term. What remains after subtracting it is the piece ALCO governs: term liquidity plus our unsecured credit spread, in bp.",
      viz:{floored:true,sofr:true,wash:true,aria:"Shaded premium between floored CD curve and SOFR"}},
     {t:"Test against the zone of indifference and the trend, then decide",
-     p:"Compare to the approved schedule (±"+S.bandBp+"bp zone of indifference) and the rolling "+S.lookback+"-week trend. Material and persistent → committee discussion and a schedule update at ALMC; otherwise hold. Decisions land in the log on the Why & Pressure-Test tab.",
+     p:"Compare to the approved schedule (±"+S.bandBp+"bp zone of indifference) and the rolling "+S.lookback+"-week trend. Material and persistent → committee discussion and a schedule update at ALMC; otherwise hold.",
      viz:"trend"}
   ];
   defs.forEach((d,k)=>{
@@ -1317,7 +1316,7 @@ $("#tabbar").addEventListener("click",ev=>{
 });
 window.addEventListener("hashchange",()=>{
   const n=location.hash.slice(1);
-  if(["week","how","build","why","gloss"].includes(n))activateTab(n);
+  if(["week","how","build","gloss"].includes(n))activateTab(n);
 });
 
 /* chart/table toggles */
@@ -1407,5 +1406,5 @@ $("#themeBtn").addEventListener("click",()=>{
 
 load();renderAll();
 {const n=location.hash.slice(1);
- if(["week","how","build","why","gloss"].includes(n))activateTab(n);}
+ if(["week","how","build","gloss"].includes(n))activateTab(n);}
 </script>

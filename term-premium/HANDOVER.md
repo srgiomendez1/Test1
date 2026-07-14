@@ -58,16 +58,18 @@ FTP(t)       = SOFR(t) + approved_TP(t)          # production cost-of-funds curv
 Defaults in `defaultState()` are the **actual** 7/6 Weekly Workbook values:
 
 - **SOFR:** `[3.66688, 3.72994, 3.83803, 3.974, 3.9667, 3.92555, 3.90588, 3.908]`
-- **Approved TP (bp):** `[15, 20, 25, 30, 50, 55, 60, 60]` (Rate Summary "FCS" col)
+- **Approved TP (bp):** `[10, 15, 20, 30, 50, 55, 60, 60]` (short end cut 5bp at
+  1M/3M/6M from the original 15/20/25 Rate Summary "FCS" values)
 - **FHLB:** `[3.84, 3.94, 4.07, 4.22, 4.24, 4.27, 4.31, 4.34]` (FHLBNY same-day)
 - **7 issuer offers** — see `defaultState()`; Wells has no 1M quote.
 - **FSB issuances:** none this week (all null).
 - **History:** real weekly market TP since 2026-01-12 (Term Premium-SOFR sheet).
 
 **Parity check (dashboard AND Python must both produce this):** 1M premium
-**41.6bp**, 13-wk trend vs production **+19.9bp**, latest vs production
-**+26.6bp**, status **Watch**. All 8 trends inside the zone → overall **Hold**,
-1M on watch.
+**41.6bp**, 13-wk trend vs production **+24.9bp**, latest vs production
+**+31.6bp**, status **Discuss** (the short-end schedule cut pushed the 1M trend
+gap past ±20bp). LS key is now `ftp-term-premium-v4` so the new schedule loads
+over any stored v3 state.
 
 ## 4. index.html architecture
 
@@ -183,6 +185,11 @@ Python mirror, openpyxl-only, runs identically on Windows/Mac/Linux.
    **term-structure** chart; cross-platform import parsing.
 5. This Week now leads with the premium-vs-schedule chart (tiles removed, text
    kept as caption); added the Python **workstation** package.
+6. Hid the Why & Pressure-Test tab (section still in DOM, unreachable — keeps
+   `renderDecisions()` alive); cut production TP 5bp at 1M/3M/6M
+   (→10/15/20); rewrote the How It Works intro around the COF identity and
+   moved the Data provenance card to the foot of that tab; widened the reading
+   column (`.wrap` 1320px, prose 100–108ch).
 
 **Next thing the user may ask:** they said "we are almost done." Likely
 follow-ups are polish, an ALMC slide/export, or wiring the workstation into
