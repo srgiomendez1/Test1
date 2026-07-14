@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T18:54:32.859081+00:00",
+  "generated_at": "2026-07-14T20:12:40.579035+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1823,10 +1823,14 @@
       "group": null,
       "round": "Semi-final",
       "ground": "Dallas (Arlington)",
-      "score": null,
+      "score": [
+        0,
+        1
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-15|England|Argentina": {
       "num": 102,
