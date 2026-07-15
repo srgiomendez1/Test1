@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T20:43:18.762351+00:00",
+  "generated_at": "2026-07-15T21:41:24.602803+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -17,7 +17,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-11|South Korea|Czech Republic": {
       "num": null,
@@ -35,7 +35,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-18|Czech Republic|South Africa": {
       "num": null,
@@ -53,7 +53,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-18|Mexico|South Korea": {
       "num": null,
@@ -71,7 +71,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|Czech Republic|Mexico": {
       "num": null,
@@ -89,7 +89,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|South Africa|South Korea": {
       "num": null,
@@ -107,7 +107,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-12|Canada|Bosnia & Herzegovina": {
       "num": null,
@@ -125,7 +125,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-13|Qatar|Switzerland": {
       "num": null,
@@ -143,7 +143,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-18|Switzerland|Bosnia & Herzegovina": {
       "num": null,
@@ -161,7 +161,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-18|Canada|Qatar": {
       "num": null,
@@ -179,7 +179,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|Switzerland|Canada": {
       "num": null,
@@ -197,7 +197,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|Bosnia & Herzegovina|Qatar": {
       "num": null,
@@ -215,7 +215,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-13|Brazil|Morocco": {
       "num": null,
@@ -233,7 +233,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-13|Haiti|Scotland": {
       "num": null,
@@ -251,7 +251,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-19|Scotland|Morocco": {
       "num": null,
@@ -269,7 +269,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-19|Brazil|Haiti": {
       "num": null,
@@ -287,7 +287,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|Scotland|Brazil": {
       "num": null,
@@ -305,7 +305,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-24|Morocco|Haiti": {
       "num": null,
@@ -323,7 +323,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-12|USA|Paraguay": {
       "num": null,
@@ -341,7 +341,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-13|Australia|Turkey": {
       "num": null,
@@ -359,7 +359,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-19|USA|Australia": {
       "num": null,
@@ -377,7 +377,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-19|Turkey|Paraguay": {
       "num": null,
@@ -395,7 +395,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Turkey|USA": {
       "num": null,
@@ -413,7 +413,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Paraguay|Australia": {
       "num": null,
@@ -431,7 +431,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-14|Germany|Curaçao": {
       "num": null,
@@ -449,7 +449,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-14|Ivory Coast|Ecuador": {
       "num": null,
@@ -467,7 +467,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-20|Germany|Ivory Coast": {
       "num": null,
@@ -485,7 +485,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-20|Ecuador|Curaçao": {
       "num": null,
@@ -503,7 +503,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Curaçao|Ivory Coast": {
       "num": null,
@@ -521,7 +521,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Ecuador|Germany": {
       "num": null,
@@ -539,7 +539,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-14|Netherlands|Japan": {
       "num": null,
@@ -557,7 +557,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-14|Sweden|Tunisia": {
       "num": null,
@@ -575,7 +575,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-20|Netherlands|Sweden": {
       "num": null,
@@ -593,7 +593,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-20|Tunisia|Japan": {
       "num": null,
@@ -611,7 +611,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Japan|Sweden": {
       "num": null,
@@ -629,7 +629,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-25|Tunisia|Netherlands": {
       "num": null,
@@ -647,7 +647,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-15|Belgium|Egypt": {
       "num": null,
@@ -665,7 +665,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-15|Iran|New Zealand": {
       "num": null,
@@ -683,7 +683,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-21|Belgium|Iran": {
       "num": null,
@@ -701,7 +701,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-21|New Zealand|Egypt": {
       "num": null,
@@ -719,7 +719,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|Egypt|Iran": {
       "num": null,
@@ -737,7 +737,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|New Zealand|Belgium": {
       "num": null,
@@ -755,7 +755,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-15|Spain|Cape Verde": {
       "num": null,
@@ -773,7 +773,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-15|Saudi Arabia|Uruguay": {
       "num": null,
@@ -791,7 +791,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-21|Spain|Saudi Arabia": {
       "num": null,
@@ -809,7 +809,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-21|Uruguay|Cape Verde": {
       "num": null,
@@ -827,7 +827,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|Cape Verde|Saudi Arabia": {
       "num": null,
@@ -845,7 +845,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|Uruguay|Spain": {
       "num": null,
@@ -863,7 +863,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-16|France|Senegal": {
       "num": null,
@@ -881,7 +881,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-16|Iraq|Norway": {
       "num": null,
@@ -899,7 +899,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-22|France|Iraq": {
       "num": null,
@@ -917,7 +917,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-22|Norway|Senegal": {
       "num": null,
@@ -935,7 +935,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|Norway|France": {
       "num": null,
@@ -953,7 +953,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-26|Senegal|Iraq": {
       "num": null,
@@ -971,7 +971,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-16|Argentina|Algeria": {
       "num": null,
@@ -989,7 +989,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-16|Austria|Jordan": {
       "num": null,
@@ -1007,7 +1007,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-22|Argentina|Austria": {
       "num": null,
@@ -1025,7 +1025,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-22|Jordan|Algeria": {
       "num": null,
@@ -1043,7 +1043,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|Algeria|Austria": {
       "num": null,
@@ -1061,7 +1061,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|Jordan|Argentina": {
       "num": null,
@@ -1079,7 +1079,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-17|Portugal|DR Congo": {
       "num": null,
@@ -1097,7 +1097,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-17|Uzbekistan|Colombia": {
       "num": null,
@@ -1115,7 +1115,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-23|Portugal|Uzbekistan": {
       "num": null,
@@ -1133,7 +1133,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-23|Colombia|DR Congo": {
       "num": null,
@@ -1151,7 +1151,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|Colombia|Portugal": {
       "num": null,
@@ -1169,7 +1169,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|DR Congo|Uzbekistan": {
       "num": null,
@@ -1187,7 +1187,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-17|England|Croatia": {
       "num": null,
@@ -1205,7 +1205,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-17|Ghana|Panama": {
       "num": null,
@@ -1223,7 +1223,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-23|England|Ghana": {
       "num": null,
@@ -1241,7 +1241,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-23|Panama|Croatia": {
       "num": null,
@@ -1259,7 +1259,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|Panama|England": {
       "num": null,
@@ -1277,7 +1277,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-27|Croatia|Ghana": {
       "num": null,
@@ -1295,7 +1295,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-28|South Africa|Canada": {
       "num": 73,
@@ -1313,7 +1313,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-29|Germany|Paraguay": {
       "num": 74,
@@ -1334,7 +1334,7 @@
         4
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-29|Netherlands|Morocco": {
       "num": 75,
@@ -1355,7 +1355,7 @@
         3
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-29|Brazil|Japan": {
       "num": 76,
@@ -1373,7 +1373,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-30|France|Sweden": {
       "num": 77,
@@ -1391,7 +1391,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-30|Ivory Coast|Norway": {
       "num": 78,
@@ -1409,7 +1409,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-06-30|Mexico|Ecuador": {
       "num": 79,
@@ -1427,7 +1427,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-01|England|DR Congo": {
       "num": 80,
@@ -1445,7 +1445,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-01|USA|Bosnia & Herzegovina": {
       "num": 81,
@@ -1463,7 +1463,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-01|Belgium|Senegal": {
       "num": 82,
@@ -1481,7 +1481,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-02|Portugal|Croatia": {
       "num": 83,
@@ -1499,7 +1499,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-02|Spain|Austria": {
       "num": 84,
@@ -1517,7 +1517,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-02|Switzerland|Algeria": {
       "num": 85,
@@ -1535,7 +1535,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-03|Argentina|Cape Verde": {
       "num": 86,
@@ -1553,7 +1553,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-03|Colombia|Ghana": {
       "num": 87,
@@ -1571,7 +1571,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-03|Australia|Egypt": {
       "num": 88,
@@ -1592,7 +1592,7 @@
         4
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-04|Paraguay|France": {
       "num": 89,
@@ -1610,7 +1610,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-04|Canada|Morocco": {
       "num": 90,
@@ -1628,7 +1628,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-05|Brazil|Norway": {
       "num": 91,
@@ -1646,7 +1646,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-05|Mexico|England": {
       "num": 92,
@@ -1664,7 +1664,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-06|Portugal|Spain": {
       "num": 93,
@@ -1682,7 +1682,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-06|USA|Belgium": {
       "num": 94,
@@ -1700,7 +1700,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-07|Argentina|Egypt": {
       "num": 95,
@@ -1718,7 +1718,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-07|Switzerland|Colombia": {
       "num": 96,
@@ -1739,7 +1739,7 @@
         3
       ],
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-09|France|Morocco": {
       "num": 97,
@@ -1757,7 +1757,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-10|Spain|Belgium": {
       "num": 98,
@@ -1775,7 +1775,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-11|Norway|England": {
       "num": 99,
@@ -1793,7 +1793,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-11|Argentina|Switzerland": {
       "num": 100,
@@ -1811,7 +1811,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-14|France|Spain": {
       "num": 101,
@@ -1829,7 +1829,7 @@
       ],
       "pens": null,
       "status": "finished",
-      "source": "openfootball"
+      "source": "live"
     },
     "2026-07-15|England|Argentina": {
       "num": 102,
@@ -1841,18 +1841,21 @@
       "group": null,
       "round": "Semi-final",
       "ground": "Atlanta",
-      "score": null,
+      "score": [
+        1,
+        2
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "finished",
+      "source": "live"
     },
-    "2026-07-18|France|L102": {
+    "2026-07-18|France|England": {
       "num": 103,
       "date": "2026-07-18",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-18T21:00:00+00:00",
       "home": "France",
-      "away": "L102",
+      "away": "England",
       "group": null,
       "round": "Match for third place",
       "ground": "Miami (Miami Gardens)",
@@ -1861,13 +1864,13 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-19|Spain|W102": {
+    "2026-07-19|Spain|Argentina": {
       "num": 104,
       "date": "2026-07-19",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-07-19T19:00:00+00:00",
       "home": "Spain",
-      "away": "W102",
+      "away": "Argentina",
       "group": null,
       "round": "Final",
       "ground": "New York/New Jersey (East Rutherford)",
