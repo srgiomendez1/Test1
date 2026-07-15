@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T06:19:03.906426+00:00",
+  "generated_at": "2026-07-15T08:38:54.889158+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1846,12 +1846,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-18|L101|L102": {
+    "2026-07-18|France|L102": {
       "num": 103,
       "date": "2026-07-18",
       "time": "17:00 UTC-4",
       "kickoff_utc": "2026-07-18T21:00:00+00:00",
-      "home": "L101",
+      "home": "France",
       "away": "L102",
       "group": null,
       "round": "Match for third place",
@@ -1861,12 +1861,12 @@
       "status": "scheduled",
       "source": "openfootball"
     },
-    "2026-07-19|W101|W102": {
+    "2026-07-19|Spain|W102": {
       "num": 104,
       "date": "2026-07-19",
       "time": "15:00 UTC-4",
       "kickoff_utc": "2026-07-19T19:00:00+00:00",
-      "home": "W101",
+      "home": "Spain",
       "away": "W102",
       "group": null,
       "round": "Final",
