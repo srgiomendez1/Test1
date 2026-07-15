@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T18:15:27.575976+00:00",
+  "generated_at": "2026-07-15T19:40:40.885254+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1841,10 +1841,14 @@
       "group": null,
       "round": "Semi-final",
       "ground": "Atlanta",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-18|France|L102": {
       "num": 103,
