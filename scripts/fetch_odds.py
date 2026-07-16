@@ -16,6 +16,7 @@ import datetime as dt
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -23,6 +24,10 @@ import urllib.request
 KEY = os.environ.get("ODDSPAPI_KEY", "").strip()
 BASE = "https://api.oddspapi.io/v4"
 OUT = "data/odds.json"
+# The remaining real matches (as of writing): Final (Spain vs Argentina, Jul 19)
+# and 3rd place (France vs England, Jul 18). Used to find fixtures by team name
+# since the tournamentId filter came back empty on this provider.
+WATCH_TEAMS = ["spain", "argentina", "france", "england"]
 
 
 def get(path, **params):
@@ -54,6 +59,7 @@ def main():
         print(f"[probe] {path} {params} -> HTTP {st}", file=sys.stderr)
         print(f"        sample: {body[:1500]}", file=sys.stderr)
         log.append({"path": path, "params": params, "status": st, "sample": body[:4000]})
+        time.sleep(1.2)  # this provider rate-limits; stay well under it
         return st, body
 
     # 1) Full tournaments list for soccer -> find the (men's senior) World Cup
@@ -101,16 +107,24 @@ def main():
 
     # Fallback: the tournamentId filter came back empty (0 fixtures reported by
     # /tournaments too) — list ALL soccer fixtures in the window and pick out
-    # World Cup ones by name, so we can see the real fixtureId/tournamentId pairing.
+    # World Cup ones by name OR by the specific teams still alive (Spain/Argentina
+    # for the Final, France/England for 3rd place), so we can see the real
+    # fixtureId/tournamentId pairing and field shape even if the tournament isn't
+    # labeled "World Cup" the way we expect.
     if not fixture_ids:
         st, body = probe("/fixtures", sportId=10, **{"from": frm, "to": to})
         if st == 200:
             try:
                 fixtures = json.loads(body)
                 print(f"[info] {len(fixtures)} total soccer fixtures in window", file=sys.stderr)
+                if fixtures:
+                    print(f"[shape] first fixture keys: {list(fixtures[0].keys())}", file=sys.stderr)
+                    print(f"[shape] first fixture: {fixtures[0]}", file=sys.stderr)
                 for fx in fixtures:
                     blob = json.dumps(fx).lower()
-                    if "world cup" in blob or "world-cup" in blob:
+                    hits = "world cup" in blob or "world-cup" in blob or \
+                        sum(t in blob for t in WATCH_TEAMS) >= 2
+                    if hits:
                         print(f"[wc-fixture] {fx}", file=sys.stderr)
                         log.append({"note": "wc-fixture-from-all", "fixture": fx})
                         fid = fx.get("fixtureId") or fx.get("id")
