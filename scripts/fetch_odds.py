@@ -59,18 +59,22 @@ def main():
         print(f"[probe] {path} {params} -> HTTP {st}", file=sys.stderr)
         print(f"        sample: {body[:1500]}", file=sys.stderr)
         log.append({"path": path, "params": params, "status": st, "sample": body[:4000]})
-        time.sleep(1.2)  # this provider rate-limits; stay well under it
+        time.sleep(2.5)  # this provider rate-limits; stay well under it
         return st, body
 
     # 1) Full tournaments list for soccer -> find the (men's senior) World Cup
-    #    tournamentId. Exact slug match wins; avoid women's/qualifiers/virtual/SRL
-    #    variants that also contain "world-cup".
+    #    tournamentId. This provider has BOTH 'fifa-world-cup' (id 24660, but it
+    #    reports 0 upcoming fixtures right now) and a plain 'world-cup' (id 16)
+    #    that reports futureFixtures=2 — exactly our 2 remaining real matches
+    #    (Final + 3rd place). Prefer whichever non-excluded candidate actually
+    #    HAS fixtures; fall back to the exact 'fifa-world-cup' slug.
     st, body = probe("/tournaments", sportId=10)
     tournament_id = None
+    fallback_id = None
     if st == 200:
         try:
             tournaments = json.loads(body)
-            EXCLUDE = ("women", "qualif", "virtual", "srl", "u20", "u17", "u23", "novelt")
+            EXCLUDE = ("women", "qualif", "virtual", "srl", "u20", "u17", "u23", "novelt", "club")
             for t in tournaments:
                 slug = (t.get("tournamentSlug") or "").lower()
                 name = (t.get("tournamentName") or "").lower()
@@ -80,8 +84,12 @@ def main():
                 log.append({"note": "world-cup-candidate", "tournament": t})
                 if any(x in slug or x in name for x in EXCLUDE):
                     continue
+                if (t.get("futureFixtures") or 0) > 0:
+                    tournament_id = t.get("tournamentId")  # has real upcoming matches -> best signal
                 if slug == "fifa-world-cup":
-                    tournament_id = t.get("tournamentId")  # exact match, stop overriding
+                    fallback_id = t.get("tournamentId")
+            if tournament_id is None:
+                tournament_id = fallback_id
         except Exception as e:  # noqa: BLE001
             print(f"[error] parsing tournaments: {e}", file=sys.stderr)
 
@@ -136,10 +144,6 @@ def main():
     # 3) Sample odds for up to 2 fixtures (Final / 3rd place) to see the market shape.
     for fid in fixture_ids[:2]:
         probe("/odds", fixtureId=fid)
-
-    # Also probe a generic outrights-style path in case "champion" odds live there.
-    if tournament_id is not None:
-        probe("/outrights", sportId=10, tournamentId=tournament_id)
 
     os.makedirs("data", exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
