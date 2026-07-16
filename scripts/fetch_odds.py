@@ -2,13 +2,15 @@
 """Fetch OddsPapi data from the GitHub Action (server-side; no CORS / no
 Cloudflare-to-Cloudflare block) and write data/odds.json.
 
-Phase 2 = TOURNAMENT + FIXTURES DISCOVERY. Phase 1 confirmed the working shape:
-  /tournaments?sportId=10          -> list of tournaments (find "World Cup")
-  /fixtures?sportId=10&tournamentId=X&from=YYYY-MM-DD&to=YYYY-MM-DD  (<=10 days apart)
-  /odds?fixtureId=Y                -> odds for one fixture
-This probes those with real values so we can see the World Cup's tournamentId,
-its remaining fixtures (only the Final + 3rd place remain as of writing), and a
-sample odds payload's market shape. Read the Action logs, then lock this down.
+Phase 6 = FULL SCHEMA DUMP. Confirmed working:
+  tournamentId=16 ("World Cup", the real 2026 tournament on this provider)
+  fixtures: France vs England (3rd place, id1000001653452539, Jul 18)
+            Spain vs Argentina (Final, id1000001653452537, Jul 19)
+  /odds?fixtureId=X -> {..., bookmakerOdds: {<bookmaker>: {markets: {<marketId>:
+    {outcomes: {<outcomeId>: {players: {"0": {price, ...}}}}}}}}}
+This dumps the FULL (untruncated) odds payload for both fixtures plus a compact
+summary (bookmakers x markets x outcome prices) so we can pick a normalized
+market (1X2 / match-winner) and a bookmaker (or an average) for the real UI.
 
 The API key comes from the ODDSPAPI_KEY GitHub *secret* (env var), never the repo.
 """
@@ -24,11 +26,7 @@ import urllib.request
 KEY = os.environ.get("ODDSPAPI_KEY", "").strip()
 BASE = "https://api.oddspapi.io/v4"
 OUT = "data/odds.json"
-# The remaining real matches (as of writing): Final (Spain vs Argentina, Jul 19)
-# and 3rd place (France vs England, Jul 18). Used to find fixtures by team name
-# since the tournamentId filter came back empty on this provider.
-WATCH_TEAMS = ["spain", "argentina", "france", "england"]
-# trigger: re-run now that the workflow actually commits data/odds.json
+TOURNAMENT_ID = 16  # confirmed: the real (men's senior) 2026 World Cup on this provider
 
 
 def get(path, **params):
@@ -48,110 +46,62 @@ def get(path, **params):
         return -1, str(e)
 
 
+def summarize(fixture_odds):
+    """bookmaker -> marketId -> [{outcomeId, price}] (first player only)."""
+    out = {}
+    for bk, bdata in (fixture_odds.get("bookmakerOdds") or {}).items():
+        markets = {}
+        for mkt_id, mkt in (bdata.get("markets") or {}).items():
+            outs = []
+            for out_id, out_data in (mkt.get("outcomes") or {}).items():
+                players = out_data.get("players") or {}
+                p0 = players.get("0") or {}
+                outs.append({"outcomeId": out_id, "price": p0.get("price")})
+            markets[mkt_id] = outs
+        out[bk] = markets
+    return out
+
+
 def main():
     if not KEY:
         print("ERROR: ODDSPAPI_KEY secret not set on the repo.", file=sys.stderr)
         sys.exit(1)
 
-    log = []
-
-    def probe(path, **params):
+    def call(path, **params):
         st, body = get(path, **params)
-        print(f"[probe] {path} {params} -> HTTP {st}", file=sys.stderr)
-        print(f"        sample: {body[:1500]}", file=sys.stderr)
-        log.append({"path": path, "params": params, "status": st, "sample": body[:4000]})
-        time.sleep(2.5)  # this provider rate-limits; stay well under it
+        print(f"[call] {path} {params} -> HTTP {st}", file=sys.stderr)
+        time.sleep(2.5)
         return st, body
 
-    # 1) Full tournaments list for soccer -> find the (men's senior) World Cup
-    #    tournamentId. This provider has BOTH 'fifa-world-cup' (id 24660, but it
-    #    reports 0 upcoming fixtures right now) and a plain 'world-cup' (id 16)
-    #    that reports futureFixtures=2 — exactly our 2 remaining real matches
-    #    (Final + 3rd place). Prefer whichever non-excluded candidate actually
-    #    HAS fixtures; fall back to the exact 'fifa-world-cup' slug.
-    st, body = probe("/tournaments", sportId=10)
-    tournament_id = None
-    fallback_id = None
-    if st == 200:
-        try:
-            tournaments = json.loads(body)
-            EXCLUDE = ("women", "qualif", "virtual", "srl", "u20", "u17", "u23", "novelt", "club")
-            for t in tournaments:
-                slug = (t.get("tournamentSlug") or "").lower()
-                name = (t.get("tournamentName") or "").lower()
-                if "world-cup" not in slug and "world cup" not in name:
-                    continue
-                print(f"[found] {t}", file=sys.stderr)
-                log.append({"note": "world-cup-candidate", "tournament": t})
-                if any(x in slug or x in name for x in EXCLUDE):
-                    continue
-                if (t.get("futureFixtures") or 0) > 0:
-                    tournament_id = t.get("tournamentId")  # has real upcoming matches -> best signal
-                if slug == "fifa-world-cup":
-                    fallback_id = t.get("tournamentId")
-            if tournament_id is None:
-                tournament_id = fallback_id
-        except Exception as e:  # noqa: BLE001
-            print(f"[error] parsing tournaments: {e}", file=sys.stderr)
-
-    # 2) Fixtures for that tournament in a near-term window (today .. +9 days;
-    #    the API caps the range at 10 days). Only the Final + 3rd place remain.
     today = dt.datetime.now(dt.timezone.utc).date()
-    frm = today.isoformat()
-    to = (today + dt.timedelta(days=9)).isoformat()
-    fixture_ids = []
-    if tournament_id is not None:
-        st, body = probe("/fixtures", sportId=10, tournamentId=tournament_id, **{"from": frm, "to": to})
-        if st == 200:
-            try:
-                fixtures = json.loads(body)
-                for fx in fixtures:
-                    fid = fx.get("fixtureId") or fx.get("id")
-                    if fid is not None:
-                        fixture_ids.append(fid)
-            except Exception as e:  # noqa: BLE001
-                print(f"[error] parsing fixtures: {e}", file=sys.stderr)
-    else:
-        print("[warn] no World Cup tournamentId found in /tournaments", file=sys.stderr)
+    frm, to = today.isoformat(), (today + dt.timedelta(days=9)).isoformat()
 
-    # Fallback: the tournamentId filter came back empty (0 fixtures reported by
-    # /tournaments too) — list ALL soccer fixtures in the window and pick out
-    # World Cup ones by name OR by the specific teams still alive (Spain/Argentina
-    # for the Final, France/England for 3rd place), so we can see the real
-    # fixtureId/tournamentId pairing and field shape even if the tournament isn't
-    # labeled "World Cup" the way we expect.
-    if not fixture_ids:
-        st, body = probe("/fixtures", sportId=10, **{"from": frm, "to": to})
-        if st == 200:
-            try:
-                fixtures = json.loads(body)
-                print(f"[info] {len(fixtures)} total soccer fixtures in window", file=sys.stderr)
-                if fixtures:
-                    print(f"[shape] first fixture keys: {list(fixtures[0].keys())}", file=sys.stderr)
-                    print(f"[shape] first fixture: {fixtures[0]}", file=sys.stderr)
-                for fx in fixtures:
-                    blob = json.dumps(fx).lower()
-                    hits = "world cup" in blob or "world-cup" in blob or \
-                        sum(t in blob for t in WATCH_TEAMS) >= 2
-                    if hits:
-                        print(f"[wc-fixture] {fx}", file=sys.stderr)
-                        log.append({"note": "wc-fixture-from-all", "fixture": fx})
-                        fid = fx.get("fixtureId") or fx.get("id")
-                        if fid is not None:
-                            fixture_ids.append(fid)
-            except Exception as e:  # noqa: BLE001
-                print(f"[error] parsing all fixtures: {e}", file=sys.stderr)
+    st, body = call("/fixtures", sportId=10, tournamentId=TOURNAMENT_ID, **{"from": frm, "to": to})
+    fixtures = json.loads(body) if st == 200 else []
+    print(f"[info] {len(fixtures)} fixtures for tournamentId={TOURNAMENT_ID}", file=sys.stderr)
 
-    # 3) Sample odds for up to 2 fixtures (Final / 3rd place) to see the market shape.
-    for fid in fixture_ids[:2]:
-        probe("/odds", fixtureId=fid)
+    dump = {"_debug": True, "tournament_id": TOURNAMENT_ID, "fixtures": [], "odds_raw": {}, "summary": {}}
+    for fx in fixtures:
+        fid = fx.get("fixtureId")
+        dump["fixtures"].append({
+            "fixtureId": fid, "home": fx.get("participant1Name"), "away": fx.get("participant2Name"),
+            "startTime": fx.get("startTime"), "round": fx.get("tournamentName"),
+        })
+        st, body = call("/odds", fixtureId=fid)
+        if st != 200:
+            continue
+        odds = json.loads(body)
+        dump["odds_raw"][fid] = odds  # FULL untruncated payload
+        summ = summarize(odds)
+        dump["summary"][fid] = summ
+        print(f"[summary] fixture {fid} bookmakers: {list(summ.keys())}", file=sys.stderr)
+        for bk, mkts in summ.items():
+            print(f"  [{bk}] markets: {list(mkts.keys())}", file=sys.stderr)
 
     os.makedirs("data", exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump({"_discovery": True, "tournament_id": tournament_id,
-                    "fixture_ids": fixture_ids, "probes": log}, f, ensure_ascii=False, indent=2)
-    print(f"Wrote {OUT} (discovery dump, {len(log)} probes, tournamentId={tournament_id}, "
-          f"fixtures={fixture_ids}).", file=sys.stderr)
+        json.dump(dump, f, ensure_ascii=False, indent=2)
+    print(f"Wrote {OUT} (full schema dump, {len(fixtures)} fixtures).", file=sys.stderr)
 
 
 if __name__ == "__main__":
