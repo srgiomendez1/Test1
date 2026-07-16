@@ -56,20 +56,26 @@ def main():
         log.append({"path": path, "params": params, "status": st, "sample": body[:4000]})
         return st, body
 
-    # 1) Full tournaments list for soccer -> find the World Cup tournamentId.
+    # 1) Full tournaments list for soccer -> find the (men's senior) World Cup
+    #    tournamentId. Exact slug match wins; avoid women's/qualifiers/virtual/SRL
+    #    variants that also contain "world-cup".
     st, body = probe("/tournaments", sportId=10)
     tournament_id = None
     if st == 200:
         try:
             tournaments = json.loads(body)
+            EXCLUDE = ("women", "qualif", "virtual", "srl", "u20", "u17", "u23", "novelt")
             for t in tournaments:
                 slug = (t.get("tournamentSlug") or "").lower()
                 name = (t.get("tournamentName") or "").lower()
-                if "world-cup" in slug or "world cup" in name:
-                    print(f"[found] {t}", file=sys.stderr)
-                    log.append({"note": "world-cup-candidate", "tournament": t})
-                    if "fifa" in slug or "fifa" in name or tournament_id is None:
-                        tournament_id = t.get("tournamentId")
+                if "world-cup" not in slug and "world cup" not in name:
+                    continue
+                print(f"[found] {t}", file=sys.stderr)
+                log.append({"note": "world-cup-candidate", "tournament": t})
+                if any(x in slug or x in name for x in EXCLUDE):
+                    continue
+                if slug == "fifa-world-cup":
+                    tournament_id = t.get("tournamentId")  # exact match, stop overriding
         except Exception as e:  # noqa: BLE001
             print(f"[error] parsing tournaments: {e}", file=sys.stderr)
 
@@ -92,6 +98,26 @@ def main():
                 print(f"[error] parsing fixtures: {e}", file=sys.stderr)
     else:
         print("[warn] no World Cup tournamentId found in /tournaments", file=sys.stderr)
+
+    # Fallback: the tournamentId filter came back empty (0 fixtures reported by
+    # /tournaments too) — list ALL soccer fixtures in the window and pick out
+    # World Cup ones by name, so we can see the real fixtureId/tournamentId pairing.
+    if not fixture_ids:
+        st, body = probe("/fixtures", sportId=10, **{"from": frm, "to": to})
+        if st == 200:
+            try:
+                fixtures = json.loads(body)
+                print(f"[info] {len(fixtures)} total soccer fixtures in window", file=sys.stderr)
+                for fx in fixtures:
+                    blob = json.dumps(fx).lower()
+                    if "world cup" in blob or "world-cup" in blob:
+                        print(f"[wc-fixture] {fx}", file=sys.stderr)
+                        log.append({"note": "wc-fixture-from-all", "fixture": fx})
+                        fid = fx.get("fixtureId") or fx.get("id")
+                        if fid is not None:
+                            fixture_ids.append(fid)
+            except Exception as e:  # noqa: BLE001
+                print(f"[error] parsing all fixtures: {e}", file=sys.stderr)
 
     # 3) Sample odds for up to 2 fixtures (Final / 3rd place) to see the market shape.
     for fid in fixture_ids[:2]:
