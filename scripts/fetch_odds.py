@@ -2,13 +2,17 @@
 """Fetch OddsPapi data from the GitHub Action (server-side; no CORS / no
 Cloudflare-to-Cloudflare block) and write data/odds.json.
 
-Phase 1 = DISCOVERY: OddsPapi's exact endpoints for the World Cup aren't known
-yet, so this probes a handful of likely paths and logs their status + a sample.
-Read the Action logs to find the right endpoint, then we lock this down to a
-single call that writes the real odds.
+Phase 2 = TOURNAMENT + FIXTURES DISCOVERY. Phase 1 confirmed the working shape:
+  /tournaments?sportId=10          -> list of tournaments (find "World Cup")
+  /fixtures?sportId=10&tournamentId=X&from=YYYY-MM-DD&to=YYYY-MM-DD  (<=10 days apart)
+  /odds?fixtureId=Y                -> odds for one fixture
+This probes those with real values so we can see the World Cup's tournamentId,
+its remaining fixtures (only the Final + 3rd place remain as of writing), and a
+sample odds payload's market shape. Read the Action logs, then lock this down.
 
 The API key comes from the ODDSPAPI_KEY GitHub *secret* (env var), never the repo.
 """
+import datetime as dt
 import json
 import os
 import sys
@@ -22,6 +26,7 @@ OUT = "data/odds.json"
 
 
 def get(path, **params):
+    params = {k: v for k, v in params.items() if v is not None}
     params["apiKey"] = KEY
     url = BASE + path + "?" + urllib.parse.urlencode(params)
     req = urllib.request.Request(url, headers={
@@ -47,24 +52,61 @@ def main():
     def probe(path, **params):
         st, body = get(path, **params)
         print(f"[probe] {path} {params} -> HTTP {st}", file=sys.stderr)
-        print(f"        sample: {body[:500]}", file=sys.stderr)
-        log.append({"path": path, "params": params, "status": st, "sample": body[:2000]})
+        print(f"        sample: {body[:1500]}", file=sys.stderr)
+        log.append({"path": path, "params": params, "status": st, "sample": body[:4000]})
         return st, body
 
-    # Known to work:
-    probe("/sports")
-    # Discover soccer (sportId 10) structure — competitions/leagues/events/odds:
-    for p in ["/competitions", "/leagues", "/tournaments", "/categories",
-              "/events", "/fixtures", "/odds", "/matches"]:
-        probe(p, sportId=10)
-    # Outrights / "World Cup winner" likely under soccer-specials (sportId 44):
-    probe("/competitions", sportId=44)
-    probe("/events", sportId=44)
+    # 1) Full tournaments list for soccer -> find the World Cup tournamentId.
+    st, body = probe("/tournaments", sportId=10)
+    tournament_id = None
+    if st == 200:
+        try:
+            tournaments = json.loads(body)
+            for t in tournaments:
+                slug = (t.get("tournamentSlug") or "").lower()
+                name = (t.get("tournamentName") or "").lower()
+                if "world-cup" in slug or "world cup" in name:
+                    print(f"[found] {t}", file=sys.stderr)
+                    log.append({"note": "world-cup-candidate", "tournament": t})
+                    if "fifa" in slug or "fifa" in name or tournament_id is None:
+                        tournament_id = t.get("tournamentId")
+        except Exception as e:  # noqa: BLE001
+            print(f"[error] parsing tournaments: {e}", file=sys.stderr)
+
+    # 2) Fixtures for that tournament in a near-term window (today .. +9 days;
+    #    the API caps the range at 10 days). Only the Final + 3rd place remain.
+    today = dt.datetime.now(dt.timezone.utc).date()
+    frm = today.isoformat()
+    to = (today + dt.timedelta(days=9)).isoformat()
+    fixture_ids = []
+    if tournament_id is not None:
+        st, body = probe("/fixtures", sportId=10, tournamentId=tournament_id, **{"from": frm, "to": to})
+        if st == 200:
+            try:
+                fixtures = json.loads(body)
+                for fx in fixtures:
+                    fid = fx.get("fixtureId") or fx.get("id")
+                    if fid is not None:
+                        fixture_ids.append(fid)
+            except Exception as e:  # noqa: BLE001
+                print(f"[error] parsing fixtures: {e}", file=sys.stderr)
+    else:
+        print("[warn] no World Cup tournamentId found in /tournaments", file=sys.stderr)
+
+    # 3) Sample odds for up to 2 fixtures (Final / 3rd place) to see the market shape.
+    for fid in fixture_ids[:2]:
+        probe("/odds", fixtureId=fid)
+
+    # Also probe a generic outrights-style path in case "champion" odds live there.
+    if tournament_id is not None:
+        probe("/outrights", sportId=10, tournamentId=tournament_id)
 
     os.makedirs("data", exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump({"_discovery": True, "probes": log}, f, ensure_ascii=False, indent=2)
-    print(f"Wrote {OUT} (discovery dump, {len(log)} probes).", file=sys.stderr)
+        json.dump({"_discovery": True, "tournament_id": tournament_id,
+                    "fixture_ids": fixture_ids, "probes": log}, f, ensure_ascii=False, indent=2)
+    print(f"Wrote {OUT} (discovery dump, {len(log)} probes, tournamentId={tournament_id}, "
+          f"fixtures={fixture_ids}).", file=sys.stderr)
 
 
 if __name__ == "__main__":
