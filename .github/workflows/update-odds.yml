@@ -35,8 +35,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- data/odds.json; then
-            git add data/odds.json
+          git add data/odds.json
+          # `git diff --quiet` misses untracked files, so check the index instead
+          # (this file was never committed before, so the old check silently no-op'd).
+          if ! git diff --cached --quiet -- data/odds.json; then
             git commit -m "chore: update odds $(date -u +%FT%TZ)"
             git push
           else
