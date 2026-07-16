@@ -28,6 +28,7 @@ OUT = "data/odds.json"
 # and 3rd place (France vs England, Jul 18). Used to find fixtures by team name
 # since the tournamentId filter came back empty on this provider.
 WATCH_TEAMS = ["spain", "argentina", "france", "england"]
+# trigger: re-run now that the workflow actually commits data/odds.json
 
 
 def get(path, **params):
