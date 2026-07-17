@@ -283,8 +283,16 @@
     // Elo power ranking (drives the Title Pie / tournament sim).
     let elo = {};
     try { elo = await getJSON("data/team-elo.json"); } catch (e) { /* ignore */ }
+    // Real bookmaker odds (OddsPapi, fetched server-side by a GitHub Action).
+    // Optional: when present, the Odds tab prefers these over the model estimate
+    // for matches it covers. Keyed by "home team|away team" (lowercase).
+    let realOdds = {};
+    try {
+      const ro = await getJSON("data/odds.json");
+      realOdds = (ro && ro.matches) || {};
+    } catch (e) { /* ignore, purely additive */ }
 
-    return { bets, results, teams, ratings, elo };
+    return { bets, results, teams, ratings, elo, realOdds };
   }
 
   // Overlay live scores onto already-loaded results, then re-apply the clock.
