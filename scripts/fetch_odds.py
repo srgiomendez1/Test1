@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Fetch OddsPapi data from the GitHub Action (server-side; no CORS / no
-Cloudflare-to-Cloudflare block) and write data/odds.json.
+"""Fetch REAL bookmaker odds from OddsPapi and write a compact data/odds.json.
 
-Phase 6 = FULL SCHEMA DUMP. Confirmed working:
-  tournamentId=16 ("World Cup", the real 2026 tournament on this provider)
-  fixtures: France vs England (3rd place, id1000001653452539, Jul 18)
-            Spain vs Argentina (Final, id1000001653452537, Jul 19)
-  /odds?fixtureId=X -> {..., bookmakerOdds: {<bookmaker>: {markets: {<marketId>:
-    {outcomes: {<outcomeId>: {players: {"0": {price, ...}}}}}}}}}
-This dumps the FULL (untruncated) odds payload for both fixtures plus a compact
-summary (bookmakers x markets x outcome prices) so we can pick a normalized
-market (1X2 / match-winner) and a bookmaker (or an average) for the real UI.
+Runs server-side (GitHub Action) — no CORS / no Cloudflare-to-Cloudflare block.
+Confirmed via discovery (read the Action logs of earlier runs if you need the
+raw exploration):
+  - tournamentId=16 is the real 2026 FIFA World Cup on this provider (its
+    'fifa-world-cup' slug tournament reports 0 fixtures for some reason; the
+    plain 'world-cup' slug is the one with actual fixtures/odds).
+  - Market "101" = 1X2 (outcome 101=home, 102=draw, 103=away) — same IDs across
+    every bookmaker on this aggregator.
+  - Market "1010" = Over/Under 2.5 goals (1010=over, 1011=under) — same deal.
+  - Prefer the 'pinnacle' bookmaker (industry-standard low-margin "sharp" book);
+    fall back to an average of a few major books, else skip that match (the
+    site's model-based estimate is used instead — this is purely additive).
 
 The API key comes from the ODDSPAPI_KEY GitHub *secret* (env var), never the repo.
 """
@@ -27,6 +29,9 @@ KEY = os.environ.get("ODDSPAPI_KEY", "").strip()
 BASE = "https://api.oddspapi.io/v4"
 OUT = "data/odds.json"
 TOURNAMENT_ID = 16  # confirmed: the real (men's senior) 2026 World Cup on this provider
+MARKET_1X2 = "101"
+MARKET_OU25 = "1010"
+PREFERRED_BOOKS = ["pinnacle", "bet365", "williamhill", "betmgm", "caesars", "unibet"]
 
 
 def get(path, **params):
@@ -46,32 +51,79 @@ def get(path, **params):
         return -1, str(e)
 
 
-def summarize(fixture_odds):
-    """bookmaker -> marketId -> [{outcomeId, price}] (first player only)."""
+def call(path, **params):
+    st, body = get(path, **params)
+    print(f"[call] {path} {params} -> HTTP {st}", file=sys.stderr)
+    time.sleep(2.5)  # this provider rate-limits; stay well under it
+    return st, body
+
+
+def market_prices(bookmaker_data, market_id):
+    """{outcomeId: price} for one market, or {} if absent/malformed."""
+    mkt = (bookmaker_data.get("markets") or {}).get(market_id) or {}
     out = {}
-    for bk, bdata in (fixture_odds.get("bookmakerOdds") or {}).items():
-        markets = {}
-        for mkt_id, mkt in (bdata.get("markets") or {}).items():
-            outs = []
-            for out_id, out_data in (mkt.get("outcomes") or {}).items():
-                players = out_data.get("players") or {}
-                p0 = players.get("0") or {}
-                outs.append({"outcomeId": out_id, "price": p0.get("price")})
-            markets[mkt_id] = outs
-        out[bk] = markets
+    for out_id, out_data in (mkt.get("outcomes") or {}).items():
+        p0 = (out_data.get("players") or {}).get("0") or {}
+        price = p0.get("price")
+        if isinstance(price, (int, float)) and price > 1:
+            out[out_id] = price
     return out
+
+
+def pick_book(fixture_odds):
+    """Prefer a known low-margin book; else average across whichever of the
+    preferred list are present; else None (caller skips this fixture)."""
+    books = fixture_odds.get("bookmakerOdds") or {}
+    if "pinnacle" in books:
+        return "pinnacle", books["pinnacle"]
+
+    present = [b for b in PREFERRED_BOOKS if b in books]
+    if not present:
+        return None, None
+
+    avg = {"markets": {MARKET_1X2: {"outcomes": {}}, MARKET_OU25: {"outcomes": {}}}}
+    for market_id in (MARKET_1X2, MARKET_OU25):
+        sums, counts = {}, {}
+        for b in present:
+            for out_id, price in market_prices(books[b], market_id).items():
+                sums[out_id] = sums.get(out_id, 0) + price
+                counts[out_id] = counts.get(out_id, 0) + 1
+        for out_id, total in sums.items():
+            mean_price = total / counts[out_id]
+            avg["markets"][market_id]["outcomes"][out_id] = {"players": {"0": {"price": mean_price}}}
+    return f"average({len(present)} books)", avg
+
+
+def implied_pct(price):
+    return round(100 / price) if price and price > 1 else None
+
+
+def extract_match_odds(fixture_odds):
+    book_label, book_data = pick_book(fixture_odds)
+    if not book_data:
+        return None, None
+
+    m1x2 = market_prices(book_data, MARKET_1X2)
+    mou = market_prices(book_data, MARKET_OU25)
+    if not (m1x2.get("101") and m1x2.get("102") and m1x2.get("103")):
+        return None, None  # need a complete 1X2 to be useful
+
+    result = {
+        "dec1": m1x2["101"], "decX": m1x2["102"], "dec2": m1x2["103"],
+        "pct1": implied_pct(m1x2["101"]), "pctX": implied_pct(m1x2["102"]), "pct2": implied_pct(m1x2["103"]),
+    }
+    if mou.get("1010") and mou.get("1011"):
+        result.update({
+            "decOver": mou["1010"], "decUnder": mou["1011"],
+            "pctOver": implied_pct(mou["1010"]), "pctUnder": implied_pct(mou["1011"]),
+        })
+    return book_label, result
 
 
 def main():
     if not KEY:
         print("ERROR: ODDSPAPI_KEY secret not set on the repo.", file=sys.stderr)
         sys.exit(1)
-
-    def call(path, **params):
-        st, body = get(path, **params)
-        print(f"[call] {path} {params} -> HTTP {st}", file=sys.stderr)
-        time.sleep(2.5)
-        return st, body
 
     today = dt.datetime.now(dt.timezone.utc).date()
     frm, to = today.isoformat(), (today + dt.timedelta(days=9)).isoformat()
@@ -80,28 +132,43 @@ def main():
     fixtures = json.loads(body) if st == 200 else []
     print(f"[info] {len(fixtures)} fixtures for tournamentId={TOURNAMENT_ID}", file=sys.stderr)
 
-    dump = {"_debug": True, "tournament_id": TOURNAMENT_ID, "fixtures": [], "odds_raw": {}, "summary": {}}
+    matches = {}
     for fx in fixtures:
         fid = fx.get("fixtureId")
-        dump["fixtures"].append({
-            "fixtureId": fid, "home": fx.get("participant1Name"), "away": fx.get("participant2Name"),
-            "startTime": fx.get("startTime"), "round": fx.get("tournamentName"),
-        })
+        home, away = fx.get("participant1Name"), fx.get("participant2Name")
+        if not (fid and home and away):
+            continue
         st, body = call("/odds", fixtureId=fid)
         if st != 200:
             continue
-        odds = json.loads(body)
-        dump["odds_raw"][fid] = odds  # FULL untruncated payload
-        summ = summarize(odds)
-        dump["summary"][fid] = summ
-        print(f"[summary] fixture {fid} bookmakers: {list(summ.keys())}", file=sys.stderr)
-        for bk, mkts in summ.items():
-            print(f"  [{bk}] markets: {list(mkts.keys())}", file=sys.stderr)
+        try:
+            fixture_odds = json.loads(body)
+        except Exception as e:  # noqa: BLE001
+            print(f"[error] parsing odds for {fid}: {e}", file=sys.stderr)
+            continue
 
+        book_label, odds = extract_match_odds(fixture_odds)
+        if not odds:
+            print(f"[skip] no usable 1X2 for {home} vs {away}", file=sys.stderr)
+            continue
+
+        key = f"{home.strip().lower()}|{away.strip().lower()}"
+        matches[key] = {
+            "home": home, "away": away, "bookmaker": book_label,
+            "kickoff_utc": fx.get("startTime"), **odds,
+        }
+        print(f"[ok] {home} vs {away} <- {book_label}: 1={odds['dec1']} X={odds['decX']} 2={odds['dec2']}",
+              file=sys.stderr)
+
+    payload = {
+        "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "provider": "oddspapi",
+        "matches": matches,
+    }
     os.makedirs("data", exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(dump, f, ensure_ascii=False, indent=2)
-    print(f"Wrote {OUT} (full schema dump, {len(fixtures)} fixtures).", file=sys.stderr)
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    print(f"Wrote {OUT}: {len(matches)} matches with real odds.", file=sys.stderr)
 
 
 if __name__ == "__main__":
