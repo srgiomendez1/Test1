@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T10:00:47.403463+00:00",
+  "generated_at": "2026-07-17T13:44:48.457512+00:00",
   "provider": "oddspapi",
   "matches": {
     "france|england": {
@@ -13,8 +13,8 @@
       "pct1": 52,
       "pctX": 25,
       "pct2": 26,
-      "decOver": 1.446,
-      "decUnder": 2.76,
+      "decOver": 1.444,
+      "decUnder": 2.77,
       "pctOver": 69,
       "pctUnder": 36
     },
