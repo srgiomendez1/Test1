@@ -262,6 +262,10 @@ body > * { position: relative; z-index: 1; }
 .ochip .ol { font-size: 0.7rem; color: var(--muted); }
 .ochip b { font-size: 1.05rem; color: var(--gold); }
 .ochip i { font-size: 0.68rem; color: var(--muted); font-style: normal; }
+.ochip.real { border-color: #3fae5a; background: rgba(63, 174, 90, 0.12); }
+.ochip.real b { color: #6fe08f; }
+.badge.real-odds { display: inline-block; margin: 2px 0 4px; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 700; background: rgba(63, 174, 90, 0.18); color: #6fe08f; border: 1px solid #3fae5a; }
 
 .foot { text-align: center; padding: 20px; color: var(--muted); font-size: 0.75rem; }
 .foot a { color: var(--accent); }

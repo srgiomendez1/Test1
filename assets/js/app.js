@@ -138,7 +138,7 @@
     return box;
   }
 
-  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "eliminatorias", player: null, countLive: true, elo: {} };
+  let state = { bets: null, results: null, teams: {}, ratings: {}, view: "eliminatorias", player: null, countLive: true, elo: {}, realOdds: {} };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, cls, html) => {
@@ -753,14 +753,15 @@
 
     // How-to-read panel (top)
     wrap.appendChild(el("div", "oddshelp",
-      `<p class="ohb">⚠️ <strong>Cuotas estimadas — NO son de casa de apuestas.</strong></p>
+      `<p class="ohb">⚠️ <strong>Cuotas estimadas por un modelo — salvo donde diga 🟢 Cuotas reales.</strong></p>
        <p>Cómo leerlas (cuota decimal estilo momio europeo): si apuestas $100 a una cuota de
-       <b>2.00</b>, recibes $200 (ganancia $100). Cuanto <b>más baja</b> la cuota, más probable según el modelo.
-       El <b>%</b> es la probabilidad estimada.</p>
+       <b>2.00</b>, recibes $200 (ganancia $100). Cuanto <b>más baja</b> la cuota, más probable.
+       El <b>%</b> es la probabilidad implícita.</p>
        <ul class="ohl">
          <li><b>1X2</b> — resultado: gana <b>Local</b>, <b>Empate</b> o gana <b>Visitante</b>.</li>
          <li><b>Total 2.5</b> — <b>Más</b> = 3+ goles en el partido; <b>Menos</b> = 2 o menos.</li>
-         <li><b>Marcador más probable</b> — los 3 marcadores con mayor probabilidad.</li>
+         <li><b>Marcador más probable</b> — los 3 marcadores con mayor probabilidad (siempre estimado por el modelo).</li>
+         <li>🟢 <b>Cuotas reales</b> — 1X2 y Total 2.5 vienen de una casa de apuestas real (vía OddsPapi) cuando el partido ya está definido y listado.</li>
        </ul>`));
 
     // Title Pie — probability of being crowned champion (full-tournament sim).
@@ -803,10 +804,24 @@
       }
       const od = Odds.matchOdds({ lh, la, curH, curA, remFrac });
 
+      // Real bookmaker odds (OddsPapi), when this match is covered — pre-match
+      // only (once live, the model's minute-adjusted estimate is more relevant).
+      const ro = m.status === "scheduled" ? state.realOdds[`${(m.home || "").toLowerCase()}|${(m.away || "").toLowerCase()}`] : null;
+
       if (m.date !== lastDay) { lastDay = m.date; list.appendChild(el("h3", "dayhdr", fmtDay(m.date))); }
 
       const chip = (label, p) =>
         `<span class="ochip">${label ? `<span class="ol">${label}</span>` : ""}<b>${dec(p).toFixed(2)}</b><i>${pct(p)}%</i></span>`;
+      const chipReal = (label, decVal, pctVal) =>
+        `<span class="ochip real">${label ? `<span class="ol">${label}</span>` : ""}<b>${decVal.toFixed(2)}</b><i>${pctVal}%</i></span>`;
+      const row1x2 = ro
+        ? `${chipReal("Local", ro.dec1, ro.pct1)}${chipReal("Empate", ro.decX, ro.pctX)}${chipReal("Visit.", ro.dec2, ro.pct2)}`
+        : `${chip("Local", od.p1)}${chip("Empate", od.pX)}${chip("Visit.", od.p2)}`;
+      const rowOU = ro && ro.decOver != null
+        ? `${chipReal("Más", ro.decOver, ro.pctOver)}${chipReal("Menos", ro.decUnder, ro.pctUnder)}`
+        : `${chip("Más", od.over)}${chip("Menos", od.under)}`;
+      const realBadge = ro ? `<span class="badge real-odds">🟢 Cuotas reales${ro.bookmaker ? " · " + ro.bookmaker : ""}</span>` : "";
+
       const card = el("div", "oddscard");
       card.innerHTML = `
         <div class="mhead">
@@ -814,10 +829,11 @@
           <span class="mtime">${fmtKickoffTime(m)}</span>${statusBadge(m)}
         </div>
         <div class="oteams">${koTeamHTML(m.home)}<span class="ovs">${m.score ? m.score[0] + "–" + m.score[1] : "vs"}</span>${koTeamHTML(m.away)}</div>
+        ${realBadge}
         <div class="omkt"><div class="omh">Resultado (1X2)</div>
-          <div class="orow">${chip("Local", od.p1)}${chip("Empate", od.pX)}${chip("Visit.", od.p2)}</div></div>
+          <div class="orow">${row1x2}</div></div>
         <div class="omkt"><div class="omh">Total de goles 2.5</div>
-          <div class="orow">${chip("Más", od.over)}${chip("Menos", od.under)}</div></div>
+          <div class="orow">${rowOU}</div></div>
         <div class="omkt"><div class="omh">Marcador más probable</div>
           <div class="orow">${od.scores.map((s) => `<span class="ochip"><b>${s.s}</b><i>${pct(s.p)}%</i></span>`).join("")}</div></div>`;
       list.appendChild(card);
@@ -862,7 +878,7 @@
   async function refresh() {
     try {
       const d = await DataLayer.load();
-      state.bets = d.bets; state.results = d.results; state.teams = d.teams; state.ratings = d.ratings || {}; state.elo = d.elo || {};
+      state.bets = d.bets; state.results = d.results; state.teams = d.teams; state.ratings = d.ratings || {}; state.elo = d.elo || {}; state.realOdds = d.realOdds || {};
       render(); // paint committed data immediately (fast, same-origin only)
     } catch (e) {
       console.error(e);
