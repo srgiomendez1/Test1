@@ -1,38 +1,22 @@
 {
-  "generated_at": "2026-07-18T20:53:30.191741+00:00",
+  "generated_at": "2026-07-18T22:53:42.245997+00:00",
   "provider": "oddspapi",
   "matches": {
-    "france|england": {
-      "home": "France",
-      "away": "England",
-      "bookmaker": "pinnacle",
-      "kickoff_utc": "2026-07-18T21:00:00.000Z",
-      "dec1": 1.729,
-      "decX": 4.18,
-      "dec2": 4.67,
-      "pct1": 58,
-      "pctX": 24,
-      "pct2": 21,
-      "decOver": 1.454,
-      "decUnder": 2.7,
-      "pctOver": 69,
-      "pctUnder": 37
-    },
     "spain|argentina": {
       "home": "Spain",
       "away": "Argentina",
       "bookmaker": "pinnacle",
       "kickoff_utc": "2026-07-19T19:00:00.000Z",
-      "dec1": 2.27,
-      "decX": 3.05,
-      "dec2": 3.76,
-      "pct1": 44,
+      "dec1": 2.3,
+      "decX": 3.04,
+      "dec2": 3.71,
+      "pct1": 43,
       "pctX": 33,
       "pct2": 27,
-      "decOver": 2.3,
-      "decUnder": 1.653,
+      "decOver": 2.31,
+      "decUnder": 1.645,
       "pctOver": 43,
-      "pctUnder": 60
+      "pctUnder": 61
     }
   }
 }
