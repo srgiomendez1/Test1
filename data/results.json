@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T20:33:40.888597+00:00",
+  "generated_at": "2026-07-18T21:31:35.505616+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1859,10 +1859,14 @@
       "group": null,
       "round": "Match for third place",
       "ground": "Miami (Miami Gardens)",
-      "score": null,
+      "score": [
+        0,
+        2
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     },
     "2026-07-19|Spain|Argentina": {
       "num": 104,
