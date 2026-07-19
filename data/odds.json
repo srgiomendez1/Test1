@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:53:42.245997+00:00",
+  "generated_at": "2026-07-19T02:57:47.470082+00:00",
   "provider": "oddspapi",
   "matches": {
     "spain|argentina": {
@@ -8,13 +8,13 @@
       "bookmaker": "pinnacle",
       "kickoff_utc": "2026-07-19T19:00:00.000Z",
       "dec1": 2.3,
-      "decX": 3.04,
-      "dec2": 3.71,
+      "decX": 3.03,
+      "dec2": 3.72,
       "pct1": 43,
       "pctX": 33,
       "pct2": 27,
-      "decOver": 2.31,
-      "decUnder": 1.645,
+      "decOver": 2.34,
+      "decUnder": 1.628,
       "pctOver": 43,
       "pctUnder": 61
     }
