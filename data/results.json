@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T18:31:24.867284+00:00",
+  "generated_at": "2026-07-19T19:47:48.125837+00:00",
   "matches": {
     "2026-06-11|Mexico|South Africa": {
       "num": null,
@@ -1877,10 +1877,14 @@
       "group": null,
       "round": "Final",
       "ground": "New York/New Jersey (East Rutherford)",
-      "score": null,
+      "score": [
+        0,
+        0
+      ],
       "pens": null,
-      "status": "scheduled",
-      "source": "openfootball"
+      "status": "live",
+      "source": "live",
+      "minute": "live"
     }
   }
 }
