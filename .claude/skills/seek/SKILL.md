@@ -11,14 +11,25 @@ have to search Pocket again.
 
 ## Inputs
 
-Parse these from the request. If one is missing, use the default; don't ask.
+Parse these from the request. If date range, topic or time zone is missing, use the default
+and don't ask.
 
 | Input | Default | Examples |
 |---|---|---|
 | Date range | Last 7 days, ending today | "this week", "since Monday", "Sept" |
 | Topic filter | None (all recordings) | "FTP", "anything with Connor" |
-| Scope | All (Work, Personal, Mixed) | "work only", "personal only" |
+| Scope | **Ask** (see below) | "work only", "personal only", "everything" |
 | Time zone | America/Detroit (Eastern) | — |
+
+**Scope: always ask unless the request already says.** Before searching, ask one question
+with three options (use AskUserQuestion when available):
+- **All**: Work, Personal and Mixed recordings.
+- **Work only**: Work and Mixed recordings (for Mixed, summarize only the work part).
+- **Personal only**: Personal and Mixed recordings (for Mixed, summarize only the personal part).
+
+When Seek is called by the follow-up or weekly-summary prompt, use the scope that prompt
+passes and don't ask. Apply the scope in step 4, after categorizing, and record it in
+`filters.scope` as `all`, `work` or `personal`.
 
 ## Steps
 
