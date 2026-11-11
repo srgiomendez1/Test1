@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pagos – acceso</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1d1d1b;--muted:#5f5e58;--line:#dedcd3;--accent:#1f5f8b;--warn:#a3480f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16171a;--card:#212226;--ink:#f0efe9;--muted:#a8a7a0;--line:#3a3b40;--accent:#7db8e0;--warn:#f0a372}}
+:root[data-theme="dark"]{--bg:#16171a;--card:#212226;--ink:#f0efe9;--muted:#a8a7a0;--line:#3a3b40;--accent:#7db8e0;--warn:#f0a372}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--ink);font:18px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;width:100%;max-width:400px}
+h1{font-size:1.4rem;margin:0 0 6px}
+p{color:var(--muted);margin:0 0 18px}
+label{display:block;font-weight:600;margin-bottom:6px}
+input[type=password]{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.rem{display:flex;gap:10px;align-items:center;font-weight:400;margin:14px 0}
+.rem input{width:20px;height:20px}
+button{font:inherit;font-weight:600;width:100%;padding:12px;border:0;border-radius:10px;background:var(--accent);color:#fff;cursor:pointer}
+button:disabled{opacity:.6}
+#err{color:var(--warn);font-weight:600;min-height:1.5em;margin:10px 0 0}
+</style>
+</head>
+<body>
+<form id="f" autocomplete="on">
+  <h1>Página privada</h1>
+  <p>Escriba la contraseña para ver los pagos.</p>
+  <label for="pw">Contraseña</label>
+  <input type="password" id="pw" autocomplete="current-password" autofocus required>
+  <label class="rem"><input type="checkbox" id="rem" checked> Recordar en este celular</label>
+  <button id="go">Entrar</button>
+  <div id="err" role="alert"></div>
+</form>
+<script id="payload" type="application/json">{}</script>
+<script>
+(function(){
+  const KEYSTORE = "tauro-pagos-key";
+  const P = JSON.parse(document.getElementById("payload").textContent);
+  const b = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const enc = u => btoa(String.fromCharCode(...new Uint8Array(u)));
+
+  async function deriveRaw(pw){
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]);
+    return crypto.subtle.deriveBits({name:"PBKDF2", hash:"SHA-256", salt:b(P.salt), iterations:P.iter}, base, 256);
+  }
+  async function decryptHtml(raw){
+    const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    return new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM", iv:b(P.iv)}, key, b(P.ct)));
+  }
+  function show(html){ document.open(); document.write(html); document.close(); }
+
+  // Llave recordada en este aparato (solo sirve para esta versión cifrada: se guarda junto con su "salt")
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEYSTORE) || "null"); } catch(e){}
+  if (saved && saved.salt === P.salt) {
+    decryptHtml(b(saved.k)).then(show).catch(()=>{ try{ localStorage.removeItem(KEYSTORE); }catch(e){} });
+  }
+
+  document.getElementById("f").addEventListener("submit", async e => {
+    e.preventDefault();
+    const btn = document.getElementById("go"), err = document.getElementById("err");
+    btn.disabled = true; err.textContent = "Abriendo…";
+    try {
+      const raw = await deriveRaw(document.getElementById("pw").value);
+      const html = await decryptHtml(raw);
+      try {
+        if (document.getElementById("rem").checked) localStorage.setItem(KEYSTORE, JSON.stringify({salt:P.salt, k:enc(raw)}));
+        else localStorage.removeItem(KEYSTORE);
+      } catch(_){}
+      show(html);
+    } catch(x){
+      btn.disabled = false; err.textContent = "Contraseña incorrecta. Revise mayúsculas y minúsculas.";
+    }
+  });
+})();
+</script>
+</body>
+</html>

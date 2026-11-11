@@ -1,24 +1,17 @@
-# Pagos Tintorería Tauro
+# Calculadora de pagos (privada)
 
-Página sencilla (un solo `index.html`, sin servidor) para calcular los pagos mensuales
-de la venta de Tintorería Tauro, ligados a la tasa de **CETES a 28 días** de Banxico.
+`index.html` está **cifrado** (AES-256-GCM, llave derivada de la contraseña con PBKDF2-SHA256).
+Sin la contraseña solo se ve una pantalla para escribirla; la contraseña no se guarda en este repositorio.
 
-## Qué muestra
-1. **Próximo pago**: monto, tasa usada y un menú para elegir otra tasa semanal (la más reciente, etc.).
-2. **Adeudo**: pagos atrasados + interés por atraso, a la fecha de corte elegida.
-3. **Tabla completa** de los 48 pagos; cada pago se puede marcar como recibido.
+## Editar la página
+1. Descifrar:  `TAURO_PASSWORD=... python scripts/protect.py decrypt index.html /ruta/fuera/del/repo/app.html`
+2. Editar `app.html` (fuera del repositorio; nunca lo suba sin cifrar).
+3. Cifrar:     `TAURO_PASSWORD=... python scripts/protect.py encrypt /ruta/fuera/del/repo/app.html index.html`
 
-## Reglas (igual que el Excel "TABLA3 - Tintoreria Tauro pagos")
-- Capital: 5,000,000 / 48 por mes. Interés: saldo × CETES / 12.
-- Tasa (regla del contrato): última subasta semanal de CETES 28 días del mes en que inicia el periodo.
-- Cuando el comprador mandó su cálculo (julio y agosto 2026), se usa su monto por defecto y la página verifica cada renglón contra Banxico. Para agregar otro mes, edite el bloque `BUYER` en `index.html`.
-- IVA 16% sobre (capital + interés); ISR retenido 1.25% de (capital + interés).
-- Pagos 1 y 2 se dejan con las tasas que se cobraron (9.74% y 9.37%).
+Requiere `pip install cryptography`. Cada vez que se vuelve a cifrar, los aparatos que tenían
+la contraseña recordada la piden una vez más.
 
-## Actualización automática
-`.github/workflows/update-cetes.yml` (en la raíz del repo) corre `scripts/update_cetes.py` todas las noches a las 8 pm hora del Centro,
-descarga la serie SF43936 de Banxico (sin token) y actualiza `data/cetes.json`.
-La página trae las tasas también incluidas, por si el archivo no carga.
-
-## Publicar
-Settings → Pages → Deploy from branch → `main` / root.
+## Tasas CETES
+`.github/workflows/update-cetes.yml` (en la raíz del repo) corre `scripts/update_cetes.py` todas las noches
+a las 8 pm hora del Centro, descarga la serie SF43936 de Banxico (dato público, sin token) y actualiza
+`data/cetes.json`, que la página lee después de abrirse.
