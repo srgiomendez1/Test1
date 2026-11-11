@@ -15,7 +15,7 @@ de la venta de Tintorería Tauro, ligados a la tasa de **CETES a 28 días** de B
 - Pagos 1 y 2 se dejan con las tasas que se cobraron (9.74% y 9.37%).
 
 ## Actualización automática
-`.github/workflows/update-cetes.yml` corre `scripts/update_cetes.py` cada miércoles y viernes,
+`.github/workflows/update-cetes.yml` (en la raíz del repo) corre `scripts/update_cetes.py` todas las noches a las 8 pm hora del Centro,
 descarga la serie SF43936 de Banxico (sin token) y actualiza `data/cetes.json`.
 La página trae las tasas también incluidas, por si el archivo no carga.
 
