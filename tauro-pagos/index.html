@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagos Tintorería Tauro</title>
+<style>
+:root{
+  --bg:#f6f5f1; --card:#ffffff; --ink:#1d1d1b; --muted:#5f5e58; --line:#dedcd3;
+  --accent:#1f5f8b; --accent-soft:#e3eef6; --ok:#2e7d4f; --ok-soft:#e4f3ea;
+  --warn:#a3480f; --warn-soft:#fbeadc;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171a; --card:#212226; --ink:#f0efe9; --muted:#a8a7a0; --line:#3a3b40;
+    --accent:#7db8e0; --accent-soft:#1d3342; --ok:#7fcf9f; --ok-soft:#1b3326;
+    --warn:#f0a372; --warn-soft:#3d2618;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171a; --card:#212226; --ink:#f0efe9; --muted:#a8a7a0; --line:#3a3b40;
+  --accent:#7db8e0; --accent-soft:#1d3342; --ok:#7fcf9f; --ok-soft:#1b3326;
+  --warn:#f0a372; --warn-soft:#3d2618;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.25rem;margin:0 0 12px}
+h3{font-size:1.05rem;margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px}
+.big{font-size:2.6rem;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.rate-badge{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:10px;padding:8px 12px;font-weight:600;margin:6px 0 14px}
+label{font-weight:600;display:block;margin-bottom:6px}
+select,input[type=number]{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:100%;max-width:560px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{font-size:.85rem;color:var(--muted);font-weight:600}
+td:first-child,th:first-child,.l{text-align:left}
+.breakdown td,.breakdown th{border:none;padding:4px 6px}
+.breakdown td:first-child{white-space:normal}
+@media (max-width:600px){ .breakdown{font-size:15px} .breakdown td,.breakdown th{padding:4px 3px} }
+.breakdown tr.tot td{border-top:2px solid var(--ink);font-weight:700;padding-top:8px}
+.total-owed{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:14px 16px;margin-top:14px}
+.total-owed .big{font-size:2.2rem}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pill{font-size:.8rem;border-radius:999px;padding:2px 8px;font-weight:600}
+.pill.paid{background:var(--ok-soft);color:var(--ok)}
+.pill.due{background:var(--warn-soft);color:var(--warn)}
+.pill.fut{background:var(--accent-soft);color:var(--accent)}
+.note{color:var(--muted);font-size:.9rem}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.row>div{flex:1 1 240px}
+.switch{display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:4px}
+.switch input{width:22px;height:22px;flex:none}
+button{font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+tr.sel td{background:var(--accent-soft)}
+details summary{cursor:pointer;font-weight:600}
+.checks{list-style:none;padding:0;margin:0}
+.checks li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.checks li:last-child{border-bottom:none}
+.checks .ic{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+.checks .ic.ok{background:var(--ok-soft);color:var(--ok)}
+.checks .ic.info{background:var(--accent-soft);color:var(--accent)}
+.checks .ic.warn{background:var(--warn-soft);color:var(--warn)}
+.verdict{border-radius:12px;padding:12px 14px;margin:6px 0 14px;font-weight:600}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)}
+.verdict.info{background:var(--accent-soft);color:var(--accent)}
+.tag{font-size:.75rem;font-weight:600;color:var(--accent)}
+@media (max-width:600px){ .big{font-size:2rem} body{font-size:17px} }
+</style>
+</head>
+<body>
+<main>
+  <h1>Pagos por la venta de Tintorería Tauro</h1>
+  <p class="sub">Venta de $5,000,000 en 48 pagos mensuales. El interés usa la tasa de CETES a 28 días publicada por Banxico.</p>
+
+  <!-- 1. Detalle de un pago -->
+  <section class="card" id="detail">
+    <div class="row">
+      <div>
+        <label for="paySelect">Ver el pago de</label>
+        <select id="paySelect"></select>
+      </div>
+      <div>
+        <label for="rateSelect">Tasa CETES 28 días que se usa</label>
+        <select id="rateSelect"></select>
+      </div>
+    </div>
+    <h2 id="detTitle" style="margin-top:18px">—</h2>
+    <div class="big" id="detAmount">—</div>
+    <div class="rate-badge" id="detBadge">—</div>
+    <div class="scroll"><table class="breakdown" id="detBreakdown"></table></div>
+
+    <h3>¿Es justo este pago? Revisión punto por punto</h3>
+    <div class="verdict" id="verdict"></div>
+    <ul class="checks" id="checks"></ul>
+  </section>
+
+  <!-- 2. Adeudo -->
+  <section class="card" id="owed">
+    <h2>Lo que se debe</h2>
+    <label class="switch"><input type="checkbox" id="useBuyer"> Usar los montos calculados por el comprador cuando existan</label>
+    <label class="switch"><input type="checkbox" id="penalty"> Cobrar interés por atraso</label>
+    <p class="note" id="penaltyNote"></p>
+    <div class="row">
+      <div>
+        <label for="cutoff">Calcular al cierre de</label>
+        <select id="cutoff"></select>
+      </div>
+      <div>
+        <label for="prior">Saldo atrasado previo al 31-jul-2026 (0 = julio pagado completo)</label>
+        <input type="number" id="prior" step="0.01" min="0">
+      </div>
+    </div>
+    <div class="scroll" style="margin-top:14px"><table id="owedTable"></table></div>
+    <div class="total-owed">
+      <div>Total adeudado al cierre seleccionado</div>
+      <div class="big" id="owedTotal">—</div>
+    </div>
+    <p class="note">Si se activa el interés por atraso: cada mes que un pago sigue sin cubrirse genera interés simple de (CETES 28 días ÷ 12) sobre lo adeudado, con la tasa que fija el contrato para ese mes. No incluye IVA ni retención sobre ese interés.</p>
+  </section>
+
+  <!-- 3. Tabla completa -->
+  <section class="card">
+    <h2>Tabla de pagos</h2>
+    <p class="note">Marque cada pago como recibido o pendiente (se guarda en este navegador). Toque un renglón para ver su detalle arriba. <span class="tag">C</span> = monto calculado por el comprador.</p>
+    <div class="scroll"><table id="schedule"></table></div>
+    <p><button id="resetBtn">Restablecer marcas originales</button></p>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>¿Cómo se calcula?</summary>
+      <ul>
+        <li><b>Capital:</b> $5,000,000 ÷ 48 = $104,166.67 cada mes.</li>
+        <li><b>Saldo:</b> $5,000,000 menos el capital ya pagado en los meses anteriores.</li>
+        <li><b>Interés:</b> saldo × (tasa CETES 28 días ÷ 12).</li>
+        <li><b>Regla del contrato (referencia):</b> la tasa de la <b>última subasta semanal del mes</b> anterior al pago. Ej.: el pago de noviembre usa la última subasta de octubre.</li>
+        <li><b>Montos del comprador:</b> cuando el comprador mandó su cálculo (julio y agosto 2026), la página usa su tasa y su monto por defecto, y revisa que cada renglón sea correcto.</li>
+        <li><b>Subtotal</b> = capital + interés. <b>IVA</b> = 16% del subtotal. <b>ISR retenido</b> = 1.25% del subtotal.</li>
+        <li><b>Total a recibir</b> = subtotal + IVA − ISR retenido.</li>
+        <li>Los pagos 1 y 2 se cobraron con las tasas de la tabla original (9.74% y 9.37%).</li>
+      </ul>
+      <p class="note" id="sourceNote"></p>
+    </details>
+  </section>
+</main>
+
+<script>
+const EMBEDDED = [["2024-12-05",9.9],["2024-12-11",9.95],["2024-12-19",9.8],["2024-12-26",9.74],["2025-01-02",10.04],["2025-01-09",9.88],["2025-01-16",9.78],["2025-01-23",9.75],["2025-01-30",9.87],["2025-02-06",9.65],["2025-02-13",9.35],["2025-02-20",9.37],["2025-02-27",9.44],["2025-03-06",9.15],["2025-03-13",9.14],["2025-03-20",9.1],["2025-03-27",9.02],["2025-04-03",8.8],["2025-04-10",8.8],["2025-04-16",9.0],["2025-04-24",8.8],["2025-04-30",8.65],["2025-05-08",8.55],["2025-05-15",8.4],["2025-05-22",8.15],["2025-05-29",8.12],["2025-06-05",8.1],["2025-06-12",8.1],["2025-06-19",8.14],["2025-06-26",8.0],["2025-07-03",7.7],["2025-07-10",7.85],["2025-07-17",7.65],["2025-07-24",7.65],["2025-07-31",7.48],["2025-08-07",7.5],["2025-08-14",7.38],["2025-08-21",7.4],["2025-08-28",7.27],["2025-09-04",7.35],["2025-09-11",7.35],["2025-09-18",7.25],["2025-09-25",7.2],["2025-10-02",7.19],["2025-10-09",7.47],["2025-10-16",7.4],["2025-10-23",7.1],["2025-10-30",7.1],["2025-11-06",7.3],["2025-11-13",7.05],["2025-11-20",7.25],["2025-11-27",7.15],["2025-12-04",7.29],["2025-12-11",7.25],["2025-12-18",7.15],["2025-12-24",7.04],["2025-12-31",7.07],["2026-01-08",7.07],["2026-01-15",6.99],["2026-01-22",7.0],["2026-01-29",6.95],["2026-02-05",6.9],["2026-02-12",6.88],["2026-02-19",6.84],["2026-02-26",6.83],["2026-03-05",6.81],["2026-03-12",6.81],["2026-03-19",6.81],["2026-03-26",6.81],["2026-04-01",6.64],["2026-04-09",6.6],["2026-04-16",6.6],["2026-04-23",6.55],["2026-04-30",6.5],["2026-05-07",6.49],["2026-05-14",6.54],["2026-05-21",6.45],["2026-05-28",6.38],["2026-06-04",6.36],["2026-06-11",6.25],["2026-06-18",6.28],["2026-06-25",6.28],["2026-07-02",6.3],["2026-07-09",6.29],["2026-07-16",6.2],["2026-07-23",6.18],["2026-07-30",6.2],["2026-08-06",6.17],["2026-08-13",6.4],["2026-08-20",6.15],["2026-08-27",6.13],["2026-09-03",6.49],["2026-09-10",6.25],["2026-09-17",6.25],["2026-09-24",6.15],["2026-10-01",6.01],["2026-10-08",6.09],["2026-10-15",6.25],["2026-10-22",6.23],["2026-10-29",6.22],["2026-11-05",6.5],["2026-11-12",6.2]];
+const MONTO = 5000000, PLAZO = 48, IVA = 0.16, ISR = 0.0125;
+const START = {y:2024, m:12};              // periodo 1 = dic-2024 a ene-2025; se paga a fin de ene-2025
+const LOCKED = {1:{date:"2024-12-26",rate:9.74}, 2:{date:"2025-02-20",rate:9.37}};
+const FIRST_VIEW = 18;                     // el selector arranca en el pago de junio 2026
+
+// Cálculos enviados por el comprador (tal cual los mandaron). Para agregar otro mes, copie un bloque.
+const BUYER = {
+  19: { mes:"julio 2026", rateDate:"2026-07-16", rate:6.20,
+        capital:104166.67, interes:16145.92, subtotal:120312.59, iva:19250.01, isr:1503.91, total:138058.70,
+        nota:"La tasa 6.20% también fue la de la subasta del 30-jul-2026." },
+  20: { mes:"agosto 2026", rateDate:"2026-08-13", rate:6.40,
+        capital:104166.67, interes:16111.11, subtotal:120277.78, iva:19244.44, isr:1503.47, total:138018.75,
+        nota:"6.40% fue un alza de una sola semana; las demás subastas de agosto estuvieron entre 6.13% y 6.17%." },
+};
+
+// Estado por defecto: pagos 1–19 recibidos (julio incluido); ago, sep y oct-2026 (20–22) pendientes.
+const DEFAULT_PAID = n => n <= 19;
+const DEFAULTS = {paid:{}, prior:0, penalty:false, useBuyer:true};
+const STORE = "tauro-pagos-v3";
+
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const fmt = v => v.toLocaleString("es-MX",{style:"currency",currency:"MXN",minimumFractionDigits:2});
+const pct = r => r.toFixed(2)+"%";
+const dmy = iso => { const [y,m,d]=iso.split("-"); return `${+d}-${MESES[+m-1]}-${y}`; };
+const ym = (y,m) => `${y}-${String(m).padStart(2,"0")}`;
+const addM = (y,m,k) => { const t=y*12+(m-1)+k; return {y:Math.floor(t/12), m:t%12+1}; };
+const mi = o => o.y*12+o.m;
+const monthLabel = o => `${MESES_L[o.m-1]} ${o.y}`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let rates = EMBEDDED, ratesUpdated = null;
+let state = load();
+let viewN = null, rateChoice = null;   // selección actual del detalle
+
+function load(){
+  try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.paid) return {...DEFAULTS, ...s}; } catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
+function isPaid(n){ return (n in state.paid) ? state.paid[n] : DEFAULT_PAID(n); }
+function nowYM(){ const t=new Date(); return {y:t.getFullYear(), m:t.getMonth()+1}; }
+
+function auctionsIn(y,m){ const k=ym(y,m); return rates.filter(r=>r[0].startsWith(k)); }
+function lastAuctionOfMonth(y,m){ const a=auctionsIn(y,m); return a.length?{date:a[a.length-1][0],rate:a[a.length-1][1]}:null; }
+
+// Tasa de la regla del contrato para el periodo n que empieza en (y,m)
+function contractRate(n,y,m){
+  if (LOCKED[n]) return {...LOCKED[n], kind:"fija"};
+  const r = lastAuctionOfMonth(y,m), t = nowYM();
+  if (r) return {...r, kind: (y*12+m) < mi(t) ? "oficial" : "provisional"};
+  const last = rates[rates.length-1];
+  return {date:last[0], rate:last[1], kind:"estimada"};
+}
+
+function calc(n, rate){
+  const capital = MONTO/PLAZO, saldo = MONTO - (n-1)*capital;
+  const interes = rate/100/12*saldo, subtotal = capital+interes, iva = subtotal*IVA, isr = subtotal*ISR;
+  return {saldo, capital, interes, subtotal, iva, isr, total: subtotal+iva-isr};
+}
+
+function buildSchedule(){
+  const rows=[];
+  for (let n=1;n<=PLAZO;n++){
+    const start = addM(START.y, START.m, n-1), pay = addM(start.y, start.m, 1);
+    const cr = contractRate(n, start.y, start.m);
+    const rule = calc(n, cr.rate);
+    const b = BUYER[n];
+    const useB = !!(b && state.useBuyer);
+    rows.push({n, start, pay, cr, rule, buyer:b, amount: useB ? b.total : rule.total,
+               rate: useB ? b.rate : cr.rate, rateDate: useB ? b.rateDate : cr.date, fromBuyer:useB});
+  }
+  return rows;
+}
+
+function monthRate(sched, y, m){
+  const prev = addM(y,m,-1); const row = sched.find(r=>r.start.y===prev.y && r.start.m===prev.m);
+  return row ? row.cr.rate : rates[rates.length-1][1];
+}
+function lateInterest(sched, amount, due, cut){
+  let tot=0, k=1;
+  for (;;k++){
+    const mm = addM(due.y, due.m, k);
+    if (mi(mm) > mi(cut)) break;
+    if (state.penalty) tot += amount * monthRate(sched, mm.y, mm.m)/100/12;
+  }
+  return {tot, months:k-1};
+}
+
+// ---------- Detalle de un pago ----------
+function renderDetail(sched){
+  const t = nowYM();
+  const nextRow = sched.find(r => mi(r.pay) >= mi(t)) || sched[sched.length-1];
+  if (viewN === null) viewN = nextRow.n;
+  const paySel = document.getElementById("paySelect");
+  paySel.innerHTML = "";
+  sched.filter(r => r.n >= FIRST_VIEW).forEach(r=>{
+    const tag = r.n===nextRow.n ? " — próximo pago" : (r.buyer ? " — cálculo del comprador" : "");
+    paySel.add(new Option(`#${r.n} · ${monthLabel(r.pay)}${tag}`, r.n));
+  });
+  paySel.value = viewN;
+  const row = sched[viewN-1], b = row.buyer;
+
+  // Opciones de tasa: comprador, regla del contrato, subastas del mes del periodo y del mes de pago, y la más reciente
+  const rateSel = document.getElementById("rateSelect");
+  rateSel.innerHTML = "";
+  if (b) rateSel.add(new Option(`Usada por el comprador: ${pct(b.rate)} (subasta del ${dmy(b.rateDate)})`, "buyer"));
+  rateSel.add(new Option(`Regla del contrato: última subasta de ${MESES_L[row.start.m-1]} — ${pct(row.cr.rate)} (${dmy(row.cr.date)})${row.cr.kind==="provisional"?" · provisional":row.cr.kind==="estimada"?" · estimada":""}`, "rule"));
+  const seen = new Set();
+  const addAuction = (d,v,prefix) => { if (seen.has(d)) return; seen.add(d); rateSel.add(new Option(`${prefix}${dmy(d)}: ${pct(v)}`, d)); };
+  auctionsIn(row.start.y,row.start.m).forEach(([d,v])=>addAuction(d,v,"Subasta "));
+  auctionsIn(row.pay.y,row.pay.m).forEach(([d,v])=>addAuction(d,v,"Subasta "));
+  const latest = rates[rates.length-1];
+  addAuction(latest[0], latest[1], "Más reciente — ");
+  const defaultChoice = b && state.useBuyer ? "buyer" : "rule";
+  if (!rateChoice || ![...rateSel.options].some(o=>o.value===rateChoice)) rateChoice = defaultChoice;
+  rateSel.value = rateChoice;
+
+  let rate, rDate, how;
+  if (rateChoice==="buyer"){ rate=b.rate; rDate=b.rateDate; how="Tasa usada por el comprador"; }
+  else if (rateChoice==="rule"){ rate=row.cr.rate; rDate=row.cr.date; how="Tasa según la regla del contrato"; }
+  else { const f=rates.find(r=>r[0]===rateChoice); rate=f[1]; rDate=f[0]; how="Tasa seleccionada"; }
+  const c = calc(row.n, rate);
+  const showBuyerAmt = rateChoice==="buyer";
+
+  const status = isPaid(row.n) ? "recibido" : (mi(row.pay) < mi(t) ? "pendiente" : (row.n===nextRow.n ? "próximo pago" : "por venir"));
+  document.getElementById("detTitle").textContent = `Pago #${row.n} de 48 · ${monthLabel(row.pay)} (${status})`;
+  document.getElementById("detAmount").textContent = fmt(showBuyerAmt ? b.total : c.total);
+  document.getElementById("detBadge").textContent = `${how}: CETES 28 días ${pct(rate)} · subasta del ${dmy(rDate)}`;
+
+  const lines = [["Saldo antes del pago","saldo"],["Capital","capital"],[`Interés (${pct(rate)} ÷ 12 × saldo)`,"interes"],
+                 ["Subtotal","subtotal"],["IVA 16%","iva"],["ISR retenido 1.25%","isr"]];
+  let h = b ? `<tr><th></th><th>Comprador</th><th>Recalculado aquí</th></tr>` : "";
+  lines.forEach(([lab,k])=>{
+    const neg = k==="isr" ? "−" : "";
+    const bv = b ? (k==="saldo" ? "—" : neg+fmt(b[k])) : null;
+    h += `<tr><td class="l">${lab}</td>${b?`<td>${bv}</td>`:""}<td>${neg}${fmt(c[k])}</td></tr>`;
+  });
+  h += `<tr class="tot"><td class="l">Total a recibir</td>${b?`<td>${fmt(b.total)}</td>`:""}<td>${fmt(c.total)}</td></tr>`;
+  document.getElementById("detBreakdown").innerHTML = h;
+
+  renderChecks(row, c, rate, rDate);
+}
+
+function renderChecks(row, c, rate, rDate){
+  const items = [];
+  const add = (kind, html) => items.push(`<li><span class="ic ${kind}">${kind==="ok"?"✓":kind==="warn"?"!":"i"}</span><span>${html}</span></li>`);
+  const b = row.buyer, rule = row.rule;
+  const capital = MONTO/PLAZO, saldo = MONTO-(row.n-1)*capital;
+  const verdict = document.getElementById("verdict");
+
+  if (b){
+    const close = (x,y,tol=0.02) => Math.abs(x-y) <= tol;
+    const implied = b.interes*1200/saldo;
+    const window_ = [...auctionsIn(row.start.y,row.start.m), ...auctionsIn(row.pay.y,row.pay.m)];
+    const matches = window_.filter(r=>Math.abs(r[1]-implied) < 0.005).map(r=>dmy(r[0]));
+    add(close(b.capital,capital) ? "ok":"warn", `<b>Capital correcto:</b> ${fmt(b.capital)} = $5,000,000 ÷ 48.`);
+    add("ok", `<b>Saldo correcto:</b> el interés se cobró sobre ${fmt(saldo)} = $5,000,000 − ${row.n-1} pagos de capital ya hechos.`);
+    add(matches.length ? "ok":"warn", `<b>Tasa verificada con Banxico:</b> el interés equivale a ${pct(implied)} anual, que coincide con la tasa publicada de CETES 28 días ${matches.length?`del <b>${matches.join(", ")}</b>`:"(no se encontró esa tasa exacta)"}. Fecha usada por el comprador: <b>${dmy(b.rateDate)}</b>.`);
+    const dInt = b.interes - calc(row.n,b.rate).interes;
+    add(Math.abs(dInt) < 1 ? "ok":"warn", `<b>Interés:</b> ${fmt(saldo)} × ${pct(b.rate)} ÷ 12 = ${fmt(calc(row.n,b.rate).interes)}; el comprador puso ${fmt(b.interes)}${Math.abs(dInt)>=0.01?` (diferencia de ${fmt(Math.abs(dInt))} por redondeo)`:""}.`);
+    add(close(b.subtotal, b.capital+b.interes) ? "ok":"warn", `<b>Subtotal correcto:</b> capital + interés = ${fmt(b.capital+b.interes)}.`);
+    add(close(b.iva, b.subtotal*IVA) ? "ok":"warn", `<b>IVA correcto:</b> 16% de ${fmt(b.subtotal)} = ${fmt(b.subtotal*IVA)}.`);
+    add(close(b.isr, b.subtotal*ISR) ? "ok":"warn", `<b>ISR retenido correcto:</b> 1.25% de ${fmt(b.subtotal)} = ${fmt(b.subtotal*ISR)}. Esta retención se acredita en la declaración de impuestos de quien vende; pida la constancia de retención.`);
+    add(close(b.total, b.subtotal+b.iva-b.isr) ? "ok":"warn", `<b>Total correcto:</b> subtotal + IVA − ISR = ${fmt(b.subtotal+b.iva-b.isr)}.`);
+    const diff = b.total - rule.total;
+    add("info", `<b>Comparado con la regla del contrato</b> (última subasta de ${MESES_L[row.start.m-1]}: ${pct(row.cr.rate)} del ${dmy(row.cr.date)}): el comprador pagó <b>${fmt(Math.abs(diff))} ${diff>=0?"más":"menos"}</b> (${fmt(rule.total)} según la regla).`);
+    if (b.nota) add("info", esc(b.nota));
+    const allOk = !items.some(x=>x.includes('ic warn'));
+    verdict.className = "verdict " + (allOk ? "ok":"info");
+    verdict.textContent = allOk
+      ? `El cálculo del comprador para ${b.mes} está bien hecho: la tasa es una tasa real publicada por Banxico y todas las cuentas cuadran.`
+      : `Revise los puntos marcados con “!”.`;
+  } else {
+    verdict.className = "verdict info";
+    verdict.textContent = `No hay cálculo del comprador para este mes. Abajo, cómo se obtiene el monto con datos oficiales de Banxico.`;
+    add("ok", `<b>Capital:</b> $5,000,000 ÷ 48 = ${fmt(capital)}.`);
+    add("ok", `<b>Saldo:</b> $5,000,000 − ${row.n-1} pagos de capital = ${fmt(saldo)}.`);
+    add("ok", `<b>Tasa:</b> CETES 28 días ${pct(rate)}, subasta del <b>${dmy(rDate)}</b> (Banxico, serie SF43936).${row.cr.kind==="provisional"?" Es provisional: puede salir otra subasta antes de que termine el mes.":row.cr.kind==="estimada"?" Es estimada: todavía no hay subasta de ese mes; se usa la más reciente.":""}`);
+    add("ok", `<b>Interés:</b> ${fmt(saldo)} × ${pct(rate)} ÷ 12 = ${fmt(c.interes)}.`);
+    add("ok", `<b>IVA</b> 16% = ${fmt(c.iva)}; <b>ISR retenido</b> 1.25% = ${fmt(c.isr)}; <b>total</b> = ${fmt(c.total)}.`);
+    const auc = auctionsIn(row.start.y,row.start.m);
+    if (auc.length>1){
+      const lo=Math.min(...auc.map(a=>a[1])), hi=Math.max(...auc.map(a=>a[1]));
+      add("info", `En ${MESES_L[row.start.m-1]} las subastas fueron de ${pct(lo)} a ${pct(hi)}; con esa variación el pago iría de ${fmt(calc(row.n,lo).total)} a ${fmt(calc(row.n,hi).total)}.`);
+    }
+  }
+  add("info", `Calculado en esta página el ${dmy(new Date().toISOString().slice(0,10))} con tasas de Banxico hasta el ${dmy(rates[rates.length-1][0])}.`);
+  document.getElementById("checks").innerHTML = items.join("");
+}
+
+// ---------- Adeudo ----------
+function renderOwed(sched){
+  const cutSel = document.getElementById("cutoff");
+  if (!cutSel.options.length){
+    for (let k=0;k<=8;k++){ // cierres de jun-2026 a feb-2027
+      const c = addM(2026,6,k), last = new Date(c.y, c.m, 0).getDate();
+      cutSel.add(new Option(`${last} de ${MESES_L[c.m-1]} ${c.y}`, ym(c.y,c.m)));
+    }
+    cutSel.value = "2026-10";
+  }
+  const [cy,cm] = cutSel.value.split("-").map(Number), cut={y:cy,m:cm};
+  document.getElementById("penalty").checked = state.penalty;
+  document.getElementById("useBuyer").checked = state.useBuyer;
+  document.getElementById("penaltyNote").textContent = state.penalty
+    ? "Interés por atraso activado: cada mes de atraso suma interés a la tasa CETES del mes ÷ 12."
+    : "Sin interés por atraso: solo se suman los pagos pendientes.";
+  const priorInput = document.getElementById("prior");
+  if (document.activeElement !== priorInput) priorInput.value = state.prior;
+  const P = state.penalty;
+  let html = `<tr><th>Concepto</th><th>Vencía</th><th>Monto</th><th>Meses atraso</th>${P?"<th>Interés atraso</th>":""}<th>Total</th></tr>`;
+  let total = 0, count = 0;
+  if (state.prior > 0 && mi(cut) >= mi({y:2026,m:7})){
+    const li = lateInterest(sched, state.prior, {y:2026,m:7}, cut);
+    total += state.prior + li.tot; count++;
+    html += `<tr><td>Saldo atrasado previo</td><td>31-jul-2026</td><td>${fmt(state.prior)}</td><td>${li.months}</td>${P?`<td>${fmt(li.tot)}</td>`:""}<td>${fmt(state.prior+li.tot)}</td></tr>`;
+  }
+  sched.filter(r => !isPaid(r.n) && mi(r.pay) <= mi(cut)).forEach(r=>{
+    const li = lateInterest(sched, r.amount, r.pay, cut);
+    total += r.amount + li.tot; count++;
+    html += `<tr><td>Pago #${r.n} (${monthLabel(r.pay)})${r.fromBuyer?' <span class="tag">C</span>':""}</td><td>fin de ${MESES[r.pay.m-1]}-${r.pay.y}</td><td>${fmt(r.amount)}</td><td>${li.months}</td>${P?`<td>${fmt(li.tot)}</td>`:""}<td>${fmt(r.amount+li.tot)}</td></tr>`;
+  });
+  if (!count) html += `<tr><td colspan="6" class="l">Nada pendiente a esa fecha.</td></tr>`;
+  document.getElementById("owedTable").innerHTML = html;
+  document.getElementById("owedTotal").textContent = fmt(total);
+}
+
+// ---------- Tabla ----------
+function renderSchedule(sched){
+  const t = nowYM();
+  let sh = `<tr><th>#</th><th>Se paga</th><th>Fecha tasa</th><th>CETES</th><th>Saldo</th><th>Total</th><th>Estado</th></tr>`;
+  sched.forEach(r=>{
+    const paid = isPaid(r.n);
+    const pill = paid ? `<span class="pill paid">Recibido</span>` : (mi(r.pay) < mi(t) ? `<span class="pill due">Pendiente</span>` : `<span class="pill fut">Por venir</span>`);
+    const kind = (r.fromBuyer || r.cr.kind==="oficial" || r.cr.kind==="fija") ? "" : ` <span class="note">(${r.cr.kind})</span>`;
+    sh += `<tr data-row="${r.n}" class="${r.n===viewN?"sel":""}" style="cursor:pointer"><td>${r.n}</td><td class="l">${MESES[r.pay.m-1]}-${r.pay.y}</td>
+      <td>${dmy(r.rateDate)}</td><td>${pct(r.rate)}${kind}</td><td>${fmt(MONTO-(r.n-1)*MONTO/PLAZO)}</td>
+      <td><b>${fmt(r.amount)}</b>${r.fromBuyer?' <span class="tag">C</span>':""}</td>
+      <td class="l"><label style="display:inline;font-weight:400"><input type="checkbox" data-n="${r.n}" ${paid?"checked":""}> ${pill}</label></td></tr>`;
+  });
+  document.getElementById("schedule").innerHTML = sh;
+  document.getElementById("sourceNote").textContent =
+    `Fuente: Banxico SIE, serie SF43936 (Cetes a 28 días, tasa de rendimiento de la subasta semanal). ` +
+    `Datos hasta ${dmy(rates[rates.length-1][0])}${ratesUpdated?`, actualizados el ${dmy(ratesUpdated)}`:""}. Se actualiza solo cada noche a las 8 pm (hora del Centro).`;
+}
+
+function render(){
+  const sched = buildSchedule();
+  renderDetail(sched); renderOwed(sched); renderSchedule(sched);
+}
+
+document.getElementById("paySelect").addEventListener("change", e=>{ viewN = +e.target.value; rateChoice = null; render(); });
+document.getElementById("rateSelect").addEventListener("change", e=>{ rateChoice = e.target.value; render(); });
+document.getElementById("cutoff").addEventListener("change", render);
+document.getElementById("penalty").addEventListener("change", e=>{ state.penalty = e.target.checked; save(); render(); });
+document.getElementById("useBuyer").addEventListener("change", e=>{ state.useBuyer = e.target.checked; rateChoice = null; save(); render(); });
+document.getElementById("prior").addEventListener("input", e=>{ state.prior = Math.max(0, parseFloat(e.target.value)||0); save(); render(); });
+document.getElementById("schedule").addEventListener("change", e=>{
+  const n = e.target.dataset && e.target.dataset.n; if (!n) return;
+  state.paid[n] = e.target.checked; save(); render();
+});
+document.getElementById("schedule").addEventListener("click", e=>{
+  if (e.target.closest("label")) return;
+  const tr = e.target.closest("tr[data-row]"); if (!tr) return;
+  const n = +tr.dataset.row; if (n < FIRST_VIEW) return;
+  viewN = n; rateChoice = null; render();
+  document.getElementById("detail").scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("resetBtn").addEventListener("click", ()=>{ state = JSON.parse(JSON.stringify(DEFAULTS)); save(); rateChoice=null; render(); });
+
+render();
+fetch("data/cetes.json", {cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
+  if (j && Array.isArray(j.datos) && j.datos.length >= rates.length){ rates=j.datos; ratesUpdated=j.actualizado; render(); }
+}).catch(()=>{});
+</script>
+</body>
+</html>
