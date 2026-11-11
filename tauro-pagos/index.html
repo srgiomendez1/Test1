@@ -47,6 +47,8 @@ td:first-child,th:first-child,.l{text-align:left}
 .pill.due{background:var(--warn-soft);color:var(--warn)}
 .pill.fut{background:var(--accent-soft);color:var(--accent)}
 .note{color:var(--muted);font-size:.9rem}
+.switch{display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:4px}
+.switch input{width:22px;height:22px}
 .row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
 .row>div{flex:1 1 240px}
 button{font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
@@ -75,14 +77,16 @@ details summary{cursor:pointer;font-weight:600}
 
   <!-- 2. Adeudo -->
   <section class="card" id="owed">
-    <h2>Lo que se debe (pagos atrasados + interés)</h2>
+    <h2>Lo que se debe</h2>
+    <label class="switch"><input type="checkbox" id="penalty"> Cobrar interés por atraso</label>
+    <p class="note" id="penaltyNote"></p>
     <div class="row">
       <div>
         <label for="cutoff">Calcular al cierre de</label>
         <select id="cutoff"></select>
       </div>
       <div>
-        <label for="prior">Saldo atrasado al 31-jul-2026 (pesos)</label>
+        <label for="prior">Saldo atrasado previo al 31-jul-2026 (0 = julio pagado completo)</label>
         <input type="number" id="prior" step="0.01" min="0">
       </div>
     </div>
@@ -93,7 +97,7 @@ details summary{cursor:pointer;font-weight:600}
       <div>Total adeudado al cierre seleccionado</div>
       <div class="big" id="owedTotal">—</div>
     </div>
-    <p class="note">Interés por atraso: cada mes que un pago sigue sin cubrirse genera interés simple de (CETES 28 días ÷ 12) sobre lo adeudado, con la misma tasa que fija el contrato para ese mes. No incluye IVA ni retención sobre el interés por atraso.</p>
+    <p class="note">Si se activa el interés por atraso: cada mes que un pago sigue sin cubrirse genera interés simple de (CETES 28 días ÷ 12) sobre lo adeudado, con la misma tasa que fija el contrato para ese mes. No incluye IVA ni retención sobre el interés por atraso.</p>
   </section>
 
   <!-- 3. Tabla completa -->
@@ -125,10 +129,11 @@ const EMBEDDED = [["2024-12-05",9.9],["2024-12-11",9.95],["2024-12-19",9.8],["20
 const MONTO = 5000000, PLAZO = 48, IVA = 0.16, ISR = 0.0125;
 const START = {y:2024, m:12};              // periodo 1 = dic-2024 a ene-2025
 const LOCKED = {1:{date:"2024-12-26",rate:9.74}, 2:{date:"2025-02-20",rate:9.37}};
-// Estado por defecto: pagos 1–19 recibidos; ago, sep y oct-2026 (20–22) pendientes.
+// Estado por defecto: pagos 1–19 recibidos (julio incluido); ago, sep y oct-2026 (20–22) pendientes.
 const DEFAULT_PAID = n => n <= 19;
-const DEFAULT_PRIOR = 50000;
-const STORE = "tauro-pagos-v1";
+const DEFAULT_PRIOR = 0;          // julio 2026 se considera pagado completo
+const DEFAULT_PENALTY = false;    // por defecto: sin interés por atraso
+const STORE = "tauro-pagos-v2";
 
 const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
@@ -143,8 +148,8 @@ let rates = EMBEDDED, ratesUpdated = null;
 let state = load();
 
 function load(){
-  try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.paid) return s; } catch(e){}
-  return {paid:{}, prior:DEFAULT_PRIOR};
+  try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.paid) return {penalty:DEFAULT_PENALTY, prior:DEFAULT_PRIOR, ...s}; } catch(e){}
+  return {paid:{}, prior:DEFAULT_PRIOR, penalty:DEFAULT_PENALTY};
 }
 function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
 function isPaid(n){ return (n in state.paid) ? state.paid[n] : DEFAULT_PAID(n); }
@@ -191,10 +196,12 @@ function monthRate(sched, y, m){
 }
 function lateInterest(sched, amount, due, cut){
   let tot=0, k=1;
+  const apply = state.penalty;
   while (true){
     const mm = addM(due.y, due.m, k);
     if (mm.y*12+mm.m > cut.y*12+cut.m) break;
-    tot += amount * monthRate(sched, mm.y, mm.m)/100/12; k++;
+    if (apply) tot += amount * monthRate(sched, mm.y, mm.m)/100/12;
+    k++;
   }
   return {tot, months:k-1};
 }
@@ -244,20 +251,25 @@ function render(){
     cutSel.value = "2026-10";
   }
   const [cy,cm] = cutSel.value.split("-").map(Number), cut={y:cy,m:cm};
+  document.getElementById("penalty").checked = state.penalty;
+  document.getElementById("penaltyNote").textContent = state.penalty
+    ? "Activado: cada mes de atraso suma interés a la tasa CETES del mes ÷ 12."
+    : "Desactivado: solo se suman los pagos pendientes, sin interés por atraso.";
   const priorInput = document.getElementById("prior");
   if (document.activeElement !== priorInput) priorInput.value = state.prior;
-  let html = `<tr><th>Concepto</th><th>Vencía</th><th>Monto</th><th>Meses atraso</th><th>Interés atraso</th><th>Total</th></tr>`;
+  const P = state.penalty;
+  let html = `<tr><th>Concepto</th><th>Vencía</th><th>Monto</th><th>Meses atraso</th>${P?"<th>Interés atraso</th>":""}<th>Total</th></tr>`;
   let total = 0;
   const julEnd = {y:2026,m:7};
   if (state.prior > 0){
     const li = lateInterest(sched, state.prior, julEnd, cut);
     total += state.prior + li.tot;
-    html += `<tr><td>Saldo atrasado previo</td><td>31-jul-2026</td><td>${fmt(state.prior)}</td><td>${li.months}</td><td>${fmt(li.tot)}</td><td>${fmt(state.prior+li.tot)}</td></tr>`;
+    html += `<tr><td>Saldo atrasado previo</td><td>31-jul-2026</td><td>${fmt(state.prior)}</td><td>${li.months}</td>${P?`<td>${fmt(li.tot)}</td>`:""}<td>${fmt(state.prior+li.tot)}</td></tr>`;
   }
   sched.filter(r => !isPaid(r.n) && r.pay.y*12+r.pay.m <= cut.y*12+cut.m).forEach(r=>{
     const li = lateInterest(sched, r.pago, r.pay, cut);
     total += r.pago + li.tot;
-    html += `<tr><td>Pago #${r.n} (${monthLabel(r.pay.y,r.pay.m)})</td><td>fin de ${MESES[r.pay.m-1]}-${r.pay.y}</td><td>${fmt(r.pago)}</td><td>${li.months}</td><td>${fmt(li.tot)}</td><td>${fmt(r.pago+li.tot)}</td></tr>`;
+    html += `<tr><td>Pago #${r.n} (${monthLabel(r.pay.y,r.pay.m)})</td><td>fin de ${MESES[r.pay.m-1]}-${r.pay.y}</td><td>${fmt(r.pago)}</td><td>${li.months}</td>${P?`<td>${fmt(li.tot)}</td>`:""}<td>${fmt(r.pago+li.tot)}</td></tr>`;
   });
   document.getElementById("owedTable").innerHTML = html;
   document.getElementById("owedTotal").textContent = fmt(total);
@@ -281,12 +293,13 @@ function render(){
 
 document.getElementById("rateSelect").addEventListener("change", render);
 document.getElementById("cutoff").addEventListener("change", render);
+document.getElementById("penalty").addEventListener("change", e=>{ state.penalty = e.target.checked; save(); render(); });
 document.getElementById("prior").addEventListener("input", e=>{ state.prior = Math.max(0, parseFloat(e.target.value)||0); save(); render(); });
 document.getElementById("schedule").addEventListener("change", e=>{
   const n = e.target.dataset && e.target.dataset.n; if (!n) return;
   state.paid[n] = e.target.checked; save(); render();
 });
-document.getElementById("resetBtn").addEventListener("click", ()=>{ state={paid:{},prior:DEFAULT_PRIOR}; save(); render(); });
+document.getElementById("resetBtn").addEventListener("click", ()=>{ state={paid:{},prior:DEFAULT_PRIOR,penalty:DEFAULT_PENALTY}; save(); render(); });
 
 render();
 // Cargar las tasas más recientes (data/cetes.json se actualiza solo cada semana)
