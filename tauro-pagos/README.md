@@ -10,7 +10,8 @@ de la venta de Tintorería Tauro, ligados a la tasa de **CETES a 28 días** de B
 
 ## Reglas (igual que el Excel "TABLA3 - Tintoreria Tauro pagos")
 - Capital: 5,000,000 / 48 por mes. Interés: saldo × CETES / 12.
-- Tasa: última subasta semanal de CETES 28 días del mes en que inicia el periodo.
+- Tasa (regla del contrato): última subasta semanal de CETES 28 días del mes en que inicia el periodo.
+- Cuando el comprador mandó su cálculo (julio y agosto 2026), se usa su monto por defecto y la página verifica cada renglón contra Banxico. Para agregar otro mes, edite el bloque `BUYER` en `index.html`.
 - IVA 16% sobre (capital + interés); ISR retenido 1.25% de (capital + interés).
 - Pagos 1 y 2 se dejan con las tasas que se cobraron (9.74% y 9.37%).
 
