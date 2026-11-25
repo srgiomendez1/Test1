@@ -1,6 +1,6 @@
 {
 "fuente": "Banxico SIE, serie SF43936 (Cetes 28 dias, tasa de rendimiento, subasta semanal)",
-"actualizado": "2026-11-18",
+"actualizado": "2026-11-25",
 "datos": [
 [
 "2024-12-05",
@@ -413,6 +413,10 @@
 [
 "2026-11-19",
 6.19
+],
+[
+"2026-11-26",
+6.2
 ]
 ]
 }
